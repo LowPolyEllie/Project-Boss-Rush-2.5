@@ -4,4 +4,6 @@ Godot remake of a scratch game :3
 Stuff to finish
 - Add a proper state machine
 - Add scene based tank loading
-- Add
+- A
+
+The game itself is in C#, the plugins are in GDScript

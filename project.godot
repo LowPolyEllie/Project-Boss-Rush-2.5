@@ -25,7 +25,7 @@ project/assembly_name="Project Boss Rush 2.5"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/br2classes/plugin.cfg", "res://addons/classdesc/plugin.cfg")
+enabled=PackedStringArray("res://addons/br2classes/plugin.cfg")
 
 [input]
 
