@@ -6,7 +6,9 @@ Bugs
 (Seems to have no effect for now, just keep in mind in case anything happens)
 
 Stuff currently being worked on
+Ellie
 - Replace the global classes with plugin classes
+Fox
 
 Stuff to finish
 - Add a proper state machine
