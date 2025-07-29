@@ -5,8 +5,10 @@ Bugs
 - An script class error message upon compilation
 (Seems to have no effect for now, just keep in mind in case anything happens)
 
-Stuff to finish
+Stuff currently being worked on
 - Replace the global classes with plugin classes
+
+Stuff to finish
 - Add a proper state machine
 - Add scene based tank loading
 
