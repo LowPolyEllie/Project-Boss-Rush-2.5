@@ -8,10 +8,13 @@ Bugs
 Stuff currently being worked on
 Ellie
 - Replace the global classes with plugin classes
+- Add scene based tank loading
 Fox
+- Add a proper state machine
 
 Stuff to finish
-- Add a proper state machine
-- Add scene based tank loading
+- Add Nova
+- Add UI
+- Add a menu screen
 
 The game itself is in C#, the plugins are in GDScript
