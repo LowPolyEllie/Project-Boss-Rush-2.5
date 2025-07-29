@@ -31,5 +31,4 @@ public partial class EntitySpawner : Node
 		toAdd.ZIndex = zindex;
 		WorldRef.AddChild(toAdd);
 	}
-
 }

@@ -8,7 +8,7 @@ Bugs
 
 Stuff currently being worked on
 Ellie
-- Replace the global classes with plugin classes
+- Add a proper tank loading system
 Fox
 - Add a proper state machine
 

@@ -3,6 +3,9 @@ using System;
 
 namespace BossRush2;
 
+/// <summary>
+/// Loads a <c>PackedScene</c> to shoot as a projectile
+/// </summary>
 [GlobalClass]
 public partial class Cannon : Node2D
 {
@@ -93,7 +96,7 @@ public partial class Cannon : Node2D
 			DelayTimer.Timeout += OnShoot;
 			AddChild(DelayTimer);
 		}
-		
+
 		ShootTimer.Timeout += OnCooldownEnd;
 		AddChild(ShootTimer);
 	}
@@ -142,7 +145,7 @@ public partial class Cannon : Node2D
 	public void OnShoot()
 	{
 		AnimatorRef.StartAnimation();
-		World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex-1);
+		World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1);
 		OnDelay = false;
 		OnCooldown = true;
 		ShootTimer.Start();

@@ -4,7 +4,7 @@ using System;
 namespace BossRush2;
 
 /// <summary>
-/// Node must have the name "Player" to be detected, because Godot is being a bitch
+/// Node must have the name "Player" to be detected
 /// </summary>
 public partial class Player : Entity
 {

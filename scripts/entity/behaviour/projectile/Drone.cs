@@ -6,6 +6,7 @@ namespace BossRush2;
 /// <summary>
 /// An entity that tracks and chases targets
 /// </summary>
+[GlobalClass]
 public partial class Drone : Entity
 {
 	/// <summary>

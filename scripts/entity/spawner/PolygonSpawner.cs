@@ -13,7 +13,7 @@ public partial class PolygonSpawner : EntitySpawner
     [Export]
     protected Array<PolygonTemplate> SpawnPool;
     [Export]
-    int PolygonCount = 0;
+    protected int PolygonCount = 0;
 
     Array<float> cachedPool = [];
     float totalWeight = 0f;

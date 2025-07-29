@@ -9,7 +9,6 @@ namespace BossRush2;
 /// <remarks>
 /// Access through <c>World.MouseTrackerMain</c>
 /// </remarks>
-[GlobalClass]
 public partial class MouseTracker : Node2D
 {
 	public override void _Process(double delta)

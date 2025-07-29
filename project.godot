@@ -13,7 +13,7 @@ config_version=5
 config/name="Project Boss Rush 2.5"
 config/description="Project Boss Rush 2, rebuilt and newed into a brand new engine"
 run/main_scene="uid://btx7bc4714n2k"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 
 [display]
 
