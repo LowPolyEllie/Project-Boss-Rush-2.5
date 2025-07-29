@@ -1,2 +1,6 @@
 android/
 .godot/
+.csproj
+.old
+.uid
+.import
