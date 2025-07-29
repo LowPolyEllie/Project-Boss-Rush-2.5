@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\Project Boss Rush 2.5.csproj": {}
+    "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\Project Boss Rush 2.5.csproj": {}
   },
   "projects": {
-    "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\Project Boss Rush 2.5.csproj": {
+    "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\Project Boss Rush 2.5.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\Project Boss Rush 2.5.csproj",
+        "projectUniqueName": "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\Project Boss Rush 2.5.csproj",
         "projectName": "Project Boss Rush 2.5",
-        "projectPath": "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\Project Boss Rush 2.5.csproj",
+        "projectPath": "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\Project Boss Rush 2.5.csproj",
         "packagesPath": "C:\\Users\\lowpo\\.nuget\\packages\\",
-        "outputPath": "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\.godot\\mono\\temp\\obj\\",
+        "outputPath": "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\.godot\\mono\\temp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lowpo\\AppData\\Roaming\\NuGet\\NuGet.Config"

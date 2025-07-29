@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Project Boss Rush 2.5")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02d7639eb7989fea9c65f1290e1fb0491634ad73")]
 [assembly: System.Reflection.AssemblyProductAttribute("Project Boss Rush 2.5")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Project Boss Rush 2.5")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

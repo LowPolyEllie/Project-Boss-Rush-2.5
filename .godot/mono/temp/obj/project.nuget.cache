@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "418xRXcSSg0=",
+  "dgSpecHash": "rtMm+ZPEyYM=",
   "success": true,
-  "projectFilePath": "D:\\Organised\\Coding\\Godot\\Project Boss Rush 2.5\\Project Boss Rush 2.5.csproj",
+  "projectFilePath": "D:\\Organised\\Coding\\Godot\\Project-Boss-Rush-2.5\\Project Boss Rush 2.5.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lowpo\\.nuget\\packages\\godot.sourcegenerators\\4.4.1\\godot.sourcegenerators.4.4.1.nupkg.sha512",
     "C:\\Users\\lowpo\\.nuget\\packages\\godotsharp\\4.4.1\\godotsharp.4.4.1.nupkg.sha512",
