@@ -1,0 +1,159 @@
+using Godot;
+using System;
+
+namespace BossRush2;
+
+[GlobalClass]
+public partial class Cannon : Node2D
+{
+	[Export]
+	public Stats MyStats;
+	/// <summary>
+	/// The time it takes after the bullet is fired for the cannon to shoot again
+	/// </summary>
+	[Export]
+	public float FireRate = 0.5f;
+	/// <summary>
+	/// InitDelay is ignored if true
+	/// </summary>
+	[Export]
+	public bool HaveDelay = false;
+	/// <summary>
+	/// The time is takes after input is pressed before bullet is fired
+	/// </summary>
+	[Export]
+	public float InitDelay;
+
+	/// <summary>
+	/// Because godot doesn't allow referencing custom types
+	/// </summary>
+	[Export]
+	Node2D _Source;
+
+	public Entity Source;
+
+	/// <summary>
+	/// The scene to instantiate once the bullet fires
+	/// </summary>
+	[Export]
+	public PackedScene ToShoot;
+
+	/// <summary>
+	/// Bosses should obviously ignore this
+	/// </summary>
+	[Export]
+	public bool UseActionTrigger;
+
+	[Export(PropertyHint.Enum, "firePrimary,fireSecondary")]
+	public string ActionTrigger;
+
+	/// <summary>
+	/// Whether or not the cooldown or delay timer is active
+	/// </summary>
+	public bool OnCooldown;
+	/// <summary>
+	/// Whether or not the delay timer is active
+	/// </summary>
+	public bool OnDelay;
+
+	protected SegmentAnimator AnimatorRef;
+
+	/// <summary>
+	/// Timers are created at runtime for abstraction purposes
+	/// </summary>
+	protected Timer ShootTimer, DelayTimer;
+
+	public override void _Ready()
+	{
+		AnimatorRef = GetParent<SegmentAnimator>();
+		if (Source is null)
+		{
+			if (_Source is Entity entity)
+			{
+				Source = entity;
+			}
+			else
+			{
+				throw new InvalidCastException("Must reference Entity type source only");
+			}
+		}
+
+		ShootTimer = new Timer()
+		{
+			OneShot = true,
+			WaitTime = FireRate,
+		};
+		if (HaveDelay)
+		{
+			DelayTimer = new Timer()
+			{
+				OneShot = true,
+				WaitTime = InitDelay
+			};
+			DelayTimer.Timeout += OnShoot;
+			AddChild(DelayTimer);
+		}
+		
+		ShootTimer.Timeout += OnCooldownEnd;
+		AddChild(ShootTimer);
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		float deltaF = (float)delta;
+		if (IsShooting())
+		{
+			if (!OnCooldown)
+			{
+				if (HaveDelay)
+				{
+					OnCooldown = true;
+					OnDelay = true;
+					DelayTimer.Start();
+				}
+				else
+				{
+					OnShoot();
+				}
+			}
+		}
+		else
+		{
+			if (OnDelay)
+			{
+				OnCooldown = false;
+				OnDelay = false;
+				DelayTimer.Stop();
+			}
+		}
+	}
+
+	/// <summary>
+	/// Whether or not the inputs are triggering the cannon to shoot
+	/// </summary>
+	public bool IsShooting()
+	{
+		return UseActionTrigger && Input.IsActionPressed(ActionTrigger);
+	}
+
+	/// <summary>
+	/// Forces the cannon to shoot, regardless of timer or cooldown
+	/// </summary>
+	public void OnShoot()
+	{
+		AnimatorRef.StartAnimation();
+		World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex-1);
+		OnDelay = false;
+		OnCooldown = true;
+		ShootTimer.Start();
+	}
+
+	protected void OnCooldownEnd()
+	{
+		OnCooldown = false;
+		if (IsShooting())
+		{
+			OnShoot();
+		}
+	}
+}

@@ -1,0 +1,17 @@
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.deps.json
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.runtimeconfig.json
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.dll
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.pdb
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\GodotSharp.dll
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.csproj.AssemblyReference.cache
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.GeneratedMSBuildEditorConfig.editorconfig
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.AssemblyInfoInputs.cache
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.AssemblyInfo.cs
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.csproj.CoreCompileInputs.cache
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project .EE2C77C1.Up2Date
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.dll
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\refint\Project Boss Rush 2.5.dll
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.pdb
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.genruntimeconfig.cache
+D:\Organised\Coding\Godot\Project Boss Rush 2.5\.godot\mono\temp\obj\Debug\ref\Project Boss Rush 2.5.dll
