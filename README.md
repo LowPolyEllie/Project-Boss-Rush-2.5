@@ -6,6 +6,7 @@ Bugs
 (Seems to have no effect for now, just keep in mind in case anything happens)
 
 Stuff to finish
+- Replace the global classes with plugin classes
 - Add a proper state machine
 - Add scene based tank loading
 
