@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8juwg48r586"
-path="res://.godot/imported/TrapCannon.svg-8400ebfd933b6ca2dc95d9a91c63c1aa.ctex"
+uid="uid://t1cirkiv0h8d"
+path="res://.godot/imported/LargeBullet.svg-b65d5a43099142b735adfab4b1b14ab1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/player/TrapCannon.svg"
-dest_files=["res://.godot/imported/TrapCannon.svg-8400ebfd933b6ca2dc95d9a91c63c1aa.ctex"]
+source_file="res://textures/player/projectiles/LargeBullet.svg"
+dest_files=["res://.godot/imported/LargeBullet.svg-b65d5a43099142b735adfab4b1b14ab1.ctex"]
 
 [params]
 

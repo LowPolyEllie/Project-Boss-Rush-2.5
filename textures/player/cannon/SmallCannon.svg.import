@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0rpbrgmc2gx1"
-path="res://.godot/imported/TurretBasic.svg-b974106d52cc28c2156b6bc5baff3418.ctex"
+uid="uid://cgyhcc45p6am7"
+path="res://.godot/imported/SmallCannon.svg-757fe58a69fddee12f98c08ea3a7d322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/player/TurretBasic.svg"
-dest_files=["res://.godot/imported/TurretBasic.svg-b974106d52cc28c2156b6bc5baff3418.ctex"]
+source_file="res://textures/player/cannon/SmallCannon.svg"
+dest_files=["res://.godot/imported/SmallCannon.svg-757fe58a69fddee12f98c08ea3a7d322.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqef22fo60t8m"
-path="res://.godot/imported/BasicBody.svg-1586f858e53c8473af0a431d0e00ba15.ctex"
+uid="uid://bcewrqrw3802n"
+path="res://.godot/imported/BasicTrap.svg-e9e345950389de88815ac08c52cbf7b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/player/BasicBody.svg"
-dest_files=["res://.godot/imported/BasicBody.svg-1586f858e53c8473af0a431d0e00ba15.ctex"]
+source_file="res://textures/player/projectiles/BasicTrap.svg"
+dest_files=["res://.godot/imported/BasicTrap.svg-e9e345950389de88815ac08c52cbf7b1.ctex"]
 
 [params]
 

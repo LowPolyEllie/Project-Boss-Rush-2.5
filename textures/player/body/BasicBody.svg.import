@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbsxwqndm8hvi"
-path="res://.godot/imported/BasicDrone.svg-00136d844284436674a40c83ca601b20.ctex"
+uid="uid://dqef22fo60t8m"
+path="res://.godot/imported/BasicBody.svg-abf1f770e0dca15a579787ab6cae1945.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/player/BasicDrone.svg"
-dest_files=["res://.godot/imported/BasicDrone.svg-00136d844284436674a40c83ca601b20.ctex"]
+source_file="res://textures/player/body/BasicBody.svg"
+dest_files=["res://.godot/imported/BasicBody.svg-abf1f770e0dca15a579787ab6cae1945.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://t1cirkiv0h8d"
-path="res://.godot/imported/LargeBullet.svg-79224bd773d71959dfa722c64b2dbfc8.ctex"
+uid="uid://ds8krrex1t37w"
+path="res://.godot/imported/BasicBullet.svg-9445d82aff7bd17466bd87c6578c900a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/player/LargeBullet.svg"
-dest_files=["res://.godot/imported/LargeBullet.svg-79224bd773d71959dfa722c64b2dbfc8.ctex"]
+source_file="res://textures/player/projectiles/BasicBullet.svg"
+dest_files=["res://.godot/imported/BasicBullet.svg-9445d82aff7bd17466bd87c6578c900a.ctex"]
 
 [params]
 

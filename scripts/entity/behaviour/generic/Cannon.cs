@@ -52,6 +52,12 @@ public partial class Cannon : Node2D
 	public PackedScene ToShoot;
 
 	/// <summary>
+	/// Automatically fire without any input needed
+	/// </summary>
+	[Export]
+	public bool ShootWithoutCommand;
+
+	/// <summary>
 	/// Bosses should obviously ignore this
 	/// </summary>
 	[Export]
@@ -147,8 +153,9 @@ public partial class Cannon : Node2D
 	public bool IsShooting()
 	{
 		return
+			(ShootWithoutCommand ||
 			UseActionTrigger &&
-			Input.IsActionPressed(ActionTrigger) &&
+			Input.IsActionPressed(ActionTrigger)) &&
 			(ProjCount < 0 || projTracker < ProjCount);
 	}
 
