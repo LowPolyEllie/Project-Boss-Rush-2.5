@@ -1,6 +1,9 @@
 using Godot;
 using System;
-
+using Apoli;
+using Apoli.Powers;
+using Apoli.Types;
+using Apoli.Actions;
 namespace BossRush2;
 
 /// <summary>
@@ -11,6 +14,29 @@ public partial class Player : Entity
 	/// <summary>
 	/// Moves the player based on set inputs
 	/// </summary>
+	
+    protected StateMachine _StateMachine = new()
+    {
+        states = [
+            new StateLayer(
+                [
+                    new State("Idle",[
+                        new PowerBuilder()
+                        .SetType(PowerId.action_on_callback)
+                        .SetParam("ActionOnEnterState",new Apoli.Types.Action(
+                            new ActionBuilder()
+                            .SetType(ActionId.print)
+                            .SetParam("Message",new Apoli.Types.String("Meow"))
+                            .Build())
+                        )
+                        .Build()
+                    ]),
+                    new State("firing")
+                ],
+                initialState : "Idle"
+            )
+        ]
+    };
 	public void MovementControls()
 	{
 		//Create a directional vector

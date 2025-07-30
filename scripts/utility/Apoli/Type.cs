@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
 using Apoli.Actions;
+using Apoli.Powers;
 using Godot;
 
 namespace Apoli.Types;
@@ -45,13 +46,13 @@ public class String: Type {
     }
 }
 public class Power: Type {
-    public Power _value;
+    public Powers.Power _value;
     public override object value {
         get {
             return _value;
         }
         set {
-            _value = (Power) value;
+            _value = (Powers.Power) value;
         }
     }
     public override TypeId type {
@@ -60,18 +61,18 @@ public class Power: Type {
         }
         set {}
     }
-    public Power(Power __value = null) {
+    public Power(Powers.Power __value = null) {
         value = __value;
     }
 }
 public class Action: Type {
-    public Action _value;
+    public Actions.Action _value;
     public override object value {
         get {
             return _value;
         }
         set {
-            _value = (Action) value;
+            _value = (Actions.Action) value;
         }
     }
     public override TypeId type {
