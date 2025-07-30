@@ -6,6 +6,7 @@ namespace BossRush2;
 /// <summary>
 /// The data used to generate a polygon with the spawner
 /// </summary>
+[GlobalClass]
 public partial class PolygonTemplate : Resource
 {
 	/// <summary>

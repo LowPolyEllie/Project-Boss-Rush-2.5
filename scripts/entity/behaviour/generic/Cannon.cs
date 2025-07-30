@@ -11,16 +11,26 @@ public partial class Cannon : Node2D
 {
 	[Export]
 	public Stats MyStats;
+
 	/// <summary>
 	/// The time it takes after the bullet is fired for the cannon to shoot again
 	/// </summary>
 	[Export]
 	public float FireRate = 0.5f;
+
+	/// <summary>
+	/// The maximum number of projectiles this cannon can shoot, set to -1f for no limit
+	/// </summary>
+	[Export]
+	public float ProjCount = -1f;
+	protected float projTracker = 0f;
+
 	/// <summary>
 	/// InitDelay is ignored if true
 	/// </summary>
 	[Export]
 	public bool HaveDelay = false;
+
 	/// <summary>
 	/// The time is takes after input is pressed before bullet is fired
 	/// </summary>
@@ -136,7 +146,10 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public bool IsShooting()
 	{
-		return UseActionTrigger && Input.IsActionPressed(ActionTrigger);
+		return
+			UseActionTrigger &&
+			Input.IsActionPressed(ActionTrigger) &&
+			(ProjCount < 0 || projTracker < ProjCount);
 	}
 
 	/// <summary>
@@ -145,7 +158,11 @@ public partial class Cannon : Node2D
 	public void OnShoot()
 	{
 		AnimatorRef.StartAnimation();
-		World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1);
+
+		var proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1);
+		projTracker += 1;
+		proj.TreeExited += () => projTracker -= 1;
+
 		OnDelay = false;
 		OnCooldown = true;
 		ShootTimer.Start();

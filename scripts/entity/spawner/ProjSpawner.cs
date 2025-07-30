@@ -13,7 +13,7 @@ public partial class ProjSpawner : EntitySpawner
 	/// <summary>
 	/// Loads a packedscene and applies it to a source, automatically handling transformation, velocity and stats
 	/// </summary>
-	public void Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex)
+	public Entity Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex)
 	{
 		var toShoot = (Entity)packed.Instantiate();
 		Spawn(toShoot, zindex);
@@ -24,5 +24,7 @@ public partial class ProjSpawner : EntitySpawner
 			toShoot.MyStats.MergeStats(sourceStats);
 			toShoot.Velocity *= sourceStats.Speed;
 		}
+
+		return toShoot;
 	}
 }
