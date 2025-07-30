@@ -49,7 +49,7 @@ public interface IStateMachine
 }
 public class StateMachine
 {
-    public List<StateLayer> states;
+    public List<StateLayer> stateLayers;
 }
 public class StateLayer
 {

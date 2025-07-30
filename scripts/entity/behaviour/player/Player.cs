@@ -17,7 +17,7 @@ public partial class Player : Entity
 	
     protected StateMachine _StateMachine = new()
     {
-        states = [
+        stateLayers = [
             new StateLayer(
                 [
                     new State("Idle",[
