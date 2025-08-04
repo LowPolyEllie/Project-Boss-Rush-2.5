@@ -1,3 +1,4 @@
+using Godot;
 using Godot.Collections;
 
 namespace BossRush2;
@@ -31,8 +32,11 @@ public class InputMachine
         {
             throw new("InputMachine has no key called " + id);
         }
+        if (!InputValues[id])
+        { 
+            InputFire(id);
+        }
         InputValues[id] = true;
-        InputFire(id);
     }
     public void InputDisable(string id)
     {
@@ -41,6 +45,14 @@ public class InputMachine
             throw new("InputMachine has no key called " + id);
         }
         InputValues[id] = false;
+    }
+    public bool InputEnabled(string id)
+    {
+        if (!InputRegistry.Contains(id))
+        {
+            throw new("InputMachine has no key called " + id);
+        }
+        return InputValues[id];
     }
     public void InputFire(string id)
     { 

@@ -25,7 +25,7 @@ public partial class Targeter : Node2D
 		/// <summary>
 		/// Target the player
 		/// </summary>
-		PLAYER,
+		ACTIVE_PLAYER,
 
 		/// <summary>
 		/// Target the mouse pointer
@@ -75,7 +75,7 @@ public partial class Targeter : Node2D
 		CurrentTarget = MyTargetMode switch
 		{
 			TargetMode.NONE => null,
-			TargetMode.PLAYER => World.PlayerMain,
+			TargetMode.ACTIVE_PLAYER => World.activePlayerController.player,
 			TargetMode.MOUSE => World.MouseTrackerMain,
 			TargetMode.NEAREST => FindClosestEntity(this.GetAllTeamMembers(Targets)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found"),

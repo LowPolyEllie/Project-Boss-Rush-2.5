@@ -55,16 +55,7 @@ public partial class Cannon : Node2D
 	/// Automatically fire without any input needed
 	/// </summary>
 	[Export]
-	public bool ShootWithoutCommand;
-
-	/// <summary>
-	/// Bosses should obviously ignore this
-	/// </summary>
-	[Export]
-	public bool UseActionTrigger;
-
-	[Export(PropertyHint.Enum, "firePrimary,fireSecondary")]
-	public string ActionTrigger;
+	public bool AutoFire;
 
 	/// <summary>
 	/// Whether or not the cooldown or delay timer is active
@@ -74,6 +65,7 @@ public partial class Cannon : Node2D
 	/// Whether or not the delay timer is active
 	/// </summary>
 	public bool OnDelay;
+	public bool InputFiring;
 
 	protected SegmentAnimator AnimatorRef;
 
@@ -153,9 +145,8 @@ public partial class Cannon : Node2D
 	public bool IsShooting()
 	{
 		return
-			(ShootWithoutCommand ||
-			UseActionTrigger &&
-			Input.IsActionPressed(ActionTrigger)) &&
+			(AutoFire ||
+			InputFiring) &&
 			(ProjCount < 0 || projTracker < ProjCount);
 	}
 

@@ -13,6 +13,6 @@ public partial class PlayerDrone : Drone
 	{
 		MyTargeter.MyTargetMode =
 			Input.IsActionPressed("firePrimary") ?
-			Targeter.TargetMode.MOUSE : Targeter.TargetMode.PLAYER;
+			Targeter.TargetMode.MOUSE : Targeter.TargetMode.ACTIVE_PLAYER;
 	}
 }

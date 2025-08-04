@@ -17,6 +17,10 @@ namespace BossRush2;
 public partial class Entity : CharacterBody2D, ICollidable
 {
 	/// <summary>
+	/// The input machine of the entity. Controls everything. Currently abstract
+	/// </summary>
+	public InputMachine inputMachine;
+	/// <summary>
 	/// The acceleration applied during a frame, <c>delta</c> is already accounted for, so ignore it
 	/// </summary>
 	protected Vector2 AccRate;

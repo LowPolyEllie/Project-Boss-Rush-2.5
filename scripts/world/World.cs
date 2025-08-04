@@ -17,6 +17,7 @@ public partial class World : Node
 	//Built in nodes
 	public static Player PlayerMain { get; set; }
 	public static Camera2D CameraMain { get; set; }
+	public static PlayerController activePlayerController{ get; set; }
 	public static PolygonSpawner PolygonSpawnerMain { get; set; }
 	public static ProjSpawner ProjSpawnerMain { get; set; }
 	public static MouseTracker MouseTrackerMain { get; set; }
@@ -36,7 +37,7 @@ public partial class World : Node
 	/// </summary>
 	public static float DefaultFriction { get; set; }
 
-	static Vector2 worldSize = new(1000f, 1000f);
+	public static Vector2 worldSize = new(1000f, 1000f);
 	/// <summary>
 	/// <br> The boundaries for Player movement and Camera scrolling </br>
 	/// <br> No, this won't show in the inspector because Godot is being a bitch </br>
@@ -115,8 +116,8 @@ public partial class World : Node
 	public override void _EnterTree()
 	{
 		//Fetching nodes
-		PlayerMain = GetNode<Player>("Player");
-		CameraMain = GetNode<Camera2D>("Camera");
+		//PlayerMain = GetNode<Player>("Player");
+		//CameraMain = GetNode<Camera2D>("Camera");
 		PolygonSpawnerMain = GetNode<PolygonSpawner>("PolygonSpawner");
 		ProjSpawnerMain = GetNode<ProjSpawner>("ProjSpawner");
 		MouseTrackerMain = GetNode<MouseTracker>("MouseTracker");

@@ -19,7 +19,7 @@ public partial class PlayerMinion : Minion
 		}
 		else
 		{
-			MyTargeter.MyTargetMode = Targeter.TargetMode.PLAYER;
+			MyTargeter.MyTargetMode = Targeter.TargetMode.ACTIVE_PLAYER;
 			IgnoreFollowLimit = true;
 			UseMinionAccuracy = false;
 		}

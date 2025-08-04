@@ -62,7 +62,7 @@ public partial class Player : Entity
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		MovementControls();
+		//MovementControls();
 		UpdateVelocity(deltaF);
 	}
 }

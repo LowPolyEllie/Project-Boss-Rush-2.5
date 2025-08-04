@@ -110,8 +110,8 @@ public partial class Hitbox : Area2D
 		if (area is Hitbox hitbox)
 		{
 			var entity = hitbox.Source;
-            CollidingEntities.Add(entity);
-            entity.DisableCollision += () => CollidingEntities.Remove(entity);
+			CollidingEntities.Add(entity);
+			entity.DisableCollision += () => CollidingEntities.Remove(entity);
 		}
 	}
 
