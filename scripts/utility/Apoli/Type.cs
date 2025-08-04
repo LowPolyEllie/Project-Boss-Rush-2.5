@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices.Marshalling;
 using Apoli.Actions;
 using Apoli.Powers;
 using Godot;
@@ -14,18 +15,13 @@ public enum TypeId {
     Power,
     Action
 }
-public abstract class Type {
+public class Type {
     public string id;
-    public abstract TypeId type {
-        get;
-        set;
-    }
-    public abstract object value {
-        get;
-        set;
-    }
+    public virtual TypeId type { get; set; }
+    public virtual object value { get; set; }
 }
 public class String: Type {
+    public override TypeId type { get; set; } = TypeId.String;
     public string _value;
     public override object value {
         get {
@@ -35,17 +31,12 @@ public class String: Type {
             _value = (string) value;
         }
     }
-    public override TypeId type {
-        get {
-            return TypeId.String;
-        }
-        set {}
-    }
     public String(string __value = "") {
         value = __value;
     }
 }
 public class Power: Type {
+    public override TypeId type { get; set; } = TypeId.Power;
     public Powers.Power _value;
     public override object value {
         get {
@@ -55,17 +46,12 @@ public class Power: Type {
             _value = (Powers.Power) value;
         }
     }
-    public override TypeId type {
-        get {
-            return TypeId.Power;
-        }
-        set {}
-    }
     public Power(Powers.Power __value = null) {
         value = __value;
     }
 }
 public class Action: Type {
+    public override TypeId type { get; set; } = TypeId.Action;
     public Actions.Action _value;
     public override object value {
         get {
@@ -74,12 +60,6 @@ public class Action: Type {
         set {
             _value = (Actions.Action) value;
         }
-    }
-    public override TypeId type {
-        get {
-            return TypeId.Action;
-        }
-        set {}
     }
     public Action(Actions.Action __value = null) {
         value = __value;

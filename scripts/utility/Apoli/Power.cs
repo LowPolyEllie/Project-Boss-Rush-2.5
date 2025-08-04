@@ -13,10 +13,10 @@ public enum PowerId
     action_on_callback,
     action_on_key_press
 }
-public abstract class Power
+public class Power
 {
     public State state;
-    public abstract PowerId type{ get; set; }
+    public virtual PowerId type{ get; set; }
     public Dictionary<string, Type> parameters;
 }
 public class PowerBuilder
@@ -49,9 +49,9 @@ public class PowerBuilder
     }
 }public class ActionOnCallback : Power
 {
-    public override PowerId type { get { return PowerId.action_on_callback; } set { } }
+    public override PowerId type { get; set; } = PowerId.action_on_callback;
 }
 public class ActionOnKeyPress : Power
 {
-    public override PowerId type { get { return PowerId.action_on_key_press; } set { } }
+    public override PowerId type { get; set; } = PowerId.action_on_key_press;
 }

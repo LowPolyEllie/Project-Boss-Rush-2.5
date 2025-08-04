@@ -11,13 +11,10 @@ public enum ActionId {
 	all_of,
 	print
 }
-public abstract class Action {
-	public abstract ActionId type {
-		get;
-		set;
-	}
+public class Action {
+	public virtual ActionId type { get; set; }
 	public Dictionary < string, Types.Type > parameters;
-	public abstract void DoAction();
+	public virtual void DoAction() { }
 }
 public class ActionBuilder
 {
@@ -49,12 +46,7 @@ public class ActionBuilder
 	}
 }
 public class Print: Action {
-	public override ActionId type {
-		get {
-			return ActionId.print;
-		}
-		set {}
-	}
+	public override ActionId type { get; set; } = ActionId.print;
 	public override void DoAction() {
 		if (!parameters.ContainsKey("Message")) {
 			return;
