@@ -35,9 +35,9 @@ public partial class Minion : Drone
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		MyTargeter.ResetTarget();
+		MyTargeter.ResetTarget(this);
 
-		Vector2 targetPos = MyTargeter.CurrentTarget.GlobalPosition;
+		Vector2 targetPos = MyTargeter.CurrentTarget.GetTargetPosition();
 		float targetRot = GlobalPosition.AngleToPoint(targetPos);
 
 		float accuracy = UseMinionAccuracy ? MinionAccuracy : Accuracy;
@@ -55,5 +55,21 @@ public partial class Minion : Drone
 		}
 
 		UpdateVelocity(deltaF);
+	}
+	public override void _Process(double delta)
+	{
+		if (Owner.inputMachine.TryGetInputEnabled("Fire"))
+		{
+			MyTargeter.MyTargetMode = Targeter.TargetMode.OWNER_TARGET;
+			IgnoreFollowLimit = false;
+			UseMinionAccuracy = true;
+		}
+		else
+		{
+			MyTargeter.MyTargetMode = Targeter.TargetMode.OWNER;
+			IgnoreFollowLimit = true;
+			UseMinionAccuracy = false;
+		}
+		inputMachine.SetInputEnabled("Fire",Owner.inputMachine.TryGetInputEnabled("Fire"));
 	}
 }

@@ -67,8 +67,6 @@ public partial class Cannon : Node2D
 	public bool OnDelay;
 	public bool InputFiring;
 
-	protected SegmentAnimator AnimatorRef;
-
 	/// <summary>
 	/// Timers are created at runtime for abstraction purposes
 	/// </summary>
@@ -76,7 +74,6 @@ public partial class Cannon : Node2D
 
 	public override void _Ready()
 	{
-		AnimatorRef = GetParent<SegmentAnimator>();
 		if (Source is null)
 		{
 			if (_Source is Entity entity)
@@ -138,7 +135,10 @@ public partial class Cannon : Node2D
 			}
 		}
 	}
-
+	public override void _Process(double delta)
+	{
+		InputFiring = Source.inputMachine.TryGetInputEnabled("Fire");
+	}
 	/// <summary>
 	/// Whether or not the inputs are triggering the cannon to shoot
 	/// </summary>
@@ -155,9 +155,7 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public void OnShoot()
 	{
-		AnimatorRef.StartAnimation();
-
-		var proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1);
+		Entity proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1, Owner:Source);
 		projTracker += 1;
 		proj.TreeExited += () => projTracker -= 1;
 

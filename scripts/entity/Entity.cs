@@ -17,9 +17,16 @@ namespace BossRush2;
 public partial class Entity : CharacterBody2D, ICollidable
 {
 	/// <summary>
-	/// The input machine of the entity. Controls everything. Currently abstract
+	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
 	/// </summary>
 	public InputMachine inputMachine;
+	public virtual Array<string> inputs { get; set; } = [];
+	public virtual Array<string> variantInputs { get; set; } = [];
+	/// <summary>
+	/// The entity's owner. Meant for controllable projectiles and potentially damage reflection
+	/// </summary>
+	[Export]
+	public new Entity Owner;
 	/// <summary>
 	/// The acceleration applied during a frame, <c>delta</c> is already accounted for, so ignore it
 	/// </summary>
@@ -155,6 +162,21 @@ public partial class Entity : CharacterBody2D, ICollidable
 	}
 
 	public event Action DisableCollision;
+	protected void RegisterInputs()
+	{
+		if (inputMachine is null)
+		{
+			inputMachine = new();
+		}
+		foreach (string id in inputs)
+		{
+			inputMachine.TryRegisterInput(id);
+		}
+		foreach (string id in variantInputs)
+		{
+			inputMachine.TryRegisterVariantInput(id);
+		}
+	}
 
 	public override void _EnterTree()
 	{
@@ -176,7 +198,7 @@ public partial class Entity : CharacterBody2D, ICollidable
 			HealthBarRef = (StatBar)_HealthBarRef;
 			HealthBarRef.TargetRef = HealthRange;
 		}
-		
+
 		TreeExiting += () => DisableCollision?.Invoke();
 
 		if (MyStats.LifeTime > 0)
@@ -190,13 +212,15 @@ public partial class Entity : CharacterBody2D, ICollidable
 			AddChild(deletionTimer);
 			deletionTimer.Timeout += QueueFree;
 		}
-		
+
 		AddToGroup(Team);
 		foreach (string thisSubTeam in SubTeams)
 		{
 			string combinedName = Team + "_" + thisSubTeam;
 			AddToGroup(combinedName);
 		}
+
+		RegisterInputs();
 	}
 
 	public override void _PhysicsProcess(double delta)

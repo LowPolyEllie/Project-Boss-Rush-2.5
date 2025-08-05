@@ -12,7 +12,16 @@ public partial class PlayerControllerWrapper : Node
     [Export]
     public Entity player { get; set; }
     [Export]
-    public Dictionary<string, Key> keyMapping { get; set; } = [];
+    public Dictionary<string, Key> keyMapping = new()
+    { 
+        {"Up",Key.W },
+        {"Down",Key.S },
+        {"Left",Key.A },
+        {"Right",Key.D },
+        {"Fire",Key.Launch1 }
+    };
+    [Export]
+    public Array<string> variantInput = ["Target"];
     [Export]
     public bool active { get; set; }
     public override void _Ready()
@@ -20,7 +29,8 @@ public partial class PlayerControllerWrapper : Node
         playerController = new()
         {
             keyMapping = keyMapping,
-            player = player,
+            variantInput = variantInput,
+            source = player,
             camera = camera,
             active = active
         };

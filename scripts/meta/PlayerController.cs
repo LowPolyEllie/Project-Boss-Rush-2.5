@@ -1,55 +1,37 @@
-using System.Linq;
-using System.Reflection.Metadata;
 using Godot;
 using Godot.Collections;
 
 namespace BossRush2;
 
-public class PlayerController
+public class PlayerController : Controller
 {
-    public InputMachine inputMachine;
     public Camera camera;
-    public Entity player;
     private bool _active = false;
-    [Export]
-    public bool active
+    public override bool active
     {
-        get
-        {
-            return _active;
-        }
         set
         {
             _active = value;
             camera.Enabled = _active;
         }
     }
-    public Dictionary<string, Key> keyMapping = [];
-    public void InitInputMachine()
+    public override void InitInputMachine()
     {
-        inputMachine = new([.. keyMapping.Keys]);
-        WorldInputHandler.worldInputEvent += HandleInput;
-        player.inputMachine = inputMachine;
-        camera.TargetEntity = player;
+        if (!keyMapping.ContainsKey("Up")){ keyMapping.Add("Up", Key.W); }
+        if (!keyMapping.ContainsKey("Down")){ keyMapping.Add("Up", Key.S); }
+        if (!keyMapping.ContainsKey("Left")){ keyMapping.Add("Up", Key.A); }
+        if (!keyMapping.ContainsKey("Right")){ keyMapping.Add("Up", Key.D); }
+        if (!keyMapping.ContainsKey("Fire")){ keyMapping.Add("Up", Key.Launch1); }
+        variantInput = ["Target"];
+
+        base.InitInputMachine();
+
+        camera.TargetEntity = source;
+        
     }
-    public void HandleInput(Godot.InputEvent inputEvent)
+    public override void ProcessInput(double delta)
     {
-        if (inputEvent is InputEventKey inputEventKey)
-        {
-            foreach ((string input, Key key) in keyMapping)
-            {
-                if (key == inputEventKey.Keycode)
-                {
-                    if (inputEventKey.Pressed)
-                    {
-                        inputMachine.InputEnable(input);
-                    }
-                    else
-                    {
-                        inputMachine.InputDisable(input);
-                    }
-                }
-            }
-        }
+        //Kinda jank but it works
+        inputMachine.SetVariantInput("Target", source.GetGlobalMousePosition());
     }
 }

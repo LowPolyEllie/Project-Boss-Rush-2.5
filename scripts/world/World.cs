@@ -15,7 +15,8 @@ namespace BossRush2;
 public partial class World : Node
 {
 	//Built in nodes
-	public static Player PlayerMain { get; set; }
+
+	public static World WorldMain { get; set; }
 	public static Camera2D CameraMain { get; set; }
 	public static PlayerController activePlayerController{ get; set; }
 	public static PolygonSpawner PolygonSpawnerMain { get; set; }
@@ -121,6 +122,7 @@ public partial class World : Node
 		PolygonSpawnerMain = GetNode<PolygonSpawner>("PolygonSpawner");
 		ProjSpawnerMain = GetNode<ProjSpawner>("ProjSpawner");
 		MouseTrackerMain = GetNode<MouseTracker>("MouseTracker");
+		WorldMain = this;
 
 		//Caching data
 		var WorldBoundaries = GetNode<StaticBody2D>("WorldBoundaries");

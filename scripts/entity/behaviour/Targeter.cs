@@ -25,12 +25,12 @@ public partial class Targeter : Node2D
 		/// <summary>
 		/// Target the player
 		/// </summary>
-		ACTIVE_PLAYER,
+		OWNER,
 
 		/// <summary>
 		/// Target the mouse pointer
 		/// </summary>
-		MOUSE,
+		OWNER_TARGET,
 
 		/// <summary>
 		/// Target the nearest entity in one of the opposing teams
@@ -47,7 +47,7 @@ public partial class Targeter : Node2D
 	[Export]
 	public Array<string> Targets = [];
 
-	public Node2D CurrentTarget;
+	public Target CurrentTarget;
 
 	/// <summary>
 	/// Finds the closest Entity to this node from a list
@@ -70,15 +70,36 @@ public partial class Targeter : Node2D
 		return closestEntity;
 	}
 
-	public void ResetTarget()
+	public void ResetTarget(Entity entity)
 	{
 		CurrentTarget = MyTargetMode switch
 		{
 			TargetMode.NONE => null,
-			TargetMode.ACTIVE_PLAYER => World.activePlayerController.player,
-			TargetMode.MOUSE => World.MouseTrackerMain,
-			TargetMode.NEAREST => FindClosestEntity(this.GetAllTeamMembers(Targets)),
-			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found"),
+			TargetMode.OWNER => new(entity.Owner),
+			TargetMode.OWNER_TARGET => entity.Owner.inputMachine.VariantInputRegistry.Contains("Target")?new((Vector2)entity.Owner.inputMachine.GetVariantInput("Target")):null,
+			TargetMode.NEAREST => new(FindClosestEntity(this.GetAllTeamMembers(Targets))),
+			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
+	}
+}
+public class Target
+{
+	Node2D TargetEntity;
+	Vector2 TargetPosition;
+	public Target(Node2D _TargetEntity)
+	{
+		TargetEntity = _TargetEntity;
+	}
+	public Target(Vector2 _TargetPosition)
+	{
+		TargetPosition = _TargetPosition;
+	}
+	public Vector2 GetTargetPosition()
+	{
+		if (TargetEntity is not null)
+		{
+			return TargetEntity.GlobalPosition;
+		}
+		return TargetPosition;
 	}
 }

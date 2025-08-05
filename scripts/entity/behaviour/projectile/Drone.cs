@@ -7,7 +7,7 @@ namespace BossRush2;
 /// An entity that tracks and chases targets
 /// </summary>
 [GlobalClass]
-public partial class Drone : Entity
+public partial class Drone : Basic
 {
 	/// <summary>
 	/// The targeting node, self explanatory
@@ -24,9 +24,9 @@ public partial class Drone : Entity
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		MyTargeter.ResetTarget();
+		MyTargeter.ResetTarget(this);
 
-		Vector2 targetPos = MyTargeter.CurrentTarget.GlobalPosition;
+		Vector2 targetPos = MyTargeter.CurrentTarget.GetTargetPosition();
 		float targetRot = GlobalPosition.AngleToPoint(targetPos);
 
 		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - Accuracy, deltaF));
@@ -34,5 +34,12 @@ public partial class Drone : Entity
 		AccRate += Vector2.FromAngle(Rotation) * GetAcceleration();
 
 		UpdateVelocity(deltaF);
+	}
+	public override void _Process(double delta)
+	{
+		MyTargeter.MyTargetMode =
+		Owner.inputMachine.TryGetInputEnabled("Fire") ?
+		Targeter.TargetMode.OWNER_TARGET : Targeter.TargetMode.OWNER;
+		inputMachine.SetInputEnabled("Fire",Owner.inputMachine.TryGetInputEnabled("Fire"));
 	}
 }
