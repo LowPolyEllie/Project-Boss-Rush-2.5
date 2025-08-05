@@ -36,14 +36,8 @@ public partial class Minion : Drone
 	{
 		float deltaF = (float)delta;
 		MyTargeter.ResetTarget(this);
-
 		Vector2 targetPos = MyTargeter.CurrentTarget.GetTargetPosition();
-		float targetRot = GlobalPosition.AngleToPoint(targetPos);
-
-		float accuracy = UseMinionAccuracy ? MinionAccuracy : Accuracy;
-
-		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
-
+		
 		if (IgnoreFollowLimit || Position.DistanceSquaredTo(targetPos) > FollowLimit * FollowLimit)
 		{
 			AccRate += Vector2.FromAngle(Rotation) * GetAcceleration();
@@ -53,6 +47,13 @@ public partial class Minion : Drone
 			AccRate -= Vector2.FromAngle(Rotation) * GetAcceleration();
 			AccRate += Vector2.FromAngle(Rotation - Mathf.Pi / 2) * GetAcceleration();
 		}
+
+		float targetRot = GlobalPosition.AngleToPoint(targetPos);
+
+		float accuracy = UseMinionAccuracy ? MinionAccuracy : Accuracy;
+		
+		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
+
 
 		UpdateVelocity(deltaF);
 	}

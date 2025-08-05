@@ -66,6 +66,10 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public bool OnDelay;
 	public bool InputFiring;
+	[Export]
+	public Node2D Body;
+	[Export]
+	public SegmentAnimator Animator;
 
 	/// <summary>
 	/// Timers are created at runtime for abstraction purposes
@@ -104,6 +108,8 @@ public partial class Cannon : Node2D
 
 		ShootTimer.Timeout += OnCooldownEnd;
 		AddChild(ShootTimer);
+		Animator = (LinearAnimator)Animator.Duplicate();
+		Animator.Subject = Body;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -138,6 +144,7 @@ public partial class Cannon : Node2D
 	public override void _Process(double delta)
 	{
 		InputFiring = Source.inputMachine.TryGetInputEnabled("Fire");
+		Animator.StepAnimation(delta);
 	}
 	/// <summary>
 	/// Whether or not the inputs are triggering the cannon to shoot
@@ -155,6 +162,8 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public void OnShoot()
 	{
+		Animator.StartAnimation();
+
 		Entity proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1, Owner:Source);
 		projTracker += 1;
 		proj.TreeExited += () => projTracker -= 1;
