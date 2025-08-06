@@ -10,7 +10,7 @@ namespace BossRush2;
 /// A Node2D with a built in targeting system
 /// </summary>
 [GlobalClass]
-public partial class Targeter : Node2D
+public partial class Targeter : Resource
 {
 	/// <summary>
 	/// To be utilised by other functions here
@@ -52,14 +52,14 @@ public partial class Targeter : Node2D
 	/// <summary>
 	/// Finds the closest Entity to this node from a list
 	/// </summary>
-	public Entity FindClosestEntity(List<Entity> entityArray)
+	public Entity FindClosestEntity(List<Entity> entityArray, Entity source)
 	{
 		float closest = -1f;
 		Entity closestEntity = null;
 
 		foreach (var thisEntity in entityArray)
 		{
-			float dist = GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
+			float dist = source.GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
 			if (dist < closest || closest < 0f)
 			{
 				closest = dist;
@@ -77,7 +77,7 @@ public partial class Targeter : Node2D
 			TargetMode.NONE => null,
 			TargetMode.OWNER => new(entity.Owner),
 			TargetMode.OWNER_TARGET => entity.Owner.inputMachine.VariantInputRegistry.Contains("Target")?new((Vector2)entity.Owner.inputMachine.GetVariantInput("Target")):null,
-			TargetMode.NEAREST => new(FindClosestEntity(this.GetAllTeamMembers(Targets))),
+			TargetMode.NEAREST => new(FindClosestEntity(entity.GetAllTeamMembers(Targets),entity)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
 	}
