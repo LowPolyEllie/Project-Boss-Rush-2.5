@@ -14,13 +14,13 @@ public partial class BarTextureSet : Resource
     /// Must be ordered in descending format for optimisation reasons
     /// </summary>
     [Export]
-    public Array<BarTexture> MyTextures = [];
+    public Array<BarTexture> textures = [];
 
     public BarTexture GetCurrentBar(double value)
     {
-        foreach (var thisTexture in MyTextures)
+        foreach (var thisTexture in textures)
         {
-            if (value <= thisTexture.Threshold)
+            if (value <= thisTexture.threshold)
             {
                 return thisTexture;
             }
@@ -30,6 +30,6 @@ public partial class BarTextureSet : Resource
 
     public BarTextureSet()
     {
-        MyTextures = [];
+        textures = [];
     }
 }

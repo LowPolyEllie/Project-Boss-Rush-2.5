@@ -12,16 +12,39 @@ namespace BossRush2;
 /// <para> Signals are queued due to static limitations, and sent during _Process() </para>
 /// <para> Data must be configured here for now, I will make making a proper json later </para>
 /// </remarks>
+[GlobalClass]
 public partial class World : Node
 {
 	//Built in nodes
 
-	public static World WorldMain { get; set; }
-	public static Camera2D CameraMain { get; set; }
-	public static PlayerController activePlayerController{ get; set; }
-	public static PolygonSpawner PolygonSpawnerMain { get; set; }
-	public static ProjSpawner ProjSpawnerMain { get; set; }
-	public static MouseTracker MouseTrackerMain { get; set; }
+	public static World activeWorld { get; set; }
+	private Camera _activeCamera;
+	public Camera activeCamera
+	{
+		get
+		{
+			return _activeCamera;
+		}
+		set
+		{
+			_activeCamera.Enabled = false;
+
+			value.Enabled = true;
+			value.LimitLeft = -(int)worldSize.X;
+			value.LimitRight = (int)worldSize.X;
+			value.LimitTop = -(int)worldSize.Y;
+			value.LimitBottom = (int)worldSize.Y;
+			
+			_activeCamera = value;
+		}
+	}
+	public PlayerController activePlayerController { get; set; }
+	public TeamLayerCollection activeTeamLayers;
+
+	[Export]
+	public PolygonSpawner activePolygonSpawner { get; set; }
+	[Export]
+	public ProjectileSpawner activeProjectileSpawner { get; set; }
 
 	//Cached border shapes, ignore this
 	static float boundaryWidth = 500f;
@@ -49,13 +72,6 @@ public partial class World : Node
 		set
 		{
 			worldSize = value;
-
-			//Setting Camera values
-			CameraMain.LimitLeft = -(int)worldSize.X;
-			CameraMain.LimitRight = (int)worldSize.X;
-			CameraMain.LimitTop = -(int)worldSize.Y;
-			CameraMain.LimitBottom = (int)worldSize.Y;
-
 			//Boundary Hitboxes
 			horizontalHitbox.Size = new Vector2(
 				2 * (worldSize.Y + boundaryWidth), boundaryWidth
@@ -116,13 +132,7 @@ public partial class World : Node
 	//Main setup, called in _EnterTree() instead of _Ready() because it needs to be available as early as possible
 	public override void _EnterTree()
 	{
-		//Fetching nodes
-		//PlayerMain = GetNode<Player>("Player");
-		//CameraMain = GetNode<Camera2D>("Camera");
-		PolygonSpawnerMain = GetNode<PolygonSpawner>("PolygonSpawner");
-		ProjSpawnerMain = GetNode<ProjSpawner>("ProjSpawner");
-		MouseTrackerMain = GetNode<MouseTracker>("MouseTracker");
-		WorldMain = this;
+		activeWorld = this;
 
 		//Caching data
 		var WorldBoundaries = GetNode<StaticBody2D>("WorldBoundaries");

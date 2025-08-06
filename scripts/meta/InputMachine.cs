@@ -5,104 +5,104 @@ namespace BossRush2;
 
 public class InputMachine
 {
-	public Array<string> InputRegistry = [];
-	public Array<string> VariantInputRegistry = [];
-	public Dictionary<string, bool> InputValues = [];
+	public Array<string> inputRegistry = [];
+	public Array<string> variantinputRegistry = [];
+	public Dictionary<string, bool> inputValues = [];
 
-	public Dictionary VariantInputValues = [];
-	public System.Collections.Generic.Dictionary<string, InputEvent> InputEvents = [];
+	public Dictionary variantinputValues = [];
+	public System.Collections.Generic.Dictionary<string, InputEvent> inputEvents = [];
 	public InputMachine() { }
-	public InputMachine(Array<string> _InputRegistry)
+	public InputMachine(Array<string> _inputRegistry)
 	{
-		foreach (string id in _InputRegistry)
+		foreach (string id in _inputRegistry)
 		{
 			RegisterInput(id);
 		}
 	}
-	public InputMachine(Array<string> _InputRegistry, Array<string> _VariantInputRegistry)
+	public InputMachine(Array<string> _inputRegistry, Array<string> _variantinputRegistry)
 	{
-		foreach (string id in _InputRegistry)
+		foreach (string id in _inputRegistry)
 		{
 			RegisterInput(id);
 		}
-		foreach (string id in _VariantInputRegistry)
+		foreach (string id in _variantinputRegistry)
 		{
 			RegisterVariantInput(id);
 		}
 	}
 	public void RegisterInput(string id)
 	{
-		if (InputRegistry.Contains(id))
+		if (inputRegistry.Contains(id))
 		{
 			throw new("InputMachine already has a key called " + id);
 		}
-		InputValues.Add(id, false);
-		InputRegistry.Add(id);
-		InputEvents.Add(id, new());
+		inputValues.Add(id, false);
+		inputRegistry.Add(id);
+		inputEvents.Add(id, new());
 	}
 	public void TryRegisterInput(string id)
 	{
-		if (InputRegistry.Contains(id))
+		if (inputRegistry.Contains(id))
 		{
 			return;
 		}
-		InputValues.Add(id, false);
-		InputRegistry.Add(id);
-		InputEvents.Add(id, new());
+		inputValues.Add(id, false);
+		inputRegistry.Add(id);
+		inputEvents.Add(id, new());
 	}
 	public void RegisterVariantInput(string id)
 	{
-		if (VariantInputRegistry.Contains(id))
+		if (variantinputRegistry.Contains(id))
 		{
 			throw new("InputMachine already has variant a key called " + id);
 		}
-		VariantInputValues.Add(id, false);
-		VariantInputRegistry.Add(id);
+		variantinputValues.Add(id, false);
+		variantinputRegistry.Add(id);
 	}
 	public void TryRegisterVariantInput(string id)
 	{
-		if (VariantInputRegistry.Contains(id))
+		if (variantinputRegistry.Contains(id))
 		{
 			return;
 		}
-		VariantInputValues.Add(id, false);
-		VariantInputRegistry.Add(id);
+		variantinputValues.Add(id, false);
+		variantinputRegistry.Add(id);
 	}
 	public void InputEnable(string id)
 	{
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		if (!InputValues[id])
+		if (!inputValues[id])
 		{ 
 			InputFire(id);
 		}
-		InputValues[id] = true;
+		inputValues[id] = true;
 	}
 	public void InputDisable(string id)
 	{
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		InputValues[id] = false;
+		inputValues[id] = false;
 	}
 	public bool GetInputEnabled(string id)
 	{
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		return InputValues[id];
+		return inputValues[id];
 	}
 	public void SetInputEnabled(string id, bool value)
 	{
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		if (InputValues[id] != value)
+		if (inputValues[id] != value)
 		{
 			if (value)
 			{
@@ -116,43 +116,43 @@ public class InputMachine
 	}
 	public bool TryGetInputEnabled(string id)
 	{
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			return false;
 		}
-		return InputValues[id];
+		return inputValues[id];
 	}
 	public Variant GetVariantInput(string id)
 	{
-		if (!VariantInputRegistry.Contains(id))
+		if (!variantinputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no variant key called " + id);
 		}
-		return VariantInputValues[id];
+		return variantinputValues[id];
 	}
 	public void SetVariantInput(string id, Variant value)
 	{
-		if (!VariantInputRegistry.Contains(id))
+		if (!variantinputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no variant key called " + id);
 		}
-		VariantInputValues[id] = value;
+		variantinputValues[id] = value;
 	}
 	public void InputFire(string id)
 	{ 
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		InputEvents[id].Fire();
+		inputEvents[id].Fire();
 	}
 	public InputEvent GetInputEvent(string id)
 	{ 
-		if (!InputRegistry.Contains(id))
+		if (!inputRegistry.Contains(id))
 		{
 			throw new("InputMachine has no key called " + id);
 		}
-		return InputEvents[id];
+		return inputEvents[id];
 	}
 }
 public delegate void InputEventDelegate();

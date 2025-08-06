@@ -3,6 +3,7 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BossRush2;
 
@@ -39,20 +40,20 @@ public partial class Targeter : Node2D
 	}
 
 	[Export]
-	public TargetMode MyTargetMode = TargetMode.NONE;
+	public TargetMode targetMode = TargetMode.NONE;
 
 	/// <summary>
 	/// The teams that this node will target
 	/// </summary>
 	[Export]
-	public Array<string> Targets = [];
+	public Array<string> targets = [];
 
-	public Target CurrentTarget;
+	public Target currentTarget;
 
 	/// <summary>
 	/// Finds the closest Entity to this node from a list
 	/// </summary>
-	public Entity FindClosestEntity(List<Entity> entityArray)
+	public Entity FindClosestEntity(List<Entity> entityArray, Entity entity)
 	{
 		float closest = -1f;
 		Entity closestEntity = null;
@@ -72,12 +73,12 @@ public partial class Targeter : Node2D
 
 	public void ResetTarget(Entity entity)
 	{
-		CurrentTarget = MyTargetMode switch
+		currentTarget = targetMode switch
 		{
 			TargetMode.NONE => null,
-			TargetMode.OWNER => new(entity.Owner),
-			TargetMode.OWNER_TARGET => entity.Owner.inputMachine.VariantInputRegistry.Contains("Target")?new((Vector2)entity.Owner.inputMachine.GetVariantInput("Target")):null,
-			TargetMode.NEAREST => new(FindClosestEntity(this.GetAllTeamMembers(Targets))),
+			TargetMode.OWNER => new(entity.owner),
+			TargetMode.OWNER_TARGET => entity.owner.inputMachine.variantinputRegistry.Contains("Target")?new((Vector2)entity.owner.inputMachine.GetVariantInput("Target")):null,
+			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeamLayers.getEntitiesInLayers([.. targets.ToArray()]),entity)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
 	}
@@ -85,7 +86,11 @@ public partial class Targeter : Node2D
 public class Target
 {
 	Node2D TargetEntity;
-	Vector2 TargetPosition;
+	Vector2 TargetPosition = new();
+	public Target()
+	{
+		
+	 }
 	public Target(Node2D _TargetEntity)
 	{
 		TargetEntity = _TargetEntity;

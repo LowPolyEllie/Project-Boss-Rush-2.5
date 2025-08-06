@@ -28,6 +28,20 @@ public class Controller
         WorldInputHandler.worldProcessEvent += ProcessInput;
         source.inputMachine = inputMachine;
     }
+    public void AddKeybind(string input, Key key, bool @override = false)
+    {
+        if (keyMapping.ContainsKey(input))
+        {
+            if (@override)
+            {
+                keyMapping[input] = key;
+            }
+        }
+        else
+        {
+            keyMapping.Add(input, key);
+        }
+    }
     public virtual void HandleInput(Godot.InputEvent inputEvent)
     {
         if (inputEvent is InputEventKey inputEventKey)

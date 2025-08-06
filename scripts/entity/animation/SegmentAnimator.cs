@@ -13,33 +13,33 @@ public abstract partial class SegmentAnimator : Resource
     /// Whether or not the animation will repeat
     /// </summary>
     [Export]
-    public bool Loop = false;
+    public bool loop = false;
 
     /// <summary>
     /// A temporary version of Loop, meant to be called without interfering with config
     /// </summary>
-    protected bool StopAtNext = false;
+    protected bool stopAtNext = false;
 
     /// <summary>
     /// How much time in seconds the animation will take
     /// </summary>
     [Export]
-    public float AnimationTime = 1f;
+    public float animationTime = 1f;
 
     /// <summary>
     /// The point that is the animation is at
     /// </summary>
-    protected float AnimationStep = 0f;
+    protected float animationStep = 0f;
 
     public bool Process = false;
-    public Node2D Subject;
+    public Node2D subject;
 
     /// <summary>
     /// Starts the animation, restarts if called mid animation
     /// </summary>
     public virtual void StartAnimation()
     {
-        AnimationStep = 0f;
+        animationStep = 0f;
         Process = true;
     }
 
@@ -50,12 +50,12 @@ public abstract partial class SegmentAnimator : Resource
     {
         if (immediate)
         {
-            AnimationStep = 0f;
+            animationStep = 0f;
             Process = true;
         }
         else
         {
-            StopAtNext = true;
+            stopAtNext = true;
         }
     }
 
@@ -71,16 +71,16 @@ public abstract partial class SegmentAnimator : Resource
         if (!Process){ return; }
         
         float deltaF = (float)delta;
-        AnimationStep += deltaF;
-        if (AnimationStep > AnimationTime)
+        animationStep += deltaF;
+        if (animationStep > animationTime)
         {
-            if (Loop && !StopAtNext)
+            if (loop && !stopAtNext)
             {
-                AnimationStep -= AnimationTime;
+                animationStep -= animationTime;
             }
             else
             {
-                AnimationStep = 0f;
+                animationStep = 0f;
                 OnAnimationStep(delta, deltaF);
                 Process = false;
             }
