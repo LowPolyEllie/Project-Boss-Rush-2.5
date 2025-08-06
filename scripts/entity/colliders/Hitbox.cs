@@ -35,29 +35,17 @@ public partial class Hitbox : Area2D
 		CollisionLayer = 0;
 		CollisionMask = 0;
 
-		/*CollisionLayer += World.TeamCollisionLayers[team];
-		CollisionMask += World.TeamCollisionMasks[team];
+		CollisionLayer += (uint)1 << owner.teams["Side"].collisionLayer;
+		foreach (Team team in owner.teams["Side"].collisionMask)
+		{
+			CollisionMask += (uint)1 << team.collisionLayer;
+		}
 
 		if (antiCram)
 		{
 			CollisionLayer += 1 << 4;
 			CollisionMask += 1 << 4;
 		}
-
-		foreach (string thisSubTeam in subTeams)
-		{
-			string combinedName = team + "_" + thisSubTeam;
-			AddToGroup(combinedName);
-
-			if (World.TeamCollisionLayers.TryGetValue(combinedName, out uint layer))
-			{
-				CollisionLayer += layer;
-			}
-			if (World.TeamCollisionMasks.TryGetValue(combinedName, out uint mask))
-			{
-				CollisionMask += mask;
-			}
-		}*/
 	}
 
 	protected void OnAreaEntered(Area2D area)
@@ -84,7 +72,7 @@ public partial class Hitbox : Area2D
 		float deltaF = (float)delta;
 		foreach (Entity entity in collidingEntities)
 		{
-			owner.OnCollisionWith(deltaF, entity, owner.teams.getLayer("Side").hasSameTeam(entity.teams.getLayer("Side")));
+			owner.OnCollisionWith(deltaF, entity, owner.teams["Side"].Equals(entity.teams["Side"]));
 		}
 	}
 }
