@@ -55,16 +55,7 @@ public partial class Cannon : Node2D
 	/// Automatically fire without any input needed
 	/// </summary>
 	[Export]
-	public bool ShootWithoutCommand;
-
-	/// <summary>
-	/// Bosses should obviously ignore this
-	/// </summary>
-	[Export]
-	public bool UseActionTrigger;
-
-	[Export(PropertyHint.Enum, "firePrimary,fireSecondary")]
-	public string ActionTrigger;
+	public bool AutoFire;
 
 	/// <summary>
 	/// Whether or not the cooldown or delay timer is active
@@ -74,8 +65,11 @@ public partial class Cannon : Node2D
 	/// Whether or not the delay timer is active
 	/// </summary>
 	public bool OnDelay;
-
-	protected SegmentAnimator AnimatorRef;
+	public bool InputFiring;
+	[Export]
+	public Node2D Body;
+	[Export]
+	public SegmentAnimator Animator;
 
 	/// <summary>
 	/// Timers are created at runtime for abstraction purposes
@@ -84,7 +78,6 @@ public partial class Cannon : Node2D
 
 	public override void _Ready()
 	{
-		AnimatorRef = GetParent<SegmentAnimator>();
 		if (Source is null)
 		{
 			if (_Source is Entity entity)
@@ -115,6 +108,8 @@ public partial class Cannon : Node2D
 
 		ShootTimer.Timeout += OnCooldownEnd;
 		AddChild(ShootTimer);
+		Animator = (LinearAnimator)Animator.Duplicate();
+		Animator.Subject = Body;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -146,16 +141,19 @@ public partial class Cannon : Node2D
 			}
 		}
 	}
-
+	public override void _Process(double delta)
+	{
+		InputFiring = Source.inputMachine.TryGetInputEnabled("Fire");
+		Animator.StepAnimation(delta);
+	}
 	/// <summary>
 	/// Whether or not the inputs are triggering the cannon to shoot
 	/// </summary>
 	public bool IsShooting()
 	{
 		return
-			(ShootWithoutCommand ||
-			UseActionTrigger &&
-			Input.IsActionPressed(ActionTrigger)) &&
+			(AutoFire ||
+			InputFiring) &&
 			(ProjCount < 0 || projTracker < ProjCount);
 	}
 
@@ -164,9 +162,9 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public void OnShoot()
 	{
-		AnimatorRef.StartAnimation();
+		Animator.StartAnimation();
 
-		var proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1);
+		Entity proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1, Owner:Source);
 		projTracker += 1;
 		proj.TreeExited += () => projTracker -= 1;
 

@@ -7,7 +7,7 @@ namespace BossRush2;
 /// An abstract base class for every animation pivot in game
 /// </summary>
 [GlobalClass]
-public abstract partial class SegmentAnimator : Node2D
+public abstract partial class SegmentAnimator : Resource
 {
     /// <summary>
     /// Whether or not the animation will repeat
@@ -31,13 +31,16 @@ public abstract partial class SegmentAnimator : Node2D
     /// </summary>
     protected float AnimationStep = 0f;
 
+    public bool Process = false;
+    public Node2D Subject;
+
     /// <summary>
     /// Starts the animation, restarts if called mid animation
     /// </summary>
     public virtual void StartAnimation()
     {
         AnimationStep = 0f;
-        SetProcess(true);
+        Process = true;
     }
 
     /// <summary>
@@ -48,7 +51,7 @@ public abstract partial class SegmentAnimator : Node2D
         if (immediate)
         {
             AnimationStep = 0f;
-            SetProcess(false);
+            Process = true;
         }
         else
         {
@@ -63,13 +66,10 @@ public abstract partial class SegmentAnimator : Node2D
     /// <param name="deltaF"></param>
     public abstract void OnAnimationStep(double delta, float deltaF);
 
-    public override void _Ready()
+    public void StepAnimation(double delta)
     {
-        SetProcess(false);
-    }
-
-    public override void _Process(double delta)
-    {
+        if (!Process){ return; }
+        
         float deltaF = (float)delta;
         AnimationStep += deltaF;
         if (AnimationStep > AnimationTime)
@@ -81,7 +81,8 @@ public abstract partial class SegmentAnimator : Node2D
             else
             {
                 AnimationStep = 0f;
-                SetProcess(false);
+                OnAnimationStep(delta, deltaF);
+                Process = false;
             }
         }
         else

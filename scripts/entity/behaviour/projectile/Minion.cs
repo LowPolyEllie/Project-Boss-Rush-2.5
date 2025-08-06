@@ -35,15 +35,9 @@ public partial class Minion : Drone
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		MyTargeter.ResetTarget();
-
-		Vector2 targetPos = MyTargeter.CurrentTarget.GlobalPosition;
-		float targetRot = GlobalPosition.AngleToPoint(targetPos);
-
-		float accuracy = UseMinionAccuracy ? MinionAccuracy : Accuracy;
-
-		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
-
+		MyTargeter.ResetTarget(this);
+		Vector2 targetPos = MyTargeter.CurrentTarget.GetTargetPosition();
+		
 		if (IgnoreFollowLimit || Position.DistanceSquaredTo(targetPos) > FollowLimit * FollowLimit)
 		{
 			AccRate += Vector2.FromAngle(Rotation) * GetAcceleration();
@@ -54,6 +48,29 @@ public partial class Minion : Drone
 			AccRate += Vector2.FromAngle(Rotation - Mathf.Pi / 2) * GetAcceleration();
 		}
 
+		float targetRot = GlobalPosition.AngleToPoint(targetPos);
+
+		float accuracy = UseMinionAccuracy ? MinionAccuracy : Accuracy;
+		
+		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
+
+
 		UpdateVelocity(deltaF);
+	}
+	public override void _Process(double delta)
+	{
+		if (Owner.inputMachine.TryGetInputEnabled("Fire"))
+		{
+			MyTargeter.MyTargetMode = Targeter.TargetMode.OWNER_TARGET;
+			IgnoreFollowLimit = false;
+			UseMinionAccuracy = true;
+		}
+		else
+		{
+			MyTargeter.MyTargetMode = Targeter.TargetMode.OWNER;
+			IgnoreFollowLimit = true;
+			UseMinionAccuracy = false;
+		}
+		inputMachine.SetInputEnabled("Fire",Owner.inputMachine.TryGetInputEnabled("Fire"));
 	}
 }

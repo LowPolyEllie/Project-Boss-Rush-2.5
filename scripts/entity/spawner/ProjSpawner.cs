@@ -13,9 +13,11 @@ public partial class ProjSpawner : EntitySpawner
 	/// <summary>
 	/// Loads a packedscene and applies it to a source, automatically handling transformation, velocity and stats
 	/// </summary>
-	public Entity Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex)
+	public Entity Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex, Entity Owner)
 	{
 		var toShoot = (Entity)packed.Instantiate();
+		toShoot.Owner = Owner;
+		toShoot.Team = Owner.Team;
 		Spawn(toShoot, zindex);
 
 		toShoot.ApplyTransform(source);

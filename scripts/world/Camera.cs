@@ -28,4 +28,11 @@ public partial class Camera : Camera2D
 	{
 		Position = TargetEntity.Position + PositionOffset;
 	}
+    public override void _Ready()
+    {
+		LimitLeft = -(int)World.worldSize.X;
+		LimitRight = (int)World.worldSize.X;
+		LimitTop = -(int)World.worldSize.Y;
+		LimitBottom = (int)World.worldSize.Y;
+    }
 }
