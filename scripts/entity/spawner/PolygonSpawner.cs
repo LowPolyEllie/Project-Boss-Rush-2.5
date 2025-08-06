@@ -7,6 +7,7 @@ namespace BossRush2;
 /// <summary>
 /// Utilises a generation pool, to spawn polygons randomly
 /// </summary>
+[GlobalClass]
 public partial class PolygonSpawner : EntitySpawner
 {
     /// The selection of polygon templates to be spawned
@@ -42,10 +43,9 @@ public partial class PolygonSpawner : EntitySpawner
         {
             Entity polygonToAdd = new()
             {
-                Team = "polygonTeam",
-                SubTeams = [],
-                RotVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
-                MyStats = thisTemplate.MyStats,
+                teams = new("polygon"),
+                angularVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
+                stats = thisTemplate.stats,
                 CollisionLayer = 0,
                 CollisionMask = 1 << 00
             };
@@ -79,7 +79,7 @@ public partial class PolygonSpawner : EntitySpawner
 
             Hitbox hitbox = new()
             {
-                Source = polygonToAdd,
+                owner = polygonToAdd,
                 CollisionLayer = 0,
                 CollisionMask = 0
             };

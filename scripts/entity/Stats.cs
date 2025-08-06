@@ -24,7 +24,7 @@ public partial class Stats : Resource
 	/// This represents max health, refer to <c>CurrentHealth</c> instead if you wish to change that
 	/// </summary>
 	[Export]
-	public float Health;
+	public float Health = 1;
 
 	/// <summary>
 	/// This represents the terminal velocity of an entity

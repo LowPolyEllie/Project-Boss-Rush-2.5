@@ -1,17 +1,17 @@
 using Godot;
-using Godot.Collections;
 using Apoli;
 using Apoli.Powers;
 using Apoli.Types;
 using Apoli.Actions;
 using Microsoft.VisualBasic;
+using System.Collections.Generic;
 namespace BossRush2;
 
 [GlobalClass]
 public partial class Basic : Entity
 {
-	public override Array<string> inputs { get; set; } = ["Up","Down","Left","Right","Fire"];
-	public override Array<string> variantInputs { get; set; } = ["Target"];
+	public override List<string> inputs { get; set; } = ["Up","Down","Left","Right","Fire"];
+	public override List<string> variantInputs { get; set; } = ["Target"];
 	public void MovementControls()
 	{
 		//Create a directional vector
@@ -35,7 +35,7 @@ public partial class Basic : Entity
 		//Normalise and apply if not zero
 		if (controlVector != Vector2.Zero)
 		{
-			AccRate += controlVector.Normalized() * GetAcceleration();
+			acceleration += controlVector.Normalized() * GetAcceleration();
 		}
 	}
 	public override void _Process(double delta)

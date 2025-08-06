@@ -1,4 +1,3 @@
-
 using Godot;
 
 public delegate void WorldInputEventHandler(InputEvent inputEvent);
@@ -12,7 +11,7 @@ public partial class WorldInputHandler : Node
 	{
 		worldInputEvent(inputEvent);
 	}
-    public override void _Process(double delta)
+	public override void _Process(double delta)
 	{
 		worldProcessEvent(delta);
 	}

@@ -1,5 +1,4 @@
 using Godot;
-using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,43 +13,67 @@ namespace BossRush2;
 /// <br>Designed to simplify entity creation with default friction, stat scaling, health bar integration, and more.</br>
 /// </remarks>
 [GlobalClass]
-public partial class Entity : CharacterBody2D, ICollidable
+public partial class Entity : CharacterBody2D, IInputMachine
 {
 	/// <summary>
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
 	/// </summary>
 	public InputMachine inputMachine;
-	public virtual Array<string> inputs { get; set; } = [];
-	public virtual Array<string> variantInputs { get; set; } = [];
+
+	public virtual List<string> inputs { get; set; } = [];
+	public virtual List<string> variantInputs { get; set; } = [];
+	/// <summary>
+	/// Teams determine collision masks, collision layers, groups, and targeting queries
+	/// </summary>
+	public TeamLayerCollection teams { get; set; }
+
+	/// <summary>
+	/// The instance of <c>Stats</c>, used for a variety of reasons
+	/// </summary>
+	public Stats stats { get; set; }
+
+	/// <summary>
+	/// Triggers all hitboxes to forget it, and may also destroy its own hitbox
+	/// </summary>
+	/// <remarks>
+	/// <br> Use mainly when entity is being destroyed </br>
+	/// </remarks>
+	public event Action disableCollision;
+
+	/// <summary>
+	/// Whether the entity can independently collide
+	/// </summary>
+	[Export]
+	public bool isTopLevel = true;
 	/// <summary>
 	/// The entity's owner. Meant for controllable projectiles and potentially damage reflection
 	/// </summary>
 	[Export]
-	public new Entity Owner;
+	public Entity owner;
 	/// <summary>
 	/// The acceleration applied during a frame, <c>delta</c> is already accounted for, so ignore it
 	/// </summary>
-	protected Vector2 AccRate;
+	protected Vector2 acceleration;
 
 	/// <summary>
-	/// <c>AccRate</c>, but for <c>RotVelocity</c> instead of <c>Velocity</c>
+	/// <c>acceleration</c>, but for <c>angularVelocity</c> instead of <c>Velocity</c>
 	/// </summary>
-	protected float RotAccRate;
+	protected float angularAcceleration;
 
 	[Export]
-	public Stats MyStats { get; set; } = new();
+	public Stats myStats { get; set; } = new();
 
 	/// <summary>
 	/// Rotational Velocity, uses radians because its rarely utilised
 	/// </summary>
 	[Export]
-	public float RotVelocity = 0f;
+	public float angularVelocity = 0f;
 
 	/// <summary>
 	/// Amplifies or reduces the impact from World.Friction
 	/// </summary>
 	[Export]
-	public float FrictionPower = 1f;
+	public float friction = 1f;
 
 	/// <summary>
 	/// Amplifies or reduces the impact from World.Friction
@@ -59,13 +82,13 @@ public partial class Entity : CharacterBody2D, ICollidable
 	/// <br> Theres no rotational friction by default </br>
 	/// </remarks>
 	[Export]
-	public float RotFrictionPower = 0f;
+	public float angularFriction = 0f;
 
 	/// <summary>
 	/// I regret using godot's CharacterBody2D class
 	/// </summary>
 	[Export]
-	Vector2 _Velocity = new();
+	Vector2 _velocity = new();
 
 	/// <summary>
 	/// Returns the Acceleration, assuming the Speed stat as terminal velocity, and friction as 0.02f
@@ -73,7 +96,7 @@ public partial class Entity : CharacterBody2D, ICollidable
 	/// <returns></returns>
 	public float GetAcceleration()
 	{
-		return MyStats.Speed * (1 - World.DefaultFriction);
+		return stats.Speed * (1 - World.DefaultFriction);
 	}
 
 	/// <summary>
@@ -93,75 +116,53 @@ public partial class Entity : CharacterBody2D, ICollidable
 	/// </summary>
 	public void UpdateVelocity(float deltaF)
 	{
-		if (FrictionPower > 0f)
+		if (friction > 0f)
 		{
 			Velocity = ExtraMath.PredictVelocity(
-			Velocity, AccRate, Mathf.Pow(World.Friction, FrictionPower), deltaF
+			Velocity, acceleration, Mathf.Pow(World.Friction, friction), deltaF
 			);
 		}
 		else
 		{
-			Velocity += AccRate * deltaF;
+			Velocity += acceleration * deltaF;
 		}
 
-		if (RotFrictionPower > 0f)
+		if (angularFriction > 0f)
 		{
-			RotVelocity = ExtraMath.PredictVelocity(
-			RotVelocity, RotAccRate, Mathf.Pow(World.Friction, RotFrictionPower), deltaF
+			angularVelocity = ExtraMath.PredictVelocity(
+			angularVelocity, angularAcceleration, Mathf.Pow(World.Friction, angularFriction), deltaF
 			);
 		}
 		else
 		{
-			RotVelocity += RotAccRate * deltaF;
+			angularVelocity += angularAcceleration * deltaF;
 		}
 
 		MoveAndSlide();
-		Rotation += RotVelocity * deltaF;
-		AccRate = Vector2.Zero;
+		Rotation += angularVelocity * deltaF;
+		acceleration = Vector2.Zero;
 	}
 
 	/// <summary>
-	/// This represents current health, refer to <c>MyStats.Health</c> instead if you wish to change that
+	/// This represents current health, refer to <c>stats.Health</c> instead if you wish to change that
 	/// </summary>
 	[Export]
-	public float CurrentHealth;
-
-	/// <summary>
-	/// A method, dedicated to <c>StatBar</c> instances. 
-	/// </summary>
-	/// <remarks>
-	/// <br> Connecting new stats must be done with code due to engine limitations </br>
-	/// </remarks>
-	public (double min, double max, double value) HealthRange() => (0, MyStats.Health, CurrentHealth);
-
-	[Export]
-	protected Control _HealthBarRef;
-	public StatBar HealthBarRef;
-
-	// Team and group data
-
-	[Export(PropertyHint.Enum, "playerTeam,bossTeam,polygonTeam")]
-	public string Team { get; set; }
-
-	[Export]
-	public Array<string> SubTeams { get; set; } = [];
-
-	public void OnCollisionWith(float deltaF, ICollidable target, bool applyDamage)
+	public float health;
+	public void OnCollisionWith(float deltaF, Entity target, bool applyDamage)
 	{
 		if (target is Entity targetEntity)
 		{
 			//Here we go again with the stupid american spelling
 			Vector2 dirVect = (Position - targetEntity.Position).Normalized();
-			float forceStrength = 100f + targetEntity.MyStats.Knockback * MyStats.KnockbackMultiplier * targetEntity.Velocity.Length();
-			AccRate += dirVect * forceStrength * (1 - World.DefaultFriction);
+			float forceStrength = 100f + targetEntity.stats.Knockback * stats.KnockbackMultiplier * targetEntity.Velocity.Length();
+			acceleration += dirVect * forceStrength * (1 - World.DefaultFriction);
 		}
 		if (applyDamage)
 		{
-			CurrentHealth -= target.MyStats.Damage * deltaF;
+			health -= target.stats.Damage * deltaF;
 		}
 	}
 
-	public event Action DisableCollision;
 	protected void RegisterInputs()
 	{
 		if (inputMachine is null)
@@ -180,11 +181,11 @@ public partial class Entity : CharacterBody2D, ICollidable
 
 	public override void _EnterTree()
 	{
-		if (_Velocity != Vector2.Zero && Velocity != Vector2.Zero)
+		if (_velocity != Vector2.Zero && Velocity != Vector2.Zero)
 		{
 			throw new InvalidOperationException("Please add an object to a scene before modifying its velocity");
 		}
-		Velocity = _Velocity;
+		Velocity = _velocity;
 	}
 
 	public override void _Ready()
@@ -192,32 +193,20 @@ public partial class Entity : CharacterBody2D, ICollidable
 		CollisionLayer = 0;
 		CollisionMask = 1;
 
-		CurrentHealth = MyStats.Health;
-		if (_HealthBarRef is not null)
-		{
-			HealthBarRef = (StatBar)_HealthBarRef;
-			HealthBarRef.TargetRef = HealthRange;
-		}
+		health = stats.Health;
 
-		TreeExiting += () => DisableCollision?.Invoke();
+		TreeExiting += () => disableCollision?.Invoke();
 
-		if (MyStats.LifeTime > 0)
+		if (stats.LifeTime > 0)
 		{
 			Timer deletionTimer = new()
 			{
 				OneShot = true,
 				Autostart = true,
-				WaitTime = MyStats.LifeTime
+				WaitTime = stats.LifeTime
 			};
 			AddChild(deletionTimer);
 			deletionTimer.Timeout += QueueFree;
-		}
-
-		AddToGroup(Team);
-		foreach (string thisSubTeam in SubTeams)
-		{
-			string combinedName = Team + "_" + thisSubTeam;
-			AddToGroup(combinedName);
 		}
 
 		RegisterInputs();

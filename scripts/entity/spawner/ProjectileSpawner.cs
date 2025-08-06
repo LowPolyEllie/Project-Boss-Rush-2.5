@@ -8,22 +8,23 @@ namespace BossRush2;
 /// <summary>
 /// Implementation of <c>EntitySpawner</c> for most of the in game projectiles
 /// </summary>
-public partial class ProjSpawner : EntitySpawner
+[GlobalClass]
+public partial class ProjectileSpawner : EntitySpawner
 {
 	/// <summary>
 	/// Loads a packedscene and applies it to a source, automatically handling transformation, velocity and stats
 	/// </summary>
-	public Entity Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex, Entity Owner)
+	public Entity Shoot(PackedScene packed, Node2D source, Stats sourceStats, int zindex, Entity owner)
 	{
 		var toShoot = (Entity)packed.Instantiate();
-		toShoot.Owner = Owner;
-		toShoot.Team = Owner.Team;
+		toShoot.owner = owner;
+		toShoot.teams= owner.teams;
 		Spawn(toShoot, zindex);
 
 		toShoot.ApplyTransform(source);
 		if (sourceStats.DoApply)
 		{
-			toShoot.MyStats.MergeStats(sourceStats);
+			toShoot.stats.MergeStats(sourceStats);
 			toShoot.Velocity *= sourceStats.Speed;
 		}
 

@@ -15,17 +15,16 @@ namespace BossRush2;
 [GlobalClass]
 public partial class StatBar : TextureProgressBar
 {
-    double targetValue;
-    [Export]
-    protected double TargetValue
+    private double _targetValue;
+    protected double targetValue
     {
-        get => targetValue;
+        get => _targetValue;
         set
         {
-            if (targetValue != value)
+            if (_targetValue != value)
             {
-                targetValue = value;
-                OnTargetValueChanged();
+                _targetValue = value;
+                OntargetValueChanged();
             }
         }
     }
@@ -63,9 +62,9 @@ public partial class StatBar : TextureProgressBar
         {
             MinValue = TargetRef().min;
             MaxValue = TargetRef().max;
-            TargetValue = TargetRef().value;
+            targetValue = TargetRef().value;
         }
-        TrueValue = Mathf.Lerp(TrueValue, TargetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
+        TrueValue = Mathf.Lerp(TrueValue, targetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
         Value = TrueValue;
     }
 
@@ -73,16 +72,16 @@ public partial class StatBar : TextureProgressBar
     {
         MinValue = TargetRef().min;
         MaxValue = TargetRef().max;
-        TargetValue = TargetRef().value;
-        TrueValue = TargetValue;
+        targetValue = TargetRef().value;
+        TrueValue = targetValue;
         Value = TrueValue;
     }
 
-    protected void OnTargetValueChanged()
+    protected void OntargetValueChanged()
     {
         BarTexture newTexture = TexturePool.GetCurrentBar((targetValue - MinValue) / (MaxValue - MinValue));
-        TextureUnder = newTexture.Under;
-        TextureOver = newTexture.Over;
-        TextureProgress = newTexture.Progress;
+        TextureUnder = newTexture.under;
+        TextureOver = newTexture.over;
+        TextureProgress = newTexture.progress;
     }
 }

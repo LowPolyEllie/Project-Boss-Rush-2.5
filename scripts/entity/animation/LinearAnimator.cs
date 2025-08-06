@@ -13,39 +13,39 @@ public partial class LinearAnimator : SegmentAnimator
 	/// The curve to represent the change in X over time
 	/// </summary>
 	[Export]
-	public Curve CurveX;
+	public Curve curveX;
 
 	/// <summary>
 	/// The curve to represent the change in Y over time
 	/// </summary>
 	[Export]
-	public Curve CurveY;
+	public Curve curveY;
 
 	/// <summary>
 	/// The curve to represent the change in rotation over time
 	/// </summary>
 	[Export]
-	public Curve CurveRot;
+	public Curve curveRot;
 
 	public override void OnAnimationStep(double delta, float deltaF)
 	{        
 		//This exists because godot for some reason won't let me change X and Y individually
-		float newX = Subject.Position.X;
-		float newY = Subject.Position.Y;
+		float newX = subject.Position.X;
+		float newY = subject.Position.Y;
 
-		if (CurveX != null)
+		if (curveX != null)
 		{
-			newX = CurveX.Sample(CurveX.MinDomain + (CurveX.MaxDomain - CurveX.MinDomain) / AnimationTime * AnimationStep);
+			newX = curveX.Sample(curveX.MinDomain + (curveX.MaxDomain - curveX.MinDomain) / animationTime * animationStep);
 		}
-		if (CurveY != null)
+		if (curveY != null)
 		{
-			newY = CurveY.Sample(CurveY.MinDomain + (CurveY.MaxDomain - CurveY.MinDomain) / AnimationTime * AnimationStep);
+			newY = curveY.Sample(curveY.MinDomain + (curveY.MaxDomain - curveY.MinDomain) / animationTime * animationStep);
 		}
-		Subject.Position = new Vector2(newX, newY);
+		subject.Position = new Vector2(newX, newY);
 
-		if (CurveRot != null)
+		if (curveRot != null)
 		{
-			Subject.Rotation = CurveRot.Sample(CurveRot.MinDomain + (CurveRot.MaxDomain - CurveRot.MinDomain) / AnimationTime * AnimationStep);
+			subject.Rotation = curveRot.Sample(curveRot.MinDomain + (curveRot.MaxDomain - curveRot.MinDomain) / animationTime * animationStep);
 		}
 	}
 }
