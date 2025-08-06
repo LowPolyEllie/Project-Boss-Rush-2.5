@@ -7,12 +7,6 @@ using System.Linq;
 
 namespace BossRush2;
 
-/// <summary>
-/// A Node2D with a built in targeting system
-/// </summary>
-[GlobalClass]
-public partial class Targeter : Node2D
-{
 	/// <summary>
 	/// To be utilised by other functions here
 	/// </summary>
@@ -39,13 +33,14 @@ public partial class Targeter : Node2D
 		NEAREST
 	}
 
-	[Export]
+public class Targeter
+{
+
 	public TargetMode targetMode = TargetMode.NONE;
 
 	/// <summary>
 	/// The teams that this node will target
 	/// </summary>
-	[Export]
 	public Array<string> targets = [];
 
 	public Target currentTarget;
@@ -60,7 +55,7 @@ public partial class Targeter : Node2D
 
 		foreach (var thisEntity in entityArray)
 		{
-			float dist = GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
+			float dist = entity.GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
 			if (dist < closest || closest < 0f)
 			{
 				closest = dist;
@@ -75,10 +70,10 @@ public partial class Targeter : Node2D
 	{
 		currentTarget = targetMode switch
 		{
-			TargetMode.NONE => null,
+			TargetMode.NONE => new(),
 			TargetMode.OWNER => new(entity.owner),
-			TargetMode.OWNER_TARGET => entity.owner.inputMachine.variantinputRegistry.Contains("Target")?new((Vector2)entity.owner.inputMachine.GetVariantInput("Target")):null,
-			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeamLayers.getEntitiesInLayers([.. targets.ToArray()]),entity)),
+			TargetMode.OWNER_TARGET => entity.owner.inputMachine.variantinputRegistry.Contains("Target") ? new((Vector2)entity.owner.inputMachine.GetVariantInput("Target")) : new(),
+			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeams.GetEntitiesInLayers([.. targets.ToArray()]), entity)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
 	}

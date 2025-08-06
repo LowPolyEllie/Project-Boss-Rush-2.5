@@ -39,12 +39,15 @@ public partial class World : Node
 		}
 	}
 	public PlayerController activePlayerController { get; set; }
-	public TeamLayerCollection activeTeamLayers;
 
 	[Export]
 	public PolygonSpawner activePolygonSpawner { get; set; }
 	[Export]
 	public ProjectileSpawner activeProjectileSpawner { get; set; }
+	[Export]
+	public Node teamRegistry { get; set; }
+	public TeamLayerCollection activeTeams = new();
+	public TeamLayer allTeams = new();
 
 	//Cached border shapes, ignore this
 	static float boundaryWidth = 500f;
@@ -101,26 +104,6 @@ public partial class World : Node
 		}
 	}
 
-	/// <summary>
-	/// The team collision layers, one which every member will be in
-	/// </summary>
-	public static readonly Dictionary<string, uint> TeamCollisionLayers = new()
-	{
-		["playerTeam"] = 1 << 1,
-		["bossTeam"] = 1 << 2,
-		["polygonTeam"] = 1 << 3
-	};
-
-	/// <summary>
-	/// The team collision masks, one which every member will react to
-	/// </summary>
-	public static readonly Dictionary<string, uint> TeamCollisionMasks = new()
-	{
-		["playerTeam"] = (1 << 2) + (1 << 3),
-		["bossTeam"] = (1 << 1) + (1 << 3),
-		["polygonTeam"] = (1 << 1) + (1 << 2) + (1 << 3),
-	};
-
 	//Signal related stuff here
 
 	/// <summary>
@@ -146,6 +129,35 @@ public partial class World : Node
 		//Initialising stuff
 		DefaultFriction = Friction;
 		GD.Randomize(); //Seriously? Randomize with a Z???
+
+		//What a mess
+		List<TeamWrapper> allWrappers = [];
+		foreach (TeamLayerWrapper layer in teamRegistry.GetChildren())
+		{
+			TeamLayer _layer = new();
+			_layer.name = layer.Name;
+			foreach (TeamWrapper team in layer.GetChildren())
+			{
+				Team _team = new();
+				_team.name = team.Name;
+				_team.collisionLayer = team.collisionLayer;
+				_layer.AddTeam(_team);
+				allTeams.AddTeam(_team);
+				if (!allWrappers.Contains(team))
+				{
+					allWrappers.Add(team);
+				}
+			}
+			activeTeams.AddLayer(_layer);
+		}
+		foreach (TeamWrapper team in allWrappers)
+		{
+
+			foreach (TeamWrapper maskTeam in team.collisionMask)
+			{
+				allTeams.GetTeam(team.Name).collisionMask.Add(allTeams.GetTeam(maskTeam.Name));
+			}
+		}
 	}
 
 	//Secondary initialisation, called after every other node's _Ready() has been called

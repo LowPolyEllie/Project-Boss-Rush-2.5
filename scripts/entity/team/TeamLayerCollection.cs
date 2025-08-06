@@ -5,29 +5,29 @@ using System.Linq;
 
 namespace BossRush2;
 
-public class TeamLayerCollection : List<TeamLayer>
+public class TeamLayerCollection
 {
-	public List<TeamLayer> teamLayers;
-	public bool hasTeam(string name)
+	public List<TeamLayer> teamLayers = [];
+	public bool HasTeam(string name)
 	{
-		if (teamLayers.FindIndex(layer => layer.hasTeam(name)) != -1)
+		if (teamLayers.FindIndex(layer => layer.HasTeam(name)) != -1)
 		{
 			return true;
 		}
 		return false;
 	}
-	public Team getTeam(string name)
+	public Team GetTeam(string name)
 	{
 		foreach (TeamLayer layer in teamLayers)
 		{
-			if (layer.hasTeam(name))
+			if (layer.HasTeam(name))
 			{
-				return layer.getTeam(name);
+				return layer.GetTeam(name);
 			}
 		}
 		return null;
 	}
-	public bool hasLayer(string name)
+	public bool HasLayer(string name)
 	{
 		if (teamLayers.FindIndex(layer => layer.name == name) != -1)
 		{
@@ -35,7 +35,7 @@ public class TeamLayerCollection : List<TeamLayer>
 		}
 		return false;
 	}
-	public TeamLayer getLayer(string name)
+	public TeamLayer GetLayer(string name)
 	{
 		foreach (TeamLayer layer in teamLayers)
 		{
@@ -46,30 +46,47 @@ public class TeamLayerCollection : List<TeamLayer>
 		}
 		return null;
 	}
-	public List<Entity> getEntitiesInLayers(List<string> teams)
+	public List<Entity> GetEntitiesInLayers(List<string> teams)
 	{
 		List<Entity> ret = [];
 		foreach (string team in teams)
 		{
-			if (hasTeam(team))
+			if (HasTeam(team))
 			{
-				ret.AddRange(getTeam(team).members);
+				ret.AddRange(GetTeam(team).members);
 			}
 		}
 		return ret;
 	}
 	//Singular team constructor
-	public TeamLayerCollection(string team)
+	public TeamLayerCollection()
+	{
+		
+	}
+	public TeamLayerCollection(string layer, Team team)
 	{
 		teamLayers = [
 			new(){
-				name = "Side",
+				name = layer,
 				teams = [
-					new(){ 
-						name = "Polygon"
-					}
+					team
 				]
 			}
 		];
+	}
+	public void AddLayer(TeamLayer layer)
+	{
+		teamLayers.Add(layer);
+	}
+	public TeamLayer FindAddLayer(string layer)
+	{
+		if (GetLayer(layer) is null)
+		{
+			AddLayer(new()
+			{ 
+				name = layer
+			});
+		}
+		return GetLayer(layer);
 	}
 }

@@ -6,17 +6,17 @@ namespace BossRush2;
 
 public class TeamLayer
 {
-	public List<Team> teams;
+	public List<Team> teams = [];
 	public string name;
-	public Team getTeam(string @name)
+	public Team GetTeam(string @name)
 	{
-		if (hasTeam(@name))
+		if (HasTeam(@name))
 		{
 			return teams.Find(team => team.name == @name);
 		}
 		return null;
 	}
-	public bool hasTeam(string @name)
+	public bool HasTeam(string @name)
 	{
 		if (teams.FindIndex(team => team.name == @name) != -1)
 		{
@@ -24,7 +24,7 @@ public class TeamLayer
 		}
 		return false;
 	}
-	public bool hasTeam(Team @team)
+	public bool HasTeam(Team @team)
 	{
 		if (teams.Contains(@team))
 		{
@@ -32,15 +32,12 @@ public class TeamLayer
 		}
 		return false;
 	}
-	public bool hasSameTeam(TeamLayer layer)
+	public void AddTeam(Team team)
 	{
-		foreach (Team team in teams)
-		{
-			if (layer.hasTeam(team))
-			{
-				return true;
-			}
-		}
-		return false;
+		teams.Add(team);
+	}
+	public void RemoveTeam(Team team)
+	{
+		teams.Remove(team);
 	}
 }

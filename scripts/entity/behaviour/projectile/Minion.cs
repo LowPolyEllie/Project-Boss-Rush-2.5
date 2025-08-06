@@ -61,13 +61,13 @@ public partial class Minion : Drone
 	{
 		if (owner.inputMachine.TryGetInputEnabled("Fire"))
 		{
-			targeter.targetMode = Targeter.TargetMode.OWNER_TARGET;
+			targeter.targetMode = TargetMode.OWNER_TARGET;
 			ignoreFollowLimit = false;
 			useMinionAccuracy = true;
 		}
 		else
 		{
-			targeter.targetMode = Targeter.TargetMode.OWNER;
+			targeter.targetMode = TargetMode.OWNER;
 			ignoreFollowLimit = true;
 			useMinionAccuracy = false;
 		}

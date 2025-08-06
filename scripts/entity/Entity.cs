@@ -1,7 +1,9 @@
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace BossRush2;
 
@@ -25,11 +27,21 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	/// <summary>
 	/// Teams determine collision masks, collision layers, groups, and targeting queries
 	/// </summary>
-	public TeamLayerCollection teams { get; set; }
+	public System.Collections.Generic.Dictionary<string,Team> teams = new();
+	/// <summary>
+	/// For setting teams in the editor.
+	/// </summary>
+	[Export]
+	public Godot.Collections.Dictionary<TeamLayerWrapper, TeamWrapper> _teams { get; set; } = [];
+	/// <summary>
+	/// For setting teams in code.
+	/// </summary>
+	public Godot.Collections.Dictionary<string, string> _teamsString { get; set; } = [];
 
 	/// <summary>
 	/// The instance of <c>Stats</c>, used for a variety of reasons
 	/// </summary>
+	[Export]
 	public Stats stats { get; set; }
 
 	/// <summary>
@@ -60,9 +72,6 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	/// </summary>
 	protected float angularAcceleration;
 
-	[Export]
-	public Stats myStats { get; set; } = new();
-
 	/// <summary>
 	/// Rotational Velocity, uses radians because its rarely utilised
 	/// </summary>
@@ -88,7 +97,7 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	/// I regret using godot's CharacterBody2D class
 	/// </summary>
 	[Export]
-	Vector2 _velocity = new();
+	Vector2 velocity = new();
 
 	/// <summary>
 	/// Returns the Acceleration, assuming the Speed stat as terminal velocity, and friction as 0.02f
@@ -178,18 +187,21 @@ public partial class Entity : CharacterBody2D, IInputMachine
 			inputMachine.TryRegisterVariantInput(id);
 		}
 	}
-
 	public override void _EnterTree()
 	{
-		if (_velocity != Vector2.Zero && Velocity != Vector2.Zero)
+		foreach ((TeamLayerWrapper layer, TeamWrapper team) in _teams)
 		{
-			throw new InvalidOperationException("Please add an object to a scene before modifying its velocity");
+			JoinTeam(layer.Name, World.activeWorld.activeTeams.GetTeam(team.Name));
 		}
-		Velocity = _velocity;
+		foreach ((string layer, string team) in _teamsString)
+		{
+			JoinTeam(layer, World.activeWorld.activeTeams.GetTeam(team));
+		}
 	}
-
 	public override void _Ready()
 	{
+		Velocity = velocity;
+
 		CollisionLayer = 0;
 		CollisionMask = 1;
 
@@ -212,6 +224,16 @@ public partial class Entity : CharacterBody2D, IInputMachine
 		RegisterInputs();
 	}
 
+	public void JoinTeam(string layer, Team team)
+	{
+		team.AddMember(this);
+		teams.TryAdd(layer,team);
+	}
+	public void LeaveTeam(Team team)
+	{
+		team.RemoveMember(this);
+		teams.Remove(teams.FirstOrDefault(x=>x.Value.Equals(team)).Key);
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;

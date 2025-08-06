@@ -9,11 +9,9 @@ namespace BossRush2;
 [GlobalClass]
 public partial class Drone : Basic
 {
-	/// <summary>
-	/// The targeting node, self explanatory
-	/// </summary>
+	public Targeter targeter = new();
 	[Export]
-	public Targeter targeter;
+	public TargetMode targetMode = TargetMode.NONE;
 
 	/// <summary>
 	/// Interpolation point for how fast the drone turns
@@ -39,7 +37,7 @@ public partial class Drone : Basic
 	{
 		targeter.targetMode =
 		owner.inputMachine.TryGetInputEnabled("Fire") ?
-		Targeter.TargetMode.OWNER_TARGET : Targeter.TargetMode.OWNER;
+		TargetMode.OWNER_TARGET : TargetMode.OWNER;
 		inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
 	}
 }

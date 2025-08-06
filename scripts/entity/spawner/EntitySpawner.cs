@@ -13,12 +13,10 @@ namespace BossRush2;
 /// </remarks>
 public partial class EntitySpawner : Node
 {
-	protected World WorldRef;
 
 	public override void _Ready()
 	{
-		WorldRef = GetParent<World>();
-		WorldRef.InitSetup += EnterGame;
+		World.activeWorld.InitSetup += EnterGame;
 	}
 
 	public virtual void EnterGame() { }
@@ -29,6 +27,6 @@ public partial class EntitySpawner : Node
 	protected void Spawn(Entity toAdd, int zindex)
 	{
 		toAdd.ZIndex = zindex;
-		WorldRef.AddChild(toAdd);
+		World.activeWorld.AddChild(toAdd);
 	}
 }

@@ -43,7 +43,7 @@ public partial class PolygonSpawner : EntitySpawner
         {
             Entity polygonToAdd = new()
             {
-                teams = new("polygon"),
+                _teamsString = {{"Side","Polygon"}},
                 angularVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
                 stats = thisTemplate.stats,
                 CollisionLayer = 0,
