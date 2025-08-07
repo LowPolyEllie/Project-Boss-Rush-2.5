@@ -1,5 +1,4 @@
 android/
-.godot/
 *.csproj
 *.old
 *.sln
