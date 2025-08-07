@@ -1,0 +1,5 @@
+res://data/animation
+res://scripts/entity/behaviour/projectile
+res://scenes/player/projectiles
+res://data/player
+res://scripts/world

@@ -1,0 +1,18 @@
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.deps.json
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.runtimeconfig.json
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.dll
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\Project Boss Rush 2.5.pdb
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.csproj.AssemblyReference.cache
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.AssemblyInfoInputs.cache
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.AssemblyInfo.cs
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.csproj.CoreCompileInputs.cache
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.sourcelink.json
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project .EE2C77C1.Up2Date
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.dll
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\refint\Project Boss Rush 2.5.dll
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.pdb
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\Project Boss Rush 2.5.genruntimeconfig.cache
+C:\Users\9tale\Desktop\Project-Boss-Rush-2.5\.godot\mono\temp\obj\Debug\ref\Project Boss Rush 2.5.dll
