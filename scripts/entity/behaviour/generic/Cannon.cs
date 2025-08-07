@@ -10,120 +10,109 @@ namespace BossRush2;
 public partial class Cannon : Node2D
 {
 	[Export]
-	public Stats MyStats;
+	public Stats stats;
 
 	/// <summary>
 	/// The time it takes after the bullet is fired for the cannon to shoot again
+	/// 
+	/// this should DEFINITELY be a stat, seperate CannonStat in the future?
 	/// </summary>
 	[Export]
-	public float FireRate = 0.5f;
+	public float fireRate = 0.5f;
 
 	/// <summary>
 	/// The maximum number of projectiles this cannon can shoot, set to -1f for no limit
 	/// </summary>
 	[Export]
-	public float ProjCount = -1f;
-	protected float projTracker = 0f;
-
-	/// <summary>
-	/// InitDelay is ignored if true
-	/// </summary>
-	[Export]
-	public bool HaveDelay = false;
+	public float maxProjectiles = -1f;
+	protected float currentProjectiles = 0f;
 
 	/// <summary>
 	/// The time is takes after input is pressed before bullet is fired
+	///  
+	/// I feel like this should be a stat -Fox
 	/// </summary>
 	[Export]
-	public float InitDelay;
-
-	/// <summary>
-	/// Because godot doesn't allow referencing custom types
-	/// </summary>
+	public float delay;
+	
 	[Export]
-	Node2D _Source;
-
-	public Entity Source;
+	public Entity owner;
 
 	/// <summary>
 	/// The scene to instantiate once the bullet fires
 	/// </summary>
 	[Export]
-	public PackedScene ToShoot;
+	public PackedScene toShoot;
 
 	/// <summary>
 	/// Automatically fire without any input needed
 	/// </summary>
 	[Export]
-	public bool AutoFire;
+	public bool autoFire;
 
 	/// <summary>
 	/// Whether or not the cooldown or delay timer is active
 	/// </summary>
-	public bool OnCooldown;
+	public bool onCooldown = false;
 	/// <summary>
 	/// Whether or not the delay timer is active
 	/// </summary>
-	public bool OnDelay;
-	public bool InputFiring;
+	public bool onDelay = false;
+	public bool isShooting{ get
+		{
+			return
+				(autoFire ||
+				inputFiring) &&
+				(maxProjectiles == -1 || currentProjectiles < maxProjectiles);
+			
+	 } set { } }
+	public bool inputFiring;
 	[Export]
-	public Node2D Body;
+	public Node2D body;
 	[Export]
-	public SegmentAnimator Animator;
+	public LinearAnimator animator;
 
 	/// <summary>
 	/// Timers are created at runtime for abstraction purposes
 	/// </summary>
-	protected Timer ShootTimer, DelayTimer;
+	protected Timer shootTimer, delayTimer;
 
 	public override void _Ready()
 	{
-		if (Source is null)
-		{
-			if (_Source is Entity entity)
-			{
-				Source = entity;
-			}
-			else
-			{
-				throw new InvalidCastException("Must reference Entity type source only");
-			}
-		}
-
-		ShootTimer = new Timer()
+		shootTimer = new Timer()
 		{
 			OneShot = true,
-			WaitTime = FireRate,
+			WaitTime = fireRate,
 		};
-		if (HaveDelay)
+		if (delay > 0)
 		{
-			DelayTimer = new Timer()
+			delayTimer = new Timer()
 			{
 				OneShot = true,
-				WaitTime = InitDelay
+				WaitTime = delay
 			};
-			DelayTimer.Timeout += OnShoot;
-			AddChild(DelayTimer);
+			delayTimer.Timeout += OnShoot;
+			AddChild(delayTimer);
 		}
 
-		ShootTimer.Timeout += OnCooldownEnd;
-		AddChild(ShootTimer);
-		Animator = (LinearAnimator)Animator.Duplicate();
-		Animator.Subject = Body;
+		shootTimer.Timeout += OnCooldownEnd;
+		AddChild(shootTimer);
+		animator = (LinearAnimator)animator.Duplicate();
+		animator.subject = body;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		if (IsShooting())
+		if (isShooting)
 		{
-			if (!OnCooldown)
+			if (!onCooldown)
 			{
-				if (HaveDelay)
+				if (delay > 0)
 				{
-					OnCooldown = true;
-					OnDelay = true;
-					DelayTimer.Start();
+					onCooldown = true;
+					onDelay = true;
+					delayTimer.Start();
 				}
 				else
 				{
@@ -133,28 +122,18 @@ public partial class Cannon : Node2D
 		}
 		else
 		{
-			if (OnDelay)
+			if (onDelay)
 			{
-				OnCooldown = false;
-				OnDelay = false;
-				DelayTimer.Stop();
+				onCooldown = false;
+				onDelay = false;
+				delayTimer.Stop();
 			}
 		}
 	}
 	public override void _Process(double delta)
 	{
-		InputFiring = Source.inputMachine.TryGetInputEnabled("Fire");
-		Animator.StepAnimation(delta);
-	}
-	/// <summary>
-	/// Whether or not the inputs are triggering the cannon to shoot
-	/// </summary>
-	public bool IsShooting()
-	{
-		return
-			(AutoFire ||
-			InputFiring) &&
-			(ProjCount < 0 || projTracker < ProjCount);
+		inputFiring = owner.inputMachine.TryGetInputEnabled("Fire");
+		animator.StepAnimation(delta);
 	}
 
 	/// <summary>
@@ -162,21 +141,21 @@ public partial class Cannon : Node2D
 	/// </summary>
 	public void OnShoot()
 	{
-		Animator.StartAnimation();
+		animator.StartAnimation();
 
-		Entity proj = World.ProjSpawnerMain.Shoot(ToShoot, this, MyStats, Source.ZIndex - 1, Owner:Source);
-		projTracker += 1;
-		proj.TreeExited += () => projTracker -= 1;
+		Entity proj = World.activeWorld.activeProjectileSpawner.Shoot(toShoot, this, stats, owner.ZIndex - 1, owner:owner);
+		currentProjectiles += 1;
+		proj.TreeExited += () => currentProjectiles -= 1;
 
-		OnDelay = false;
-		OnCooldown = true;
-		ShootTimer.Start();
+		onDelay = false;
+		onCooldown = true;
+		shootTimer.Start();
 	}
 
 	protected void OnCooldownEnd()
 	{
-		OnCooldown = false;
-		if (IsShooting())
+		onCooldown = false;
+		if (isShooting)
 		{
 			OnShoot();
 		}

@@ -13,95 +13,38 @@ public partial class Hitbox : Area2D
 	/// <summary>
 	/// Currently colliding entities with the hitbox
 	/// </summary>
-	protected List<ICollidable> CollidingEntities = [];
-
-	/// <summary>
-	/// Because godot doesn't allow referencing custom types
-	/// </summary>
-	[Export]
-	Node2D _Source;
-	[Export]
-	Node2D _AbsoluteSource;
+	protected List<Entity> collidingEntities = [];
 
 	/// <summary>
 	/// Can detect and act upon (without damaging) teamates with this value set to true as well
 	/// </summary>
 	[Export]
-	public bool AntiCram;
+	public bool antiCram;
 
 	/// <summary>
 	/// The node that this hitbox belongs to
 	/// </summary>
-	public ICollidable Source;
-
-	/// <summary>
-	/// The root Entity of this hierarchy, defaults to Source if initialised as null
-	/// </summary>
-	public Entity AbsoluteSource;
-
+	[Export]
+	public Entity owner;
 	public override void _Ready()
 	{
 		//Connecting signals
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;
 
-		//Setting up Source, more or less just a validation check
-		if (Source is null)
-		{
-			if (_Source is not ICollidable collidable)
-				throw new InvalidCastException("Must reference ICollidable source only");
-
-			Source = collidable;
-		}
-
-		//Setting up AbsoluteSource 
-		//If its initialisation value is null, it uses Source, which has to be Entity in that case
-		if (AbsoluteSource is null)
-		{
-			if (_AbsoluteSource is null)
-			{
-				if (Source is not Entity sourceEntity)
-					throw new InvalidCastException("Must reference Entity source only (auto initialisation used)");
-
-				AbsoluteSource = sourceEntity;
-			}
-			else
-			{
-				if (_AbsoluteSource is not Entity absEntity)
-					throw new InvalidCastException("Must reference Entity source only");
-
-				AbsoluteSource = absEntity;
-			}
-		}
-
 		CollisionLayer = 0;
 		CollisionMask = 0;
 
-		string team = Source.Team;
-		var subTeams = Source.SubTeams;
+		CollisionLayer += (uint)1 << owner.teams["Side"].collisionLayer;
+		foreach (Team team in owner.teams["Side"].collisionMask)
+		{
+			CollisionMask += (uint)1 << team.collisionLayer;
+		}
 
-		CollisionLayer += World.TeamCollisionLayers[team];
-		CollisionMask += World.TeamCollisionMasks[team];
-
-		if (AntiCram)
+		if (antiCram)
 		{
 			CollisionLayer += 1 << 4;
 			CollisionMask += 1 << 4;
-		}
-
-		foreach (string thisSubTeam in subTeams)
-		{
-			string combinedName = team + "_" + thisSubTeam;
-			AddToGroup(combinedName);
-
-			if (World.TeamCollisionLayers.TryGetValue(combinedName, out uint layer))
-			{
-				CollisionLayer += layer;
-			}
-			if (World.TeamCollisionMasks.TryGetValue(combinedName, out uint mask))
-			{
-				CollisionMask += mask;
-			}
 		}
 	}
 
@@ -109,9 +52,9 @@ public partial class Hitbox : Area2D
 	{
 		if (area is Hitbox hitbox)
 		{
-			var entity = hitbox.Source;
-			CollidingEntities.Add(entity);
-			entity.DisableCollision += () => CollidingEntities.Remove(entity);
+			var entity = hitbox.owner;
+			collidingEntities.Add(entity);
+			entity.disableCollision += () => collidingEntities.Remove(entity);
 		}
 	}
 
@@ -119,17 +62,17 @@ public partial class Hitbox : Area2D
 	{
 		if (area is Hitbox hitbox)
 		{
-			var entity = hitbox.Source;
-			CollidingEntities.Remove(entity);
+			var entity = hitbox.owner;
+			collidingEntities.Remove(entity);
 		}
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		foreach (var thisCollider in CollidingEntities)
+		foreach (Entity entity in collidingEntities)
 		{
-			Source.OnCollisionWith(deltaF, thisCollider, thisCollider.Team != Source.Team);
+			owner.OnCollisionWith(deltaF, entity, owner.teams["Side"].Equals(entity.teams["Side"]));
 		}
 	}
 }

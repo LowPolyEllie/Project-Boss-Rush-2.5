@@ -11,78 +11,56 @@ namespace BossRush2;
 /// <br> Interpolates changes in the value, with a controllable multiplier </br>
 /// <br> Can dynamically change textures from the <c>TexturePool</c>, based on value </br>
 /// <br> (The value is ratio based, meaning it doesn't care about min or max) </br>
-/// </remarks>
 [GlobalClass]
 public partial class StatBar : TextureProgressBar
 {
-    double targetValue;
-    [Export]
-    protected double TargetValue
-    {
-        get => targetValue;
-        set
-        {
-            if (targetValue != value)
-            {
-                targetValue = value;
-                OnTargetValueChanged();
-            }
-        }
-    }
+	protected double _targetValue;
+	[Export]
+	public Entity subject;
+	protected double targetValue
+	{
+		get => _targetValue;
+		set
+		{
+			if (_targetValue != value)
+			{
+				_targetValue = value;
+				OntargetValueChanged();
+			}
+		}
+	}
+	public float min;
+	public float max;
 
-    /// <summary>
-    /// "Fuck you I'm gonna fuck over your lerp anyways even if Rounded is false", Godot said.
-    /// </summary>
-    protected double TrueValue;
+	/// <summary>
+	/// "Fuck you I'm gonna fuck over your lerp anyways even if Rounded is false", Godot said.
+	/// </summary>
+	protected double TrueValue;
 
-    Func<(double min, double max, double value)> targetRef;
+	[Export(PropertyHint.Range, "0.0,1.0,0.01")]
+	public double Interpolation = 0.1;
 
-    /// <summary>
-    /// Pass a lambda function for to connect this bar to any stat
-    /// </summary>
-    public Func<(double min, double max, double value)> TargetRef
-    {
-        get => targetRef;
-        set
-        {
-            targetRef = value;
-            OnTargetRefChanged();
-        }
-    }
+	// A set of cached textures ready to be loaded and used
+	[Export]
+	protected BarTextureSet TexturePool;
 
-    [Export(PropertyHint.Range, "0.0,1.0,0.01")]
-    public double Interpolation = 0.1;
+	public override void _Ready()
+	{
+		MinValue = min;
+		MaxValue = max;
+	}
 
-    // A set of cached textures ready to be loaded and used
-    [Export]
-    protected BarTextureSet TexturePool;
+	public override void _Process(double delta)
+	{
+		TrueValue = Mathf.Lerp(TrueValue, targetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
+		Value = TrueValue;
+	}
 
-    public override void _Process(double delta)
-    {
-        if (TargetRef is not null)
-        {
-            MinValue = TargetRef().min;
-            MaxValue = TargetRef().max;
-            TargetValue = TargetRef().value;
-        }
-        TrueValue = Mathf.Lerp(TrueValue, TargetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
-        Value = TrueValue;
-    }
-
-    protected void OnTargetRefChanged()
-    {
-        MinValue = TargetRef().min;
-        MaxValue = TargetRef().max;
-        TargetValue = TargetRef().value;
-        TrueValue = TargetValue;
-        Value = TrueValue;
-    }
-
-    protected void OnTargetValueChanged()
-    {
-        BarTexture newTexture = TexturePool.GetCurrentBar((targetValue - MinValue) / (MaxValue - MinValue));
-        TextureUnder = newTexture.Under;
-        TextureOver = newTexture.Over;
-        TextureProgress = newTexture.Progress;
-    }
+	protected void OntargetValueChanged()
+	{
+		BarTexture newTexture = TexturePool.GetCurrentBar((targetValue - MinValue) / (MaxValue - MinValue));
+		TextureUnder = newTexture.under;
+		TextureOver = newTexture.over;
+		TextureProgress = newTexture.progress;
+	}
 }

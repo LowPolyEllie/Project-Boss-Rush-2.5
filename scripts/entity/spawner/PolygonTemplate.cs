@@ -19,7 +19,7 @@ public partial class PolygonTemplate : Resource
 	/// Polygon stats, note that speed would be ignored unless custom ai is implemented
 	/// </summary>
 	[Export]
-	public Stats MyStats;
+	public Stats stats;
 
 	/// <summary>
 	/// The texture that the polygon's sprite will hold
@@ -46,6 +46,6 @@ public partial class PolygonTemplate : Resource
 	{
 		Weight = 1f;
 		Collider = new CircleShape2D();
-		MyStats = new();
+		stats = new();
 	}
 }

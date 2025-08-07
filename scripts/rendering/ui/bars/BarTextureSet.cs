@@ -10,26 +10,26 @@ namespace BossRush2;
 [GlobalClass]
 public partial class BarTextureSet : Resource
 {
-    /// <summary>
-    /// Must be ordered in descending format for optimisation reasons
-    /// </summary>
-    [Export]
-    public Array<BarTexture> MyTextures = [];
+	/// <summary>
+	/// Must be ordered in descending format for optimisation reasons
+	/// </summary>
+	[Export]
+	public Array<BarTexture> textures = [];
 
-    public BarTexture GetCurrentBar(double value)
-    {
-        foreach (var thisTexture in MyTextures)
-        {
-            if (value <= thisTexture.Threshold)
-            {
-                return thisTexture;
-            }
-        }
-        throw new InvalidOperationException("Value exceed minimum threshold");
-    }
+	public BarTexture GetCurrentBar(double value)
+	{
+		foreach (var thisTexture in textures)
+		{
+			if (value <= thisTexture.threshold)
+			{
+				return thisTexture;
+			}
+		}
+		throw new InvalidOperationException("Value exceed minimum threshold");
+	}
 
-    public BarTextureSet()
-    {
-        MyTextures = [];
-    }
+	public BarTextureSet()
+	{
+		textures = [];
+	}
 }

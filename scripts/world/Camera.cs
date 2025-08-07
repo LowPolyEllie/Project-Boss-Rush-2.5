@@ -10,14 +10,38 @@ namespace BossRush2;
 /// <br> This node must be directly under <c>World</c> with the same name as the class name </br>
 /// <br> One of the few hardcoded nodes, for the purpose of static access </br>
 /// </remarks>
+[GlobalClass]
 public partial class Camera : Camera2D
 {
 	/// <summary>
 	/// The main entity that the camera will follow
-	/// </summary>
-	[Export]
-	public Node2D TargetEntity { get; set; }
+	/// </sumary>
+	public Target target { get; set; } = new();
 
+	/// <summary>
+	/// Use instead of Enabled. Never disable directly, or it WILL null activeCamera
+	/// </summary>
+	
+	[Export]
+	public bool Active
+	{
+		get
+		{
+			return Enabled;
+		}
+		set
+		{
+			Enabled = value;
+			if (value)
+			{
+				World.activeWorld.activeCamera = this;
+			}
+			else
+			{ 
+				World.activeWorld.activeCamera = null;
+			}
+		}
+	}
 	/// <summary>
 	/// Position offset from the target entity
 	/// </summary>
@@ -26,13 +50,13 @@ public partial class Camera : Camera2D
 
 	public override void _Process(double delta)
 	{
-		Position = TargetEntity.Position + PositionOffset;
+		Position = target.GetTargetPosition() + PositionOffset;
 	}
-    public override void _Ready()
-    {
+	public override void _Ready()
+	{
 		LimitLeft = -(int)World.worldSize.X;
 		LimitRight = (int)World.worldSize.X;
 		LimitTop = -(int)World.worldSize.Y;
 		LimitBottom = (int)World.worldSize.Y;
-    }
+	}
 }
