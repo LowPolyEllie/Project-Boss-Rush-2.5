@@ -7,10 +7,8 @@ Bugs
 - UID warning messages, they are persistent and occur every time a project is reloaded
 
 Stuff currently being worked on
-Ellie
-- Add a proper tank loading system
-Fox
-- Add a proper state machine
+- Add a proper tank loading system (Ellie)
+- Add the first boss (Ellie)
 
 Stuff to finish
 - Add a death/respawning system
