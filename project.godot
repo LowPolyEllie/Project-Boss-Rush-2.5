@@ -12,16 +12,16 @@ config_version=5
 
 config/name="Project Boss Rush 2.5"
 config/description="Project Boss Rush 2, rebuilt and newed into a brand new engine"
-run/main_scene="uid://btx7bc4714n2k"
+run/main_scene="uid://bmcfr27tr0pag"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
+
+[display]
+
+window/size/mode=3
 
 [dotnet]
 
 project/assembly_name="Project Boss Rush 2.5"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/br2classes/plugin.cfg")
 
 [input]
 

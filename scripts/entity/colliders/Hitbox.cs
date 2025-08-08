@@ -28,6 +28,11 @@ public partial class Hitbox : Area2D
 	public Entity owner;
 	public override void _Ready()
 	{
+		{
+			var parent = GetParent();
+			if (owner is null && parent is Entity) owner = GetParent<Entity>();
+		}
+
 		//Connecting signals
 		AreaEntered += OnAreaEntered;
 		AreaExited += OnAreaExited;

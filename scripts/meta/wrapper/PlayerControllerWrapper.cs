@@ -11,6 +11,7 @@ public partial class PlayerControllerWrapper : Node
     public Camera camera { get; set; }
     [Export]
     public Entity player { get; set; }
+
     [Export]
     public Dictionary<string, Key> keyMapping = new()
     { 

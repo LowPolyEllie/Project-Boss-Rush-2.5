@@ -17,10 +17,10 @@ public partial class HealthBar : StatBar
 {
     public override void _Ready()
     {
-        min = 0;
-        max = subject.stats.Health;
-        TrueValue = max;
         base._Ready();
+        MinValue = 0;
+        MaxValue = subject.stats.Health;
+        trueValue = MaxValue;
     }
     public override void _Process(double delta)
     {

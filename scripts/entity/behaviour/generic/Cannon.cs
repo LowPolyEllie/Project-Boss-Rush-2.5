@@ -21,11 +21,11 @@ public partial class Cannon : Node2D
 	public float fireRate = 0.5f;
 
 	/// <summary>
-	/// The maximum number of projectiles this cannon can shoot, set to -1f for no limit
+	/// The maximum number of projectiles this cannon can shoot, set to -1 for no limit
 	/// </summary>
 	[Export]
-	public float maxProjectiles = -1f;
-	protected float currentProjectiles = 0f;
+	public int maxProjectiles = -1;
+	protected int currentProjectiles = 0;
 
 	/// <summary>
 	/// The time is takes after input is pressed before bullet is fired
@@ -79,6 +79,11 @@ public partial class Cannon : Node2D
 
 	public override void _Ready()
 	{
+		{
+			var parent = GetParent();
+			if (owner is null && parent is Entity) owner = GetParent<Entity>();
+		}		
+
 		shootTimer = new Timer()
 		{
 			OneShot = true,

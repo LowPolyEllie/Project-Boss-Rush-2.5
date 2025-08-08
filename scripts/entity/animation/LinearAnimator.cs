@@ -27,8 +27,14 @@ public partial class LinearAnimator : SegmentAnimator
 	[Export]
 	public Curve curveRot;
 
+	/// <summary>
+	/// Whether or not the position will be relative to global rotation
+	/// </summary>
+	[Export]
+	public bool rotAsPivot;
+
 	public override void OnAnimationStep(double delta, float deltaF)
-	{        
+	{
 		//This exists because godot for some reason won't let me change X and Y individually
 		float newX = subject.Position.X;
 		float newY = subject.Position.Y;
@@ -47,5 +53,7 @@ public partial class LinearAnimator : SegmentAnimator
 		{
 			subject.Rotation = curveRot.Sample(curveRot.MinDomain + (curveRot.MaxDomain - curveRot.MinDomain) / animationTime * animationStep);
 		}
+
+		if (rotAsPivot) subject.Position = subject.Position.Rotated(subject.Rotation);
 	}
 }

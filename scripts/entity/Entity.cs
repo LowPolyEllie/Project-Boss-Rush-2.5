@@ -200,6 +200,11 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	}
 	public override void _Ready()
 	{
+		{
+			var parent = GetParent();
+			if (owner is null && parent is Entity) owner = GetParent<Entity>();
+		}	
+
 		Velocity = velocity;
 
 		CollisionLayer = 0;

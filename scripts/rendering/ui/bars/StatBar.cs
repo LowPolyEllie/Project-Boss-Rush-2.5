@@ -29,13 +29,11 @@ public partial class StatBar : TextureProgressBar
 			}
 		}
 	}
-	public float min;
-	public float max;
 
 	/// <summary>
 	/// "Fuck you I'm gonna fuck over your lerp anyways even if Rounded is false", Godot said.
 	/// </summary>
-	protected double TrueValue;
+	protected double trueValue;
 
 	[Export(PropertyHint.Range, "0.0,1.0,0.01")]
 	public double Interpolation = 0.1;
@@ -46,14 +44,16 @@ public partial class StatBar : TextureProgressBar
 
 	public override void _Ready()
 	{
-		MinValue = min;
-		MaxValue = max;
+		{
+			var parent = GetParent();
+			if (subject is null && parent is Entity) subject = GetParent<Entity>();
+		}
 	}
 
 	public override void _Process(double delta)
 	{
-		TrueValue = Mathf.Lerp(TrueValue, targetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
-		Value = TrueValue;
+		trueValue = Mathf.Lerp(trueValue, targetValue, 1 - Mathf.Pow(1 - Interpolation, delta));
+		Value = trueValue;
 	}
 
 	protected void OntargetValueChanged()
