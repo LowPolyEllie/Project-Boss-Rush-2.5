@@ -79,10 +79,7 @@ public partial class Cannon : Node2D
 
 	public override void _Ready()
 	{
-		{
-			var parent = GetParent();
-			if (owner is null && parent is Entity) owner = GetParent<Entity>();
-		}		
+		owner ??= this.SearchForParent<Entity>();	
 
 		shootTimer = new Timer()
 		{

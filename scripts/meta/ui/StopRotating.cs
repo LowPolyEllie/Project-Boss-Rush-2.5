@@ -10,5 +10,8 @@ namespace BossRush2;
 [Tool]
 public partial class StopRotating : Node2D
 {
+	public override void _EnterTree() => GlobalRotation = 0f;
+	public override void _Ready() => GlobalRotation = 0f;
 	public override void _Process(double delta) => GlobalRotation = 0f;
+	public override void _PhysicsProcess(double delta) => GlobalRotation = 0f;
 }

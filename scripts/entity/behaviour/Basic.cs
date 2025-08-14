@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using Apoli;
 using Apoli.Powers;
 using Apoli.Types;
@@ -10,8 +11,14 @@ namespace BossRush2;
 [GlobalClass]
 public partial class Basic : Entity
 {
-	public override List<string> inputs { get; set; } = ["Up","Down","Left","Right","Fire"];
+	[Export]
+	public Array<TankLoader> currentLoadout = [];
+	int currentTier = 0;
+
+	public override List<string> inputs
+	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire"];
 	public override List<string> variantInputs { get; set; } = ["Target"];
+
 	public void MovementControls()
 	{
 		//Create a directional vector
@@ -38,6 +45,7 @@ public partial class Basic : Entity
 			acceleration += controlVector.Normalized() * GetAcceleration();
 		}
 	}
+
 	public override void _Process(double delta)
 	{
 		float deltaF = (float)delta;
@@ -46,6 +54,17 @@ public partial class Basic : Entity
 		{
 			Vector2 mousePos = (Vector2)inputMachine.GetVariantInput("Target");
 			Rotation = Position.AngleToPoint(mousePos);
+		}
+
+		//Placeholder, for until I add a proper wave system
+		if (Input.IsActionJustPressed("debug_1"))
+		{
+			currentTier++;
+			if (currentTier == currentLoadout.Count)
+			{
+				currentTier = 0;
+			}
+			currentLoadout[currentTier].LoadTank(this);
 		}
 	}
 

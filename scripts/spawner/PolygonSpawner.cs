@@ -43,7 +43,7 @@ public partial class PolygonSpawner : EntitySpawner
         {
             Entity polygonToAdd = new()
             {
-                _teamsString = {{"Side","Polygon"}},
+                _teams = {{"Side","Polygon"}},
                 angularVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
                 stats = thisTemplate.stats,
                 CollisionLayer = 0,
@@ -81,7 +81,8 @@ public partial class PolygonSpawner : EntitySpawner
             {
                 owner = polygonToAdd,
                 CollisionLayer = 0,
-                CollisionMask = 0
+                CollisionMask = 0,
+                antiCram = true
             };
             hitbox.AddChild(collider2);
 

@@ -7,7 +7,6 @@ namespace BossRush2;
 /// An extended <c>TextureProgressBar</c>, with more functionality fit for my game
 /// </summary>
 /// <remarks>
-/// <br> Utilises automatic referencing by passing a lambda to <c>TargetRef</c> </br>
 /// <br> Interpolates changes in the value, with a controllable multiplier </br>
 /// <br> Can dynamically change textures from the <c>TexturePool</c>, based on value </br>
 /// <br> (The value is ratio based, meaning it doesn't care about min or max) </br>
@@ -44,10 +43,7 @@ public partial class StatBar : TextureProgressBar
 
 	public override void _Ready()
 	{
-		{
-			var parent = GetParent();
-			if (subject is null && parent is Entity) subject = GetParent<Entity>();
-		}
+		subject ??= this.SearchForParent<Entity>();
 	}
 
 	public override void _Process(double delta)

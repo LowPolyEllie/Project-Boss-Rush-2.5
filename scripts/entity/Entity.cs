@@ -27,16 +27,19 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	/// <summary>
 	/// Teams determine collision masks, collision layers, groups, and targeting queries
 	/// </summary>
-	public System.Collections.Generic.Dictionary<string,Team> teams = new();
+	public System.Collections.Generic.Dictionary<string, Team> teams = [];
+
 	/// <summary>
-	/// For setting teams in the editor.
+	/// For setting teams in game
 	/// </summary>
 	[Export]
-	public Godot.Collections.Dictionary<TeamLayerWrapper, TeamWrapper> _teams { get; set; } = [];
+	public Godot.Collections.Dictionary<string, string> _teams { get; set; } = [];
+
 	/// <summary>
-	/// For setting teams in code.
+	/// Only use for debugging purposes
 	/// </summary>
-	public Godot.Collections.Dictionary<string, string> _teamsString { get; set; } = [];
+	[Export]
+	public Godot.Collections.Dictionary<TeamLayerWrapper, TeamWrapper> _teamsDebug { get; set; } = [];
 
 	/// <summary>
 	/// The instance of <c>Stats</c>, used for a variety of reasons
@@ -189,21 +192,21 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	}
 	public override void _EnterTree()
 	{
-		foreach ((TeamLayerWrapper layer, TeamWrapper team) in _teams)
+		foreach ((TeamLayerWrapper layer, TeamWrapper team) in _teamsDebug)
 		{
 			JoinTeam(layer.Name, World.activeWorld.activeTeams.GetTeam(team.Name));
 		}
-		foreach ((string layer, string team) in _teamsString)
+		foreach ((string layer, string team) in _teams)
 		{
 			JoinTeam(layer, World.activeWorld.activeTeams.GetTeam(team));
 		}
 	}
 	public override void _Ready()
 	{
+		if (owner is null && !isTopLevel)
 		{
-			var parent = GetParent();
-			if (owner is null && parent is Entity) owner = GetParent<Entity>();
-		}	
+			owner = this.SearchForParent<Entity>();
+		}
 
 		Velocity = velocity;
 

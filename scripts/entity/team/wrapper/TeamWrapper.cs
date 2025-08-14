@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace BossRush2;
 
 [GlobalClass]
-public partial class TeamWrapper : Node{
+public partial class TeamWrapper : Node
+{
     [Export]
 	public int collisionLayer;
     [Export]
