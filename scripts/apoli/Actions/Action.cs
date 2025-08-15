@@ -14,13 +14,13 @@ public enum ActionId {
 }
 public class Action {
 	public virtual ActionId type { get; set; }
-    public virtual Dictionary<string, Parameter> parameters {get;set; }
+    public virtual ParameterCollection parameters {get;set; }
 	public virtual void DoAction() { }
 }
 public class ActionBuilder
 {
 	private ActionId type;
-    public virtual Dictionary<string, Parameter> _parameters {get;set; }
+    public virtual ParameterCollection _parameters {get;set; }
 	public Action Build()
 	{
 		Action newAction;
@@ -32,20 +32,20 @@ public class ActionBuilder
 			default:
 				throw new Exception("ActionBuilder: No class specified");
 		}
-		newAction.parameters = _parameters.ToDictionary(entry => entry.Key, entry => entry.Value);
+		newAction.parameters = _parameters;
 		return newAction;
 	}
     public ActionBuilder SetParam(string Key, Types.Type Value)
     {
-        if (!_parameters.ContainsKey(Key))
+        if (!_parameters.HasParam(Key))
         {
             throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
         }
-        if (_parameters[Key].type != Value.type)
+        if (_parameters.GetType(Key) != Value.type)
         {
-            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters[Key].type+", got "+Value.type);
+            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters.GetType(Key)+", got "+Value.type);
         }
-        _parameters[Key].value.value = Value.value;
+        _parameters.SetParam(Key,Value);
         _parameters = Parameter.actionParameters[type];
         return this;
     }
@@ -58,12 +58,9 @@ public class ActionBuilder
 public class Print: Action {
 	public override ActionId type { get; set; } = ActionId.Print;
 	public override void DoAction() {
-		if (!parameters.ContainsKey("Message")) {
+		if (!parameters.HasParam("Message")) {
 			return;
 		}
-		if (parameters["Message"].type != TypeId.String) {
-			return;
-		}
-		GD.Print((string) parameters["Message"].value.value);
+		GD.Print((string) parameters.GetValue("Message"));
 	}
 }

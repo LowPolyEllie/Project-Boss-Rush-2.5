@@ -12,6 +12,7 @@ namespace Apoli.Types;
 
 public enum TypeId
 {
+    Default,
     String,
     Float,
     Power,
@@ -24,10 +25,22 @@ public enum TypeId
     TypeIdType,
     Variant
 }
-public class Type {
+public class Type
+{
     public string id;
     public virtual TypeId type { get; set; }
     public virtual object value { get; set; }
+    public static Type FromValue(object value)
+    {
+        switch (value)
+        {
+            case bool boolValue:
+                return new Bool(boolValue);
+            case string strValue:
+                return new String(strValue);
+        }
+        return new Type();
+    }
 }
 public class Bool: Type {
     public override TypeId type { get; set; } = TypeId.Bool;

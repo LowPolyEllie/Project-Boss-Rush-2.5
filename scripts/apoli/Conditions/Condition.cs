@@ -16,13 +16,13 @@ public enum ConditionId
 }
 public class Condition {
 	public virtual ConditionId type { get; set; }
-    public virtual Dictionary<string, Parameter> parameters {get;set; }
+    public virtual ParameterCollection parameters {get;set; }
 	public virtual bool CheckCondition() { return false; }
 }
 public class ConditionBuilder
 {
 	private ConditionId type;
-	public virtual Dictionary<string, Parameter> _parameters { get; set; }
+	public virtual ParameterCollection _parameters { get; set; }
 	public Condition Build()
 	{
 		Condition newCondition;
@@ -34,20 +34,20 @@ public class ConditionBuilder
 			default:
 				throw new Exception("ConditionBuilder: No class specified");
 		}
-		newCondition.parameters = _parameters.ToDictionary(entry => entry.Key, entry => entry.Value);
+		newCondition.parameters = _parameters;
 		return newCondition;
 	}
 	public ConditionBuilder SetParam(string Key, Types.Type Value)
 	{
-		if (!_parameters.ContainsKey(Key))
+		if (!_parameters.HasParam(Key))
 		{
 			throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
 		}
-		if (_parameters[Key].type != Value.type)
+		if (_parameters.GetType(Key) != Value.type)
 		{
-			throw new TypeLoadException("Wrong Apoli type: Expected " + _parameters[Key].type + ", got " + Value.type);
+			throw new TypeLoadException("Wrong Apoli type: Expected " + _parameters.GetType(Key) + ", got " + Value.type);
 		}
-		_parameters[Key].value.value = Value.value;
+		_parameters.SetParam(Key,Value);
 		_parameters = Parameter.conditionParameters[type];
 		return this;
 	}

@@ -11,17 +11,17 @@ public class State
 {
     public void OnEnter()
     {
-        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback && e.parameters.ContainsKey("ActionOnEnterState"); }))
+        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback; }))
         {
-            Actions.Action actionOnEnterState = (Actions.Action)power.parameters["ActionOnEnterState"].value.value;
+            Actions.Action actionOnEnterState = (Actions.Action)power.parameters.GetValue("ActionOnEnterState");
             actionOnEnterState.DoAction();
         }
     }
     public void OnLeave()
     {
-        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback && e.parameters.ContainsKey("ActionOnLeaveState"); }))
+        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback; }))
         {
-            Actions.Action actionOnLeaveState = (Actions.Action)power.parameters["ActionOnLeaveState"].value.value;
+            Actions.Action actionOnLeaveState = (Actions.Action)power.parameters.GetValue("ActionOnLeaveState");
             actionOnLeaveState.DoAction();
         }
     }

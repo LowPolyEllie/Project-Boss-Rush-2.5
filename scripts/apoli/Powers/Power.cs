@@ -19,12 +19,12 @@ public class Power
 {
     public State state;
     public virtual PowerId type { get; set; }
-    public virtual Dictionary<string, Parameter> parameters {get;set; }
+    public virtual ParameterCollection parameters {get;set; }
 }
 public class PowerBuilder
 {
     private PowerId type;
-    private Dictionary<string, Parameter> _parameters = new();
+    private ParameterCollection _parameters = new();
     public Power Build()
     {
         Power newPower;
@@ -39,20 +39,20 @@ public class PowerBuilder
             default:
                 throw new Exception("PowerBuilder: No class specified");
         }
-        newPower.parameters = _parameters.ToDictionary(entry => entry.Key, entry => entry.Value);
+        newPower.parameters = _parameters;
         return newPower;
     }
     public PowerBuilder SetParam(string Key, Types.Type Value)
     {
-        if (!_parameters.ContainsKey(Key))
+        if (!_parameters.HasParam(Key))
         {
             throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
         }
-        if (_parameters[Key].type != Value.type)
+        if (_parameters.GetType(Key) != Value.type)
         {
-            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters[Key].type+", got "+Value.type);
+            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters.GetType(Key)+", got "+Value.type);
         }
-        _parameters[Key].value.value = Value.value;
+        _parameters.SetParam(Key,Value);
         return this;
     }
     public PowerBuilder SetType(PowerId _type)

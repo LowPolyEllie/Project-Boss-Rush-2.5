@@ -13,40 +13,60 @@ public class Parameter //: ICloneable
 {
     public Types.Type value { get; set; }
     public TypeId type { get; set; }
-    public static Dictionary<PowerId, Dictionary<string, Parameter>> powerParameters = new()
+    public static Dictionary<PowerId, ParameterCollection> powerParameters = new()
     {
-        {PowerId.ActionOnCallback,new(){
-            {"ActionOnStateEnter",new Parameter(TypeId.Action,null)},
-            {"ActionOnStateLeave",new Parameter(TypeId.Action,null)}
-        }},
-        {PowerId.ActionOnInput,new(){
-            {"Action",new Parameter(TypeId.Action,null)},
-            {"Input",new Parameter(TypeId.String,new Types.String("Fire"))},
-            {"Press",new Parameter(TypeId.Bool,new Bool(true))}
-        }},
-        {PowerId.Variable,new(){
-            {"Type",new Parameter(TypeId.TypeIdType,null)},
-            {"Value",new Parameter(TypeId.Bool,new Bool(true))}
-        }}
+        {PowerId.ActionOnCallback,new(
+            new("ActionOnStateEnter",TypeId.Action),
+            new("ActionOnStateLeave",TypeId.Action)
+        )},
+        {PowerId.ActionOnInput,new(
+            new("Action",TypeId.Action),
+            new("Input",TypeId.String,new Types.String("Fire")),
+            new("Press",TypeId.Bool,true)
+        )},
+        {PowerId.Variable,new(
+            new("Type",TypeId.TypeIdType),
+            new("Value",TypeId.Bool,true)
+        )}
     };
-    public static Dictionary<ActionId, Dictionary<string, Parameter>> actionParameters = new()
+    public static Dictionary<ActionId, ParameterCollection> actionParameters = new()
     {
-        {ActionId.AllOf,new(){
-            {"Actions",new Parameter(TypeId.ActionCollection,new())},
-        }},
-        {ActionId.Print,new(){
-            {"Message",new Parameter(TypeId.String,null)},
-        }}
+        {ActionId.AllOf,new(
+            new ParameterCollectionInitParam("Actions",TypeId.ActionCollection)
+        )},
+        {ActionId.Print,new(
+            new ParameterCollectionInitParam("Message",TypeId.String)
+        )}
     };
-    public static Dictionary<ConditionId, Dictionary<string, Parameter>> conditionParameters = new()
+    public static Dictionary<ConditionId, ParameterCollection> conditionParameters = new()
     {
-        {ConditionId.Controller,new(){
-        }}
+        {ConditionId.Controller,new(
+            new ParameterCollectionInitParam("PlayerController",TypeId.Bool)
+        )}
     };
     public Parameter(TypeId _type, Types.Type _value)
     {
         value = _value;
         type = _type;
+    }
+    public Parameter(TypeId _type, object _value)
+    {
+        value = Types.Type.FromValue(_value);
+        type = _type;
+    }
+    public Parameter(TypeId _type)
+    {
+        type = _type;
+    }
+    public Parameter(bool _bool)
+    {
+        type = TypeId.Bool;
+        value = new Bool(_bool);
+    }
+    public Parameter(string _string)
+    {
+        type = TypeId.String;
+        value = new Types.String(_string);
     }
     /*public object Clone()
     {

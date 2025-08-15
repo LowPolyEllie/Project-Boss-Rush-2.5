@@ -24,6 +24,13 @@ public class Controller : EntityCondition
     public override ConditionId type { get; set; } = ConditionId.Controller;
     public override bool CheckCondition()
     {
-        return subject.controller is not null;
+        if ((bool)parameters.GetValue("PlayerController"))
+        {
+            return subject.controller is PlayerController;
+        }
+        else
+        { 
+            return subject.controller is not null;
+        }
     }
 }
