@@ -1,3 +1,4 @@
+using Apoli;
 using Godot;
 using Godot.Collections;
 using System;
@@ -21,7 +22,9 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
 	/// </summary>
 	public InputMachine inputMachine;
-
+	
+	public Controller controller;
+	public StateMachine stateMachine;
 	public virtual List<string> inputs { get; set; } = [];
 	public virtual List<string> variantInputs { get; set; } = [];
 	/// <summary>

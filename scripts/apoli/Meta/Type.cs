@@ -9,16 +9,55 @@ using Apoli.Powers;
 using Godot;
 
 namespace Apoli.Types;
-public enum TypeId {
+
+public enum TypeId
+{
     String,
     Float,
     Power,
-    Action
+    PowerCollection,
+    Action,
+    ActionCollection,
+    Condition,
+    ConditionCollection,
+    Bool,
+    TypeIdType,
+    Variant
 }
 public class Type {
     public string id;
     public virtual TypeId type { get; set; }
     public virtual object value { get; set; }
+}
+public class Bool: Type {
+    public override TypeId type { get; set; } = TypeId.Bool;
+    public bool _value;
+    public override object value {
+        get {
+            return _value;
+        }
+        set {
+            _value = (bool) value;
+        }
+    }
+    public Bool(bool __value = true) {
+        value = __value;
+    }
+}
+public class TypeIdType: Type {
+    public override TypeId type { get; set; } = TypeId.TypeIdType;
+    public TypeId _value;
+    public override object value {
+        get {
+            return _value;
+        }
+        set {
+            _value = (TypeId) value;
+        }
+    }
+    public TypeIdType(TypeId __value) {
+        value = __value;
+    }
 }
 public class String: Type {
     public override TypeId type { get; set; } = TypeId.String;
@@ -63,5 +102,20 @@ public class Action: Type {
     }
     public Action(Actions.Action __value = null) {
         value = __value;
+    }
+}
+public class ActionCollection: Type {
+    public override TypeId type { get; set; } = TypeId.ActionCollection;
+    public List<Actions.Action> _value;
+    public override object value {
+        get {
+            return _value;
+        }
+        set {
+            _value = (List<Actions.Action>) value;
+        }
+    }
+    public ActionCollection(List<Actions.Action> __value = null) {
+        value = __value == null? [] : __value;
     }
 }

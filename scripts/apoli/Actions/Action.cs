@@ -3,29 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Apoli.Powers;
 using Apoli.Types;
 using Godot;
 
 namespace Apoli.Actions;
 public enum ActionId {
-	all_of,
-	print
+	AllOf,
+	Print
 }
 public class Action {
 	public virtual ActionId type { get; set; }
-	public Dictionary < string, Types.Type > parameters;
+    public virtual Dictionary<string, Parameter> parameters {get;set; }
 	public virtual void DoAction() { }
 }
 public class ActionBuilder
 {
 	private ActionId type;
-	private Dictionary<string, Types.Type> _parameters = new();
+    public virtual Dictionary<string, Parameter> _parameters {get;set; }
 	public Action Build()
 	{
 		Action newAction;
 		switch (type)
 		{
-			case ActionId.print:
+			case ActionId.Print:
 				newAction = new Print();
 				break;
 			default:
@@ -34,11 +35,20 @@ public class ActionBuilder
 		newAction.parameters = _parameters.ToDictionary(entry => entry.Key, entry => entry.Value);
 		return newAction;
 	}
-	public ActionBuilder SetParam(string Key, Types.Type Value)
-	{
-		_parameters.Add(Key, Value);
-		return this;
-	}
+    public ActionBuilder SetParam(string Key, Types.Type Value)
+    {
+        if (!_parameters.ContainsKey(Key))
+        {
+            throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
+        }
+        if (_parameters[Key].type != Value.type)
+        {
+            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters[Key].type+", got "+Value.type);
+        }
+        _parameters[Key].value.value = Value.value;
+        _parameters = Parameter.actionParameters[type];
+        return this;
+    }
 	public ActionBuilder SetType(ActionId _type)
 	{
 		type = _type;
@@ -46,7 +56,7 @@ public class ActionBuilder
 	}
 }
 public class Print: Action {
-	public override ActionId type { get; set; } = ActionId.print;
+	public override ActionId type { get; set; } = ActionId.Print;
 	public override void DoAction() {
 		if (!parameters.ContainsKey("Message")) {
 			return;
@@ -54,6 +64,6 @@ public class Print: Action {
 		if (parameters["Message"].type != TypeId.String) {
 			return;
 		}
-		GD.Print((string) parameters["Message"].value);
+		GD.Print((string) parameters["Message"].value.value);
 	}
 }
