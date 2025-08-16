@@ -45,7 +45,26 @@ public partial class Basic : Entity
 			acceleration += controlVector.Normalized() * GetAcceleration();
 		}
 	}
-
+	public override void _Ready()
+	{
+		base._Ready();
+		
+		stateMachine.AddLayer("Base",new(
+		[
+			new State("Spam",[
+				new PowerBuilder()
+					.SetType(PowerId.ActionOnPhysicsTick)
+					.SetParam("Action",new ActionType(
+						new ActionBuilder()
+							.SetType(ActionId.Print)
+							.SetParam("Message",
+								Type.FromValue("MEOW")
+								)
+							.Build()))
+					.Build()
+			])
+		], "Spam"));
+	}
 	public override void _Process(double delta)
 	{
 		float deltaF = (float)delta;

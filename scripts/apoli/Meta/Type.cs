@@ -87,7 +87,7 @@ public class String: Type {
         value = __value;
     }
 }
-public class Power: Type {
+public class PowerType: Type {
     public override TypeId type { get; set; } = TypeId.Power;
     public Powers.Power _value;
     public override object value {
@@ -98,11 +98,11 @@ public class Power: Type {
             _value = (Powers.Power) value;
         }
     }
-    public Power(Powers.Power __value = null) {
+    public PowerType(Powers.Power __value = null) {
         value = __value;
     }
 }
-public class Action: Type {
+public class ActionType: Type {
     public override TypeId type { get; set; } = TypeId.Action;
     public Actions.Action _value;
     public override object value {
@@ -113,7 +113,7 @@ public class Action: Type {
             _value = (Actions.Action) value;
         }
     }
-    public Action(Actions.Action __value = null) {
+    public ActionType(Actions.Action __value = null) {
         value = __value;
     }
 }

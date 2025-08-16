@@ -160,10 +160,7 @@ public class InputEvent {
 	private event InputEventDelegate InputEventDelegate;
 	public void Fire()
 	{
-		if (InputEventDelegate is not null)
-		{
-			InputEventDelegate();
-		}
+		InputEventDelegate?.Invoke();
 	}
 	public static InputEvent operator +(InputEvent _this, InputEventDelegate _delegate)
 	{

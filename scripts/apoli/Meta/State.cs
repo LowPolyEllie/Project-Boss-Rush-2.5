@@ -29,12 +29,12 @@ public class State
     }
     public string name;
     public StateLayer layer;
-    public List<Powers.Power> powers;
-    public State(List<Powers.Power> _powers)
+    public List<Power> powers;
+    public State(List<Power> _powers)
     {
         powers = _powers;
     }
-    public State(string _name, List<Powers.Power> _powers)
+    public State(string _name, List<Power> _powers)
     {
         powers = _powers;
         name = _name;
@@ -51,7 +51,10 @@ public class State
 }
 public class StateMachine
 {
-    public List<StateLayer> stateLayers;
+    public Dictionary<string, StateLayer> stateLayers;
+    public void AddLayer(string name, StateLayer layer) {
+        stateLayers.Add(name, layer);
+    }
 }
 public class StateLayer
 {

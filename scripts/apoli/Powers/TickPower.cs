@@ -12,10 +12,7 @@ public class PhysicsTickPower : TickPower
     public int physicsTickInterval = 1;
     public override void Tick(double delta)
     {
-        foreach (Action action in actions)
-        {
-            action.DoAction();
-        }
+        ((Action)parameters.GetValue("Action")).DoAction();
     }
     public override void OnStateEnter()
     {
