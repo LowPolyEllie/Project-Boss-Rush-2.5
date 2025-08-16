@@ -13,6 +13,7 @@ public enum ActionId {
 	Print
 }
 public class Action {
+	public Powers.Power power;
 	public virtual ActionId type { get; set; }
     public virtual ParameterCollection parameters {get;set; }
 	public virtual void DoAction() { }

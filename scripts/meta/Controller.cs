@@ -24,8 +24,8 @@ public class Controller
     public virtual void InitInputMachine()
     {
         inputMachine = new([.. keyMapping.Keys], variantInput);
-        WorldInputHandler.worldInputEvent += HandleInput;
-        WorldInputHandler.worldProcessEvent += ProcessInput;
+        WorldInputHandler.WorldInputEvent += HandleInput;
+        WorldInputHandler.WorldProcessEvent += ProcessInput;
         source.inputMachine = inputMachine;
     }
     public void AddKeybind(string input, Key key, bool @override = false)

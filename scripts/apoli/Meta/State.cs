@@ -2,50 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
+using Apoli.Powers;
 using Godot;
 
 namespace Apoli;
 
-
+public delegate void OnStateEnterEventHandler();
+public delegate void OnStateLeaveEventHandler();
+public delegate void OnPhysicsTickEventHandler();
 public class State
 {
+    public event OnStateEnterEventHandler StateEnterEvent;
+    public event OnStateLeaveEventHandler StateLeaveEvent;
+    public event OnPhysicsTickEventHandler PhysicsTickEvent;
     public void OnEnter()
     {
-        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback; }))
-        {
-            Actions.Action actionOnEnterState = (Actions.Action)power.parameters.GetValue("ActionOnEnterState");
-            actionOnEnterState.DoAction();
-        }
+        StateEnterEvent();
     }
     public void OnLeave()
     {
-        foreach (Powers.Power power in powers.FindAll(e => { return e.type == Powers.PowerId.ActionOnCallback; }))
-        {
-            Actions.Action actionOnLeaveState = (Actions.Action)power.parameters.GetValue("ActionOnLeaveState");
-            actionOnLeaveState.DoAction();
-        }
+        StateLeaveEvent();
+    }
+    public void OnTick()
+    {
+        PhysicsTickEvent();
     }
     public string name;
     public StateLayer layer;
     public List<Powers.Power> powers;
     public State(List<Powers.Power> _powers)
     {
-        powers = _powers;   
+        powers = _powers;
     }
     public State(string _name, List<Powers.Power> _powers)
     {
-        powers = _powers;   
-        name = _name;   
+        powers = _powers;
+        name = _name;
     }
     public State(string _name)
     {
-        name = _name;   
+        name = _name;
     }
-}
-
-public interface IStateMachine
-{
-
+    public void AddPower(Power power)
+    {
+        powers.Add(power);
+        power.state = this;
+    }
 }
 public class StateMachine
 {

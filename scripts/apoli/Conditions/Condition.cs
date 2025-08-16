@@ -51,6 +51,20 @@ public class ConditionBuilder
 		_parameters = Parameter.conditionParameters[type];
 		return this;
 	}
+	public ConditionBuilder AddParam(string Key, Types.Type Value)
+	{
+		if (!_parameters.HasParam(Key))
+		{
+			throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
+		}
+		if (_parameters.GetType(Key) != Value.type)
+		{
+			throw new TypeLoadException("Wrong Apoli type: Expected " + _parameters.GetType(Key) + ", got " + Value.type);
+		}
+		_parameters.SetParam(Key,Value);
+		_parameters = Parameter.conditionParameters[type];
+		return this;
+	}
 	public ConditionBuilder SetType(ConditionId _type)
 	{
 		type = _type;

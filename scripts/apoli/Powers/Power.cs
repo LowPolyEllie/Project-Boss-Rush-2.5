@@ -18,8 +18,27 @@ public enum PowerId
 public class Power
 {
     public State state;
+    public List<Actions.Action> actions = [];
     public virtual PowerId type { get; set; }
-    public virtual ParameterCollection parameters {get;set; }
+    public virtual ParameterCollection parameters { get; set; }
+    public virtual void Setup()
+    {
+        state.StateEnterEvent += OnStateEnter;
+        state.StateLeaveEvent += OnStateLeave;
+    }
+    public virtual void OnStateEnter()
+    {
+
+    }
+    public virtual void OnStateLeave()
+    {
+
+    }
+    public void AddAction(Actions.Action action)
+    {
+        actions.Add(action);
+        action.power = this;
+    }
 }
 public class PowerBuilder
 {
@@ -50,9 +69,9 @@ public class PowerBuilder
         }
         if (_parameters.GetType(Key) != Value.type)
         {
-            throw new TypeLoadException("Wrong Apoli type: Expected "+_parameters.GetType(Key)+", got "+Value.type);
+            throw new TypeLoadException("Wrong Apoli type: Expected " + _parameters.GetType(Key) + ", got " + Value.type);
         }
-        _parameters.SetParam(Key,Value);
+        _parameters.SetParam(Key, Value);
         return this;
     }
     public PowerBuilder SetType(PowerId _type)
@@ -61,7 +80,8 @@ public class PowerBuilder
         _parameters = Parameter.powerParameters[type];
         return this;
     }
-}public class ActionOnCallback : Power
+}
+public class ActionOnCallback : Power
 {
     public override PowerId type { get; set; } = PowerId.ActionOnCallback;
 }
