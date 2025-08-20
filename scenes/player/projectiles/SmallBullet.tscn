@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://g7mv4netbpkr"]
+
+[ext_resource type="Script" uid="uid://e3a1kkpgp6pa" path="res://scripts/entity/Entity.cs" id="1_ns2le"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_8um4u"]
+[ext_resource type="Texture2D" uid="uid://cd7qgbvwrau7p" path="res://textures/player/projectiles/SmallBullet.svg" id="3_rk5iw"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="4_03mnb"]
+
+[sub_resource type="Resource" id="Resource_euaki"]
+resource_local_to_scene = true
+script = ExtResource("2_8um4u")
+Damage = 1.0
+Health = 1.0
+Speed = 1.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 2.0
+KnockbackMultiplier = 5.0
+ReboundForce = 50.0
+LifeTime = 5.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_euaki"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ap4ou"]
+radius = 7.0
+
+[node name="BasicBullet" type="CharacterBody2D"]
+collision_layer = 0
+velocity = Vector2(1, 0)
+script = ExtResource("1_ns2le")
+stats = SubResource("Resource_euaki")
+friction = 0.0
+velocity = Vector2(1, 0)
+metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_rk5iw")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_euaki")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("4_03mnb")
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_ap4ou")

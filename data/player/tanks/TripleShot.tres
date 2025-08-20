@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TankLoader" load_steps=3 format=3 uid="uid://dh310ju1p6x8d"]
+
+[ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/TankLoader.cs" id="1_3nov8"]
+[ext_resource type="PackedScene" uid="uid://bq3sdv51ml0ap" path="res://scenes/player/tanks/TripleShot.tscn" id="2_3nov8"]
+
+[resource]
+script = ExtResource("1_3nov8")
+toLoad = ExtResource("2_3nov8")
+metadata/_custom_type_script = "uid://d046lyoyydsb"

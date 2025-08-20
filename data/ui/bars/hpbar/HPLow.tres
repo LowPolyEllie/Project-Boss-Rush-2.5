@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BarTexture" load_steps=5 format=3 uid="uid://bi0g3hliy2tce"]
+
+[ext_resource type="Texture2D" uid="uid://cahhdkpvuhqld" path="res://textures/ui/bars/BarFrame.svg" id="1_0ce08"]
+[ext_resource type="Texture2D" uid="uid://dpht0t4vuchj3" path="res://textures/ui/bars/HPLow.svg" id="2_87n0v"]
+[ext_resource type="Script" uid="uid://b6qbvgg4ym1c" path="res://scripts/meta/ui/bars/BarTexture.cs" id="3_e1bn0"]
+[ext_resource type="Texture2D" uid="uid://cnmin7f08pbx6" path="res://textures/ui/bars/HPEmpty.svg" id="4_7m2m5"]
+
+[resource]
+resource_name = "HPLow"
+script = ExtResource("3_e1bn0")
+under = ExtResource("4_7m2m5")
+over = ExtResource("1_0ce08")
+progress = ExtResource("2_87n0v")
+threshold = 0.33
+metadata/_custom_type_script = "uid://b6qbvgg4ym1c"

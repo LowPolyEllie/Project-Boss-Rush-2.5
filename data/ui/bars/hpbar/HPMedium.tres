@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BarTexture" load_steps=5 format=3 uid="uid://bo7odkmt1giiy"]
+
+[ext_resource type="Texture2D" uid="uid://cahhdkpvuhqld" path="res://textures/ui/bars/BarFrame.svg" id="1_fxjsy"]
+[ext_resource type="Texture2D" uid="uid://b3fmsgt8mexwc" path="res://textures/ui/bars/HPMedium.svg" id="2_2i14u"]
+[ext_resource type="Script" uid="uid://b6qbvgg4ym1c" path="res://scripts/meta/ui/bars/BarTexture.cs" id="3_jpwuf"]
+[ext_resource type="Texture2D" uid="uid://cnmin7f08pbx6" path="res://textures/ui/bars/HPEmpty.svg" id="4_ahaf0"]
+
+[resource]
+resource_name = "HPMedium"
+script = ExtResource("3_jpwuf")
+under = ExtResource("4_ahaf0")
+over = ExtResource("1_fxjsy")
+progress = ExtResource("2_2i14u")
+threshold = 0.66
+metadata/_custom_type_script = "uid://b6qbvgg4ym1c"

@@ -1,0 +1,143 @@
+[gd_scene load_steps=19 format=3 uid="uid://bq3sdv51ml0ap"]
+
+[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_h0f3o"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_jdtxe"]
+[ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_fg80f"]
+[ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_h4dly"]
+[ext_resource type="Texture2D" uid="uid://cnmin7f08pbx6" path="res://textures/ui/bars/HPEmpty.svg" id="5_uaxks"]
+[ext_resource type="Texture2D" uid="uid://cahhdkpvuhqld" path="res://textures/ui/bars/BarFrame.svg" id="6_4j3tn"]
+[ext_resource type="Texture2D" uid="uid://bmikghvtehpng" path="res://textures/ui/bars/HPHigh.svg" id="7_jeobc"]
+[ext_resource type="Script" uid="uid://ciktamhd63plw" path="res://scripts/meta/ui/bars/HealthBar.cs" id="8_mk2ta"]
+[ext_resource type="Resource" uid="uid://1o0bq8wg4pec" path="res://data/ui/bars/hpbar/HPBar.tres" id="9_88eks"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="14_vey8r"]
+[ext_resource type="Script" uid="uid://ctlkn3fghegrb" path="res://scripts/entity/behaviour/generic/Cannon.cs" id="15_jq8go"]
+[ext_resource type="PackedScene" uid="uid://1tt5gsaxvm5w" path="res://scenes/player/projectiles/BasicBullet.tscn" id="15_qc65g"]
+[ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="16_qc65g"]
+[ext_resource type="Texture2D" uid="uid://brug1ufdts2pk" path="res://textures/player/cannon/BasicCannon.svg" id="18_i5dm5"]
+
+[sub_resource type="Resource" id="Resource_ntk6r"]
+script = ExtResource("2_jdtxe")
+Damage = 10.0
+Health = 100.0
+Speed = 250.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 100.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ehwan"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o6odb"]
+radius = 20.0
+
+[sub_resource type="Resource" id="Resource_b2qcq"]
+script = ExtResource("2_jdtxe")
+Damage = 2.0
+Health = 5.0
+Speed = 300.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 1.0
+LifeTime = -1.0
+DoApply = true
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[node name="Triple Shot" type="CharacterBody2D"]
+z_index = 5
+script = ExtResource("1_h0f3o")
+_teams = Dictionary[String, String]({
+"Side": "Player"
+})
+stats = SubResource("Resource_ntk6r")
+metadata/_custom_type_script = "uid://d0rnginli70t2"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_fg80f")
+
+[node name="StopRotating" type="Node2D" parent="."]
+script = ExtResource("4_h4dly")
+metadata/_custom_type_script = "uid://jrsq1fmp0ncl"
+
+[node name="HealthBar" type="TextureProgressBar" parent="StopRotating"]
+z_index = 20
+z_as_relative = false
+offset_left = -42.0
+offset_top = 40.0
+offset_right = 42.0
+offset_bottom = 80.0
+value = 100.0
+texture_under = ExtResource("5_uaxks")
+texture_over = ExtResource("6_4j3tn")
+texture_progress = ExtResource("7_jeobc")
+script = ExtResource("8_mk2ta")
+Interpolation = 0.9
+TexturePool = ExtResource("9_88eks")
+metadata/_custom_type_script = "uid://ciktamhd63plw"
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ehwan")
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("14_vey8r")
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_o6odb")
+
+[node name="UpperCannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(18.1262, -8.45237)
+rotation = -0.436332
+script = ExtResource("15_jq8go")
+stats = SubResource("Resource_b2qcq")
+delay = 0.25
+toShoot = ExtResource("15_qc65g")
+body = NodePath("Body")
+animator = ExtResource("16_qc65g")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="UpperCannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="UpperCannon/Body"]
+texture = ExtResource("18_i5dm5")
+
+[node name="LowerCannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(18.1262, 8.45237)
+rotation = 0.436332
+script = ExtResource("15_jq8go")
+stats = SubResource("Resource_b2qcq")
+delay = 0.25
+toShoot = ExtResource("15_qc65g")
+body = NodePath("Body")
+animator = ExtResource("16_qc65g")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="LowerCannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="LowerCannon/Body"]
+texture = ExtResource("18_i5dm5")
+
+[node name="FrontCannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(25, 0)
+script = ExtResource("15_jq8go")
+stats = SubResource("Resource_b2qcq")
+toShoot = ExtResource("15_qc65g")
+body = NodePath("Body")
+animator = ExtResource("16_qc65g")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="FrontCannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="FrontCannon/Body"]
+texture = ExtResource("18_i5dm5")

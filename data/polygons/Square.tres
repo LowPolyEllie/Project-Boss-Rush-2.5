@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="PolygonTemplate" load_steps=6 format=3 uid="uid://c1attw8oeu03f"]
+
+[ext_resource type="Texture2D" uid="uid://josdnj1dkgxa" path="res://textures/polygon/Square.svg" id="1_0b1oj"]
+[ext_resource type="Script" uid="uid://fh6pnnmdb5bb" path="res://scripts/spawner/PolygonTemplate.cs" id="2_oyyph"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="3_gv3jv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_serus"]
+
+[sub_resource type="Resource" id="Resource_4ekjd"]
+script = ExtResource("3_gv3jv")
+Damage = 0.0
+Health = 5.0
+Speed = 0.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 0.5
+KnockbackMultiplier = 2.0
+ReboundForce = 50.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[resource]
+script = ExtResource("2_oyyph")
+Weight = 10.0
+stats = SubResource("Resource_4ekjd")
+Sprite = ExtResource("1_0b1oj")
+Collider = SubResource("CircleShape2D_serus")
+metadata/_custom_type_script = "uid://fh6pnnmdb5bb"

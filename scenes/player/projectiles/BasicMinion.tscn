@@ -1,0 +1,83 @@
+[gd_scene load_steps=13 format=3 uid="uid://b3yrqihchr15q"]
+
+[ext_resource type="Script" uid="uid://cx2p4ukd2q2vm" path="res://scripts/entity/behaviour/projectile/Minion.cs" id="1_xeqes"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_1562y"]
+[ext_resource type="Texture2D" uid="uid://t1cirkiv0h8d" path="res://textures/player/projectiles/LargeBullet.svg" id="3_ml1sp"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="4_y0cvc"]
+[ext_resource type="Script" uid="uid://ctlkn3fghegrb" path="res://scripts/entity/behaviour/generic/Cannon.cs" id="5_qm26o"]
+[ext_resource type="PackedScene" uid="uid://g7mv4netbpkr" path="res://scenes/player/projectiles/SmallBullet.tscn" id="6_xeqes"]
+[ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="7_xeqes"]
+[ext_resource type="Texture2D" uid="uid://cgyhcc45p6am7" path="res://textures/player/cannon/SmallCannon.svg" id="8_byjtg"]
+
+[sub_resource type="Resource" id="Resource_dppdj"]
+resource_local_to_scene = true
+script = ExtResource("2_1562y")
+Damage = 1.0
+Health = 1.0
+Speed = 1.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 100.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8iupr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_32d87"]
+
+[sub_resource type="Resource" id="Resource_7i52m"]
+script = ExtResource("2_1562y")
+Damage = 2.0
+Health = 2.5
+Speed = 350.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 1.0
+LifeTime = -1.0
+DoApply = true
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[node name="BasicMinion" type="CharacterBody2D"]
+collision_layer = 0
+velocity = Vector2(1, 0)
+script = ExtResource("1_xeqes")
+minionAccuracy = 0.99
+targetMode = 1
+accuracy = 0.95
+stats = SubResource("Resource_dppdj")
+velocity = Vector2(1, 0)
+metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_ml1sp")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8iupr")
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("4_y0cvc")
+antiCram = true
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_32d87")
+
+[node name="Cannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(12, 0)
+script = ExtResource("5_qm26o")
+stats = SubResource("Resource_7i52m")
+toShoot = ExtResource("6_xeqes")
+body = NodePath("CannonSprite")
+animator = ExtResource("7_xeqes")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="CannonSprite" type="Sprite2D" parent="Cannon"]
+texture = ExtResource("8_byjtg")

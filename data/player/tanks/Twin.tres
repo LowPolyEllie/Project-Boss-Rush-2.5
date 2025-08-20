@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TankLoader" load_steps=3 format=3 uid="uid://cbcilcmaltndq"]
+
+[ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/TankLoader.cs" id="1_rr347"]
+[ext_resource type="PackedScene" uid="uid://cnoekplakoydr" path="res://scenes/player/tanks/Twin.tscn" id="2_rr347"]
+
+[resource]
+script = ExtResource("1_rr347")
+toLoad = ExtResource("2_rr347")
+metadata/_custom_type_script = "uid://d046lyoyydsb"

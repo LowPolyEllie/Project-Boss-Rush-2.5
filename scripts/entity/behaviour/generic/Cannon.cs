@@ -58,14 +58,11 @@ public partial class Cannon : Node2D
 	/// Whether or not the delay timer is active
 	/// </summary>
 	public bool onDelay = false;
-	public bool isShooting{ get
-		{
-			return
-				(autoFire ||
-				inputFiring) &&
-				(maxProjectiles == -1 || currentProjectiles < maxProjectiles);
-			
-	 } set { } }
+	public bool isShooting => 
+		(autoFire ||
+		inputFiring) &&
+		(maxProjectiles == -1 || currentProjectiles < maxProjectiles);
+	
 	public bool inputFiring;
 	[Export]
 	public Node2D body;

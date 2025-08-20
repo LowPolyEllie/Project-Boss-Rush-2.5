@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://1tt5gsaxvm5w"]
+
+[ext_resource type="Script" uid="uid://e3a1kkpgp6pa" path="res://scripts/entity/Entity.cs" id="1_jevg6"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_k4und"]
+[ext_resource type="Texture2D" uid="uid://ds8krrex1t37w" path="res://textures/player/projectiles/BasicBullet.svg" id="3_lcmge"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="4_i0h5x"]
+
+[sub_resource type="Resource" id="Resource_6i7yt"]
+resource_local_to_scene = true
+script = ExtResource("2_k4und")
+Damage = 1.0
+Health = 1.0
+Speed = 1.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 2.0
+KnockbackMultiplier = 3.0
+ReboundForce = 50.0
+LifeTime = 5.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ujags"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_81xg0"]
+
+[node name="BasicBullet" type="CharacterBody2D"]
+collision_layer = 0
+velocity = Vector2(1, 0)
+script = ExtResource("1_jevg6")
+stats = SubResource("Resource_6i7yt")
+friction = 0.0
+velocity = Vector2(1, 0)
+metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_lcmge")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ujags")
+
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("owner")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("4_i0h5x")
+owner = NodePath("..")
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_81xg0")

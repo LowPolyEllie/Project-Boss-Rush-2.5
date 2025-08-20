@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwc0pcyimcjno"]
+
+[ext_resource type="Script" uid="uid://dldy8lw1hx732" path="res://scripts/meta/ui/UIManager.cs" id="1_dj8aq"]
+
+[node name="UIManager" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_dj8aq")

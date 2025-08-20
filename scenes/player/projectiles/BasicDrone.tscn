@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb0eyptjm8r6u"]
+
+[ext_resource type="Script" uid="uid://5y3so1lii4db" path="res://scripts/entity/behaviour/projectile/Drone.cs" id="1_lti5p"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_ayd0k"]
+[ext_resource type="Texture2D" uid="uid://dbsxwqndm8hvi" path="res://textures/player/projectiles/BasicDrone.svg" id="3_37uk1"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="4_75lr2"]
+
+[sub_resource type="Resource" id="Resource_32d87"]
+resource_local_to_scene = true
+script = ExtResource("2_ayd0k")
+Damage = 1.0
+Health = 1.0
+Speed = 1.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 2.0
+KnockbackMultiplier = 1.0
+ReboundForce = 75.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8iupr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_32d87"]
+
+[node name="BasicDrone" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_lti5p")
+targetMode = 1
+accuracy = 0.95
+stats = SubResource("Resource_32d87")
+metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_37uk1")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8iupr")
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("4_75lr2")
+antiCram = true
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_32d87")
