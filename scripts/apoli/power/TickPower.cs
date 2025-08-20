@@ -13,11 +13,6 @@ public class TickPower : Power
 		new ParameterCollectionInitParam("Interval",TypeId.Int,""),
 		new ParameterCollectionInitParam("Action",TypeId.Action,"")
 	);
-	public override void InitParam()
-	{
-		base.InitParam();
-		parameters.AddFrom(parameterSet);
-	}
 }
 public class PhysicsTickPower : TickPower
 {

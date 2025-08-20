@@ -18,7 +18,6 @@ public class ApoliObjectBuilder
 
 		ApoliObject newObject;
 		newObject = (ApoliObject)Activator.CreateInstance(internalType);
-		newObject.InitParam();
 		newObject.parameters.AddFrom(_parameters);
 		return newObject;
 	}

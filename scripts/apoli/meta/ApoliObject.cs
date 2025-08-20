@@ -8,11 +8,6 @@ public class ApoliObject
 {
 	public ParameterCollection parameters { get; set; } = [];
 	public static ParameterCollection parameterSet = [];
-	public virtual void InitParam()
-	{
-		parameters = parameterSet;
-	}
-
 	public static ParameterCollection GetParameterSet(Type type)
 	{
 		ParameterCollection paramSet = new();

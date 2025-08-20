@@ -38,11 +38,6 @@ public class Power : ApoliObject
 	public new static ParameterCollection parameterSet = new(
 		new ParameterCollectionInitParam("Condition", TypeId.Condition, "")
 	);
-	public override void InitParam()
-	{
-		base.InitParam();
-		parameters.AddFrom(parameterSet);
-	}
 }
 public class ActionOnCallback : Power
 {

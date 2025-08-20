@@ -11,6 +11,7 @@ using Godot;
 namespace Apoli.Actions;
 public enum ActionId {
 	AllOf,
+	TargetOwner,
 	Print
 }
 public class Action : ApoliObject
@@ -21,9 +22,4 @@ public class Action : ApoliObject
     public new static ParameterCollection parameterSet = new(
         new ParameterCollectionInitParam("Condition",TypeId.Condition,"")
     );
-	public override void InitParam()
-	{
-		base.InitParam();
-		parameters.AddFrom(parameterSet);
-    }
 }

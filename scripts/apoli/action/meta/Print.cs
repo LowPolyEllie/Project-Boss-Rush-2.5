@@ -15,9 +15,4 @@ public class Print: Action {
 		}
 		GD.Print((subject?.Name??"undefined")+ " : " + (string)parameters.GetValue("Message"));
 	}
-	public override void InitParam()
-	{
-		base.InitParam();
-		parameters.AddFrom(parameterSet);
-	}
 }
