@@ -8,7 +8,7 @@ namespace Apoli;
 
 public class ParameterCollection : IEnumerable
 {
-	private Dictionary<string, Parameter> parameters;
+	public Dictionary<string, Parameter> parameters = new();
 
 	public IEnumerator GetEnumerator()
 	{
@@ -16,7 +16,7 @@ public class ParameterCollection : IEnumerable
 	}
 	public object GetValue(string key)
 	{
-		return parameters[key].value;
+		return parameters[key].value.value;
 	}
 	public TypeId GetType(string key)
 	{
@@ -34,13 +34,24 @@ public class ParameterCollection : IEnumerable
 		}
 		else
 		{
-			throw new KeyNotFoundException("No key called " + key); 
+			throw new KeyNotFoundException("No key called " + key);
 		}
+	}
+	public void AddFrom(ParameterCollection collection)
+	{
+		foreach (var keyValuePair in collection.parameters)
+		{
+			SetParam(keyValuePair.Key, keyValuePair.Value);
+		}
+	}
+	public void SetParam(string key, Parameter parameter)
+	{
+		parameters[key] = parameter;
 	}
 	public ParameterCollection Clone()
 	{
 		ParameterCollection newCollection = new();
-		foreach (KeyValuePair<string,Parameter> kp in parameters)
+		foreach (KeyValuePair<string, Parameter> kp in parameters)
 		{
 			parameters.Add(kp.Key, new(kp.Value.type, kp.Value.value));
 		}
@@ -59,6 +70,15 @@ public class ParameterCollection : IEnumerable
 				parameters.Add(arg.name, new(arg.type));
 			}
 		}
+	}
+	public override string ToString()
+	{
+		string output = "";
+		foreach (KeyValuePair<string, Parameter> keyValuePair in parameters)
+		{
+			output += keyValuePair.Key + " : " + keyValuePair.Value.ToString() + "\n";
+		}
+		return output;
 	}
 }
 public class ParameterCollectionInitParam

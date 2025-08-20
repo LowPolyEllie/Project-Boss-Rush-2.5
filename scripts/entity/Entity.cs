@@ -1,4 +1,5 @@
 using Apoli;
+using Apoli.States;
 using Godot;
 using Godot.Collections;
 using System;
@@ -16,7 +17,7 @@ namespace BossRush2;
 /// <br>Designed to simplify entity creation with default friction, stat scaling, health bar integration, and more.</br>
 /// </remarks>
 [GlobalClass]
-public partial class Entity : CharacterBody2D, IInputMachine
+public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 {
 	/// <summary>
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
@@ -24,7 +25,7 @@ public partial class Entity : CharacterBody2D, IInputMachine
 	public InputMachine inputMachine;
 	
 	public Controller controller;
-	public StateMachine stateMachine;
+	public StateMachine stateMachine{ get; set; }
 	public virtual List<string> inputs { get; set; } = [];
 	public virtual List<string> variantInputs { get; set; } = [];
 	/// <summary>

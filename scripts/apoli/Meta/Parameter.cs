@@ -27,6 +27,10 @@ public class Parameter //: ICloneable
 		{PowerId.Variable,new(
 			new("Type",TypeId.TypeIdType),
 			new("Value",TypeId.Bool,true)
+		)},
+		{PowerId.ActionOnPhysicsTick,new(
+			new("Action",TypeId.Action),
+			new("Interval",TypeId.Bool,true)
 		)}
 	};
 	public static Dictionary<ActionId, ParameterCollection> actionParameters = new()
@@ -72,4 +76,9 @@ public class Parameter //: ICloneable
 	{
 		return new Parameter(type,value);
 	}*/
+	public override string ToString()
+	{
+		return value.ToString()+"("+type.ToString()+")";
+	}
+
 }

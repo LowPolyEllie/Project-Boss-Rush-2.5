@@ -6,6 +6,7 @@ using Apoli.Types;
 using Apoli.Actions;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using Apoli.States;
 namespace BossRush2;
 
 [GlobalClass]
@@ -48,22 +49,23 @@ public partial class Basic : Entity
 	public override void _Ready()
 	{
 		base._Ready();
-		
-		stateMachine.AddLayer("Base",new(
-		[
-			new State("Spam",[
+		stateMachine = new(this);
+		stateMachine.AddLayer("Base", new StateLayer("Idle")
+		{ 
+			new State("Idle"){
 				new PowerBuilder()
 					.SetType(PowerId.ActionOnPhysicsTick)
-					.SetParam("Action",new ActionType(
+					.SetParam("Action", new ActionType(
 						new ActionBuilder()
 							.SetType(ActionId.Print)
 							.SetParam("Message",
 								Type.FromValue("MEOW")
-								)
-							.Build()))
-					.Build()
-			])
-		], "Spam"));
+							)
+						.Build()))
+				.Build()
+			}
+		}.Init()
+		);
 	}
 	public override void _Process(double delta)
 	{

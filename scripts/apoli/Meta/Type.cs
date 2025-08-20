@@ -15,6 +15,7 @@ public enum TypeId
     Default,
     String,
     Float,
+    Int,
     Power,
     PowerCollection,
     Action,
@@ -38,8 +39,25 @@ public class Type
                 return new Bool(boolValue);
             case string strValue:
                 return new String(strValue);
+            case int intValue:
+                return new Int(intValue);
         }
         return new Type();
+    }
+}
+public class Int: Type {
+    public override TypeId type { get; set; } = TypeId.Int;
+    public int _value;
+    public override object value {
+        get {
+            return _value;
+        }
+        set {
+            _value = (int) value;
+        }
+    }
+    public Int(int __value = 0) {
+        value = __value;
     }
 }
 public class Bool: Type {
