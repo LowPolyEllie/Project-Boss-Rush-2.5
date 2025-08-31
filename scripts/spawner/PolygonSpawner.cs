@@ -45,13 +45,11 @@ public partial class PolygonSpawner : EntitySpawner
             {
                 _teams = {{"Side","Polygon"}},
                 angularVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
-                stats = thisTemplate.stats,
-                CollisionLayer = 0,
-                CollisionMask = 1 << 00
+                stats = thisTemplate.stats
             };
 
             //Setting position
-            Vector2 spawnSize = World.WorldSize;
+            Vector2 spawnSize = World.worldSize;
             float radius = thisTemplate.Collider.Radius;
 
             spawnSize -= new Vector2(radius, radius);

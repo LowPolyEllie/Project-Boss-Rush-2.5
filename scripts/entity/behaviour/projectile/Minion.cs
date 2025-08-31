@@ -59,18 +59,21 @@ public partial class Minion : Drone
 	}
 	public override void _Process(double delta)
 	{
-		if (owner.inputMachine.TryGetInputEnabled("Fire"))
+		if (controllable)
 		{
-			targeter.targetMode = TargetMode.OWNER_TARGET;
-			ignoreFollowLimit = false;
-			useMinionAccuracy = true;
+			if (owner.inputMachine.TryGetInputEnabled("Fire"))
+			{
+				targeter.targetMode = TargetMode.OWNER_TARGET;
+				ignoreFollowLimit = false;
+				useMinionAccuracy = true;
+			}
+			else
+			{
+				targeter.targetMode = TargetMode.OWNER;
+				ignoreFollowLimit = true;
+				useMinionAccuracy = false;
+			}
+			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
 		}
-		else
-		{
-			targeter.targetMode = TargetMode.OWNER;
-			ignoreFollowLimit = true;
-			useMinionAccuracy = false;
-		}
-		inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
 	}
 }

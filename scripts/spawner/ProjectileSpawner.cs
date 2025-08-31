@@ -25,7 +25,7 @@ public partial class ProjectileSpawner : EntitySpawner
 		if (sourceStats.DoApply)
 		{
 			toShoot.stats.MergeStats(sourceStats);
-			toShoot.Velocity *= sourceStats.Speed;
+			toShoot.velocity *= sourceStats.Speed;
 		}
 
 		return toShoot;

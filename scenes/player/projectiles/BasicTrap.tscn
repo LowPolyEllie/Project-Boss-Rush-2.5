@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://x5xwny8lxshd"]
+[gd_scene load_steps=7 format=3 uid="uid://x5xwny8lxshd"]
 
 [ext_resource type="Script" uid="uid://e3a1kkpgp6pa" path="res://scripts/entity/Entity.cs" id="1_jn7oi"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_a7bmi"]
@@ -21,13 +21,9 @@ DoApply = false
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_hsbvh"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_ex0vy"]
 
-[node name="BasicTrap" type="CharacterBody2D"]
-collision_layer = 0
-velocity = Vector2(1, 0)
+[node name="BasicTrap" type="Node2D"]
 script = ExtResource("1_jn7oi")
 stats = SubResource("Resource_j7f5n")
 velocity = Vector2(1, 0)
@@ -35,9 +31,6 @@ metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_hmkqb")
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_hsbvh")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0

@@ -36,9 +36,9 @@ public partial class GridBG : Node2D
 		Vector2 end;
 		Vector2 worldSize;
 
-		worldSize = World.WorldSize;
-		start = -World.WorldSize;
-		end = World.WorldSize;
+		worldSize = World.worldSize;
+		start = -World.worldSize;
+		end = World.worldSize;
 
 		float left = start.X;
 		float right = end.X;

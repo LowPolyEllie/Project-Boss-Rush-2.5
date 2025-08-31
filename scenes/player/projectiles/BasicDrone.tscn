@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb0eyptjm8r6u"]
+[gd_scene load_steps=7 format=3 uid="uid://cb0eyptjm8r6u"]
 
 [ext_resource type="Script" uid="uid://5y3so1lii4db" path="res://scripts/entity/behaviour/projectile/Drone.cs" id="1_lti5p"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_ayd0k"]
@@ -21,12 +21,9 @@ DoApply = false
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8iupr"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_32d87"]
 
-[node name="BasicDrone" type="CharacterBody2D"]
-collision_layer = 0
+[node name="BasicDrone" type="Node2D"]
 script = ExtResource("1_lti5p")
 targetMode = 1
 accuracy = 0.95
@@ -35,9 +32,6 @@ metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_37uk1")
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_8iupr")
 
 [node name="Hitbox" type="Area2D" parent="."]
 script = ExtResource("4_75lr2")

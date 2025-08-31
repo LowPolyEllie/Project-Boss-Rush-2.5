@@ -1,6 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://cnoekplakoydr"]
+[gd_scene load_steps=18 format=3 uid="uid://cnoekplakoydr"]
 
-[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_0oqgv"]
+[ext_resource type="Script" uid="uid://e3a1kkpgp6pa" path="res://scripts/entity/Entity.cs" id="1_mchr6"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_nhi0w"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_i7s4x"]
 [ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_hqmpn"]
@@ -30,9 +30,6 @@ DoApply = false
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ehwan"]
-radius = 20.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_o6odb"]
 radius = 20.0
 
@@ -51,14 +48,14 @@ DoApply = true
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[node name="Twin" type="CharacterBody2D"]
+[node name="Twin" type="Node2D"]
 z_index = 5
-script = ExtResource("1_0oqgv")
+script = ExtResource("1_mchr6")
 _teams = Dictionary[String, String]({
 "Side": "Player"
 })
 stats = SubResource("Resource_jdrxb")
-metadata/_custom_type_script = "uid://d0rnginli70t2"
+metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_i7s4x")
@@ -83,9 +80,6 @@ script = ExtResource("8_xi08c")
 Interpolation = 0.9
 TexturePool = ExtResource("9_mchr6")
 metadata/_custom_type_script = "uid://ciktamhd63plw"
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_ehwan")
 
 [node name="Hitbox" type="Area2D" parent="."]
 script = ExtResource("14_bqmw8")

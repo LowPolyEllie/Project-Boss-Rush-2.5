@@ -23,7 +23,7 @@ namespace BossRush2;
 		OWNER,
 
 		/// <summary>
-		/// Target the mouse pointer
+		/// Target what the owner of this node is targeting
 		/// </summary>
 		OWNER_TARGET,
 

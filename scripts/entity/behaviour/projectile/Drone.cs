@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 namespace BossRush2;
@@ -12,6 +13,13 @@ public partial class Drone : Basic
 	public Targeter targeter = new();
 	[Export]
 	public TargetMode targetMode = TargetMode.NONE;
+	[Export]
+	public Array<string> targets = [];
+	/// <summary>
+	/// If this is on, the drone will be controlled according to owner inputs
+	/// </summary>
+	[Export]
+	public bool controllable = false;
 
 	/// <summary>
 	/// Interpolation point for how fast the drone turns
@@ -35,9 +43,12 @@ public partial class Drone : Basic
 	}
 	public override void _Process(double delta)
 	{
-		targeter.targetMode =
-		owner.inputMachine.TryGetInputEnabled("Fire") ?
-		TargetMode.OWNER_TARGET : TargetMode.OWNER;
-		inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
+		if (controllable)
+		{
+			targeter.targetMode =
+			owner.inputMachine.TryGetInputEnabled("Fire") ?
+			TargetMode.OWNER_TARGET : TargetMode.OWNER;
+			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
+		}
 	}
 }

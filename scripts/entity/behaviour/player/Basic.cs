@@ -76,17 +76,6 @@ public partial class Basic : Entity
 			Vector2 mousePos = (Vector2)inputMachine.GetVariantInput("Target");
 			Rotation = Position.AngleToPoint(mousePos);
 		}
-
-		//Placeholder, for until I add a proper wave system
-		if (Input.IsActionJustPressed("debug_1"))
-		{
-			currentTier++;
-			if (currentTier == currentLoadout.Count)
-			{
-				currentTier = 0;
-			}
-			currentLoadout[currentTier].LoadTank(this);
-		}
 	}
 
 	public override void _PhysicsProcess(double delta)

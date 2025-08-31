@@ -49,13 +49,8 @@ public partial class World : Node
 	public TeamLayerCollection activeTeams = new();
 	public TeamLayer allTeams = new();
 
-	//Cached border shapes, ignore this
-	static float boundaryWidth = 500f;
-	static CollisionShape2D leftBoundary, rightBoundary, topBoundary, bottomBoundary;
-	static RectangleShape2D horizontalHitbox, verticalHitbox;
-
 	/// <summary>
-	/// Amount of Velocity in ratio remaining after a second
+	/// Amount of velocity in ratio remaining after a second
 	/// </summary>
 	public static float Friction { get; set; } = 0.01f;
 
@@ -64,45 +59,13 @@ public partial class World : Node
 	/// </summary>
 	public static float DefaultFriction { get; set; }
 
-	public static Vector2 worldSize = new(1000f, 1000f);
 	/// <summary>
-	/// <br> The boundaries for Player movement and Camera scrolling </br>
-	/// <br> No, this won't show in the inspector because Godot is being a bitch </br>
+	/// Size that determines limit for grid rendering and camera scroll
 	/// </summary>
-	public static Vector2 WorldSize
-	{
-		get => worldSize;
-		set
-		{
-			worldSize = value;
-			//Boundary Hitboxes
-			horizontalHitbox.Size = new Vector2(
-				2 * (worldSize.Y + boundaryWidth), boundaryWidth
-			);
-
-			verticalHitbox.Size = new Vector2(
-				boundaryWidth, 2 * (worldSize.X + boundaryWidth)
-			);
-
-			//Boundary Positioning
-			leftBoundary.Position = new Vector2(
-				-(worldSize.X + boundaryWidth / 2),
-				0f
-			);
-			rightBoundary.Position = new Vector2(
-				worldSize.X + boundaryWidth / 2,
-				0f
-			);
-			topBoundary.Position = new Vector2(
-				0f,
-				-(worldSize.Y + boundaryWidth / 2)
-			);
-			bottomBoundary.Position = new Vector2(
-				0f,
-				worldSize.Y + boundaryWidth / 2
-			);
-		}
-	}
+	/// <remarks>
+	/// Boundaries for player/entity movement should be manually done per level
+	/// </remarks>
+	public static Vector2 worldSize { get; set; } = new(1000f, 1000f);
 
 	//Signal related stuff here
 
@@ -116,15 +79,6 @@ public partial class World : Node
 	public override void _EnterTree()
 	{
 		activeWorld = this;
-
-		//Caching data
-		var WorldBoundaries = GetNode<StaticBody2D>("WorldBoundaries");
-		leftBoundary = WorldBoundaries.GetNode<CollisionShape2D>("LeftHitbox");
-		rightBoundary = WorldBoundaries.GetNode<CollisionShape2D>("RightHitbox");
-		topBoundary = WorldBoundaries.GetNode<CollisionShape2D>("TopHitbox");
-		bottomBoundary = WorldBoundaries.GetNode<CollisionShape2D>("BottomHitbox");
-		horizontalHitbox = (RectangleShape2D)topBoundary.Shape;
-		verticalHitbox = (RectangleShape2D)leftBoundary.Shape;
 
 		//Initialising stuff
 		DefaultFriction = Friction;

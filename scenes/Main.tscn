@@ -1,16 +1,11 @@
-[gd_scene load_steps=23 format=3 uid="uid://6mehkqxcptea"]
+[gd_scene load_steps=16 format=3 uid="uid://6mehkqxcptea"]
 
 [ext_resource type="Script" uid="uid://gpok6wqhadog" path="res://scripts/world/World.cs" id="1_1nqs0"]
 [ext_resource type="Script" uid="uid://ben0wt2lg5lyf" path="res://scripts/world/GridBG.cs" id="2_1iba3"]
 [ext_resource type="Script" uid="uid://bjr20qw7hcsce" path="res://scripts/world/Camera.cs" id="3_yxlcp"]
 [ext_resource type="PackedScene" uid="uid://dan1w4kldaxwe" path="res://scenes/player/tanks/Basic.tscn" id="4_3p2gp"]
-[ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/TankLoader.cs" id="5_1nqs0"]
-[ext_resource type="Resource" uid="uid://dt4y8hmg0uh4l" path="res://data/player/tanks/Basic.tres" id="5_nfivy"]
-[ext_resource type="Resource" uid="uid://cbcilcmaltndq" path="res://data/player/tanks/Twin.tres" id="6_1nqs0"]
-[ext_resource type="Resource" uid="uid://dh310ju1p6x8d" path="res://data/player/tanks/TripleShot.tres" id="7_1iba3"]
 [ext_resource type="Resource" uid="uid://c1attw8oeu03f" path="res://data/polygons/Square.tres" id="7_3p2gp"]
 [ext_resource type="Resource" uid="uid://noyjj00jw5lh" path="res://data/polygons/Triangle.tres" id="8_cvmbd"]
-[ext_resource type="Resource" uid="uid://uwq7te8xdbyg" path="res://data/player/tanks/PentaShot.tres" id="8_yxlcp"]
 [ext_resource type="Resource" uid="uid://bljh8gwyw0dyg" path="res://data/polygons/Pentagon.tres" id="9_ft6cd"]
 [ext_resource type="Resource" uid="uid://b38nvbqagi77e" path="res://data/polygons/Hexagon.tres" id="10_bb450"]
 [ext_resource type="Script" uid="uid://58m5oopp0viv" path="res://scripts/meta/wrapper/PlayerControllerWrapper.cs" id="10_e2s0e"]
@@ -21,12 +16,6 @@
 [ext_resource type="Script" uid="uid://bymkl0nf3per4" path="res://scripts/entity/team/wrapper/TeamLayerWrapper.cs" id="19_cobve"]
 [ext_resource type="Script" uid="uid://bbfiusnelu16g" path="res://scripts/entity/team/wrapper/TeamWrapper.cs" id="20_cmqll"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1mg43"]
-size = Vector2(500, 3000)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_s5esk"]
-size = Vector2(3000, 500)
-
 [node name="World" type="Node" node_paths=PackedStringArray("activePolygonSpawner", "activeProjectileSpawner", "teamRegistry")]
 script = ExtResource("1_1nqs0")
 activePolygonSpawner = NodePath("PolygonSpawner")
@@ -36,25 +25,6 @@ metadata/_custom_type_script = "uid://gpok6wqhadog"
 
 [node name="GridBG" type="Node2D" parent="."]
 script = ExtResource("2_1iba3")
-
-[node name="WorldBoundaries" type="StaticBody2D" parent="."]
-collision_mask = 0
-
-[node name="LeftHitbox" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(-1250, 0)
-shape = SubResource("RectangleShape2D_1mg43")
-
-[node name="RightHitbox" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(1250, 0)
-shape = SubResource("RectangleShape2D_1mg43")
-
-[node name="TopHitbox" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(0, -1250)
-shape = SubResource("RectangleShape2D_s5esk")
-
-[node name="BottomHitbox" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(0, 1250)
-shape = SubResource("RectangleShape2D_s5esk")
 
 [node name="Camera" type="Camera2D" parent="."]
 enabled = false
@@ -69,7 +39,6 @@ script = ExtResource("3_yxlcp")
 metadata/_custom_type_script = "uid://bjr20qw7hcsce"
 
 [node name="Basic" parent="." instance=ExtResource("4_3p2gp")]
-currentLoadout = Array[ExtResource("5_1nqs0")]([ExtResource("5_nfivy"), ExtResource("6_1nqs0"), ExtResource("7_1iba3"), ExtResource("8_yxlcp")])
 
 [node name="PlayerControllerWrapper" type="Node" parent="." node_paths=PackedStringArray("camera", "player")]
 script = ExtResource("10_e2s0e")

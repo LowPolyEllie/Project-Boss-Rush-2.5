@@ -17,7 +17,7 @@ namespace BossRush2;
 /// <br>Designed to simplify entity creation with default friction, stat scaling, health bar integration, and more.</br>
 /// </remarks>
 [GlobalClass]
-public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
+public partial class Entity : Node2D, IInputMachine, IStateMachine
 {
 	/// <summary>
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
@@ -75,12 +75,12 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 	protected Vector2 acceleration;
 
 	/// <summary>
-	/// <c>acceleration</c>, but for <c>angularVelocity</c> instead of <c>Velocity</c>
+	/// <c>acceleration</c>, but for <c>angularVelocity</c> instead of <c>velocity</c>
 	/// </summary>
 	protected float angularAcceleration;
 
 	/// <summary>
-	/// Rotational Velocity, uses radians because its rarely utilised
+	/// Rotational velocity, uses radians because its rarely utilised
 	/// </summary>
 	[Export]
 	public float angularVelocity = 0f;
@@ -104,7 +104,7 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 	/// I regret using godot's CharacterBody2D class
 	/// </summary>
 	[Export]
-	Vector2 velocity = new();
+	public Vector2 velocity = new();
 
 	/// <summary>
 	/// Returns the Acceleration, assuming the Speed stat as terminal velocity, and friction as 0.02f
@@ -124,7 +124,7 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 		GlobalRotation += source.GlobalRotation;
 		GlobalScale *= source.GlobalScale;
 
-		Velocity = Velocity.Rotated(source.GlobalRotation);
+		velocity = velocity.Rotated(source.GlobalRotation);
 	}
 
 	/// <summary>
@@ -134,13 +134,13 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 	{
 		if (friction > 0f)
 		{
-			Velocity = ExtraMath.PredictVelocity(
-			Velocity, acceleration, Mathf.Pow(World.Friction, friction), deltaF
+			velocity = ExtraMath.PredictVelocity(
+			velocity, acceleration, Mathf.Pow(World.Friction, friction), deltaF
 			);
 		}
 		else
 		{
-			Velocity += acceleration * deltaF;
+			velocity += acceleration * deltaF;
 		}
 
 		if (angularFriction > 0f)
@@ -154,7 +154,7 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 			angularVelocity += angularAcceleration * deltaF;
 		}
 
-		MoveAndSlide();
+		Position += velocity * deltaF;
 		Rotation += angularVelocity * deltaF;
 		acceleration = Vector2.Zero;
 	}
@@ -170,7 +170,7 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 		{
 			//Here we go again with the stupid american spelling
 			Vector2 dirVect = (Position - targetEntity.Position).Normalized();
-			float forceStrength = 100f + targetEntity.stats.Knockback * stats.KnockbackMultiplier * targetEntity.Velocity.Length();
+			float forceStrength = 100f + targetEntity.stats.Knockback * stats.KnockbackMultiplier * targetEntity.velocity.Length();
 			acceleration += dirVect * forceStrength * (1 - World.DefaultFriction);
 		}
 		if (applyDamage)
@@ -211,11 +211,6 @@ public partial class Entity : CharacterBody2D, IInputMachine, IStateMachine
 		{
 			owner = this.SearchForParent<Entity>();
 		}
-
-		Velocity = velocity;
-
-		CollisionLayer = 0;
-		CollisionMask = 1;
 
 		health = stats.Health;
 
