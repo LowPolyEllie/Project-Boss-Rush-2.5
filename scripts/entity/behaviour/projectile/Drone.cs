@@ -15,6 +15,7 @@ public partial class Drone : Basic
 	public TargetMode targetMode = TargetMode.NONE;
 	[Export]
 	public Array<string> targets = [];
+
 	/// <summary>
 	/// If this is on, the drone will be controlled according to owner inputs
 	/// </summary>
@@ -22,11 +23,22 @@ public partial class Drone : Basic
 	public bool controllable = false;
 
 	/// <summary>
+	/// If controllable, this input type from the owner would cause this drone to move forward
+	/// </summary>
+	[Export]
+	public string controlTrigger = "Fire";
+
+	/// <summary>
 	/// Interpolation point for how fast the drone turns
 	/// </summary>
 	[Export]
 	public float accuracy = 0.9f;
 
+	public override void _Ready()
+	{
+		targeter.targetMode = targetMode;
+		targeter.targets = targets;
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
@@ -46,9 +58,9 @@ public partial class Drone : Basic
 		if (controllable)
 		{
 			targeter.targetMode =
-			owner.inputMachine.TryGetInputEnabled("Fire") ?
+			owner.inputMachine.TryGetInputEnabled(controlTrigger) ?
 			TargetMode.OWNER_TARGET : TargetMode.OWNER;
-			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
+			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled(controlTrigger));
 		}
 	}
 }

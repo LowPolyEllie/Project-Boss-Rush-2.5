@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace BossRush2;
 
@@ -8,10 +9,16 @@ namespace BossRush2;
 /// A node that automatically faces a target
 /// </summary>
 [GlobalClass]
-public partial class Turret : Node2D
+public partial class Turret : Entity
 {
+	/// <summary>
+	/// The parent's input type that would cause this cannon to shoot
+	/// </summary>
 	[Export]
-	public Entity owner;
+	public string shootTrigger = "Fire";
+
+	public override List<string> inputs { get; set; } = ["Fire"];
+
 	[Export]
 	public TargetMode targetMode;
 	[Export]
@@ -21,6 +28,11 @@ public partial class Turret : Node2D
 
 	[Export]
 	public bool controllable;
+
+	/// <summary>
+	/// Overidden rotation value
+	/// </summary>
+	public float rotation;
 
 	/// <summary>
 	/// Interpolation point for how fast the turret turns
@@ -33,25 +45,24 @@ public partial class Turret : Node2D
 		owner ??= this.SearchForParent<Entity>();
 		targeter.targetMode = targetMode;
 		targeter.targets = targets;
+		rotation = GlobalRotation;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		targeter.ResetTarget(owner);
+		targeter.ResetTarget(this);
 
 		Vector2 targetPos = targeter.currentTarget.GetTargetPosition();
 		float targetRot = GlobalPosition.AngleToPoint(targetPos);
 
-		GlobalRotation += Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
+		rotation = Mathf.LerpAngle(rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
+		GlobalRotation = rotation;
 	}
 
-	public override void _Process(double delta) {
-		if (controllable)
-		{
-			targeter.targetMode =
-			owner.inputMachine.TryGetInputEnabled("Fire") ?
-			TargetMode.OWNER_TARGET : TargetMode.OWNER;
-		}
+	public override void _Process(double delta)
+	{
+		GlobalRotation = rotation;
+		inputMachine.SetInputEnabled("Fire", owner.inputMachine.TryGetInputEnabled(shootTrigger));
 	}
 }

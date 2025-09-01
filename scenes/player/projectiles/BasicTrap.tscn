@@ -27,6 +27,7 @@ metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 script = ExtResource("1_jn7oi")
 stats = SubResource("Resource_j7f5n")
 velocity = Vector2(1, 0)
+isTopLevel = true
 metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
 
 [node name="Sprite" type="Sprite2D" parent="."]

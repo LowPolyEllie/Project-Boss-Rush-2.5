@@ -46,10 +46,12 @@ metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 script = ExtResource("1_xeqes")
 minionAccuracy = 0.99
 targetMode = 1
+controllable = true
 accuracy = 0.95
 stats = SubResource("Resource_dppdj")
 velocity = Vector2(1, 0)
-metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+isTopLevel = true
+metadata/_custom_type_script = "uid://cx2p4ukd2q2vm"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_ml1sp")

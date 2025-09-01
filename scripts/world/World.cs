@@ -13,7 +13,7 @@ namespace BossRush2;
 /// <para> Data must be configured here for now, I will make making a proper json later </para>
 /// </remarks>
 [GlobalClass]
-public partial class World : Node
+public partial class World : Node, IBrObject
 {
 	//Built in nodes
 

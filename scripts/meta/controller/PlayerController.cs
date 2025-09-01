@@ -3,7 +3,7 @@ using Godot.Collections;
 
 namespace BossRush2;
 
-public class PlayerController : Controller
+public class PlayerController : Controller, IBrObject
 {
 	public Camera camera;
 	private bool _active = false;

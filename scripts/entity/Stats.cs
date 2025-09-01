@@ -12,7 +12,7 @@ namespace BossRush2;
 /// <br> A lot of these stats refer to <c>Entity</c> classes </br>
 /// </remarks>
 [GlobalClass]
-public partial class Stats : Resource
+public partial class Stats : Resource, IBrObject
 {
 	/// <summary>
 	/// Amount of health points this <c>Entity</c> can deal

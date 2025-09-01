@@ -6,6 +6,7 @@ namespace BossRush2;
 /// <summary>
 /// An alternate Drone with a follow limit
 /// </summary>
+[GlobalClass]
 public partial class Minion : Drone
 {
 	/// <summary>

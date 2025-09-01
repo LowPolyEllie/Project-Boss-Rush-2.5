@@ -9,7 +9,7 @@ namespace BossRush2;
 /// A template that can hold tanks in game
 /// </summary>
 [GlobalClass]
-public partial class TankLoader : Resource
+public partial class TankLoader : Resource, IBrObject
 {
     /// <summary>
     /// The scene to be loaded, any entity is allowed

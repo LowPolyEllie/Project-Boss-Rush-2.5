@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://bq3sdv51ml0ap"]
 
-[ext_resource type="Script" uid="uid://e3a1kkpgp6pa" path="res://scripts/entity/Entity.cs" id="1_88eks"]
+[ext_resource type="Script" uid="uid://tb04h3q0pgqj" path="res://scripts/entity/behaviour/player/Player.cs" id="1_88eks"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_jdtxe"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_fg80f"]
 [ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_h4dly"]
@@ -55,7 +55,8 @@ _teams = Dictionary[String, String]({
 "Side": "Player"
 })
 stats = SubResource("Resource_ntk6r")
-metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
+isTopLevel = true
+metadata/_custom_type_script = "uid://tb04h3q0pgqj"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_fg80f")

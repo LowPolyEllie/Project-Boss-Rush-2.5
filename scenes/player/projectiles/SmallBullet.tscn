@@ -28,6 +28,7 @@ script = ExtResource("1_ns2le")
 stats = SubResource("Resource_euaki")
 friction = 0.0
 velocity = Vector2(1, 0)
+isTopLevel = true
 metadata/_custom_type_script = "uid://e3a1kkpgp6pa"
 
 [node name="Sprite" type="Sprite2D" parent="."]

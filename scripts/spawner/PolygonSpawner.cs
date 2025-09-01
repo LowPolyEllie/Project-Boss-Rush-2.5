@@ -43,9 +43,10 @@ public partial class PolygonSpawner : EntitySpawner
         {
             Entity polygonToAdd = new()
             {
-                _teams = {{"Side","Polygon"}},
+                _teams = { { "Side", "Polygon" } },
                 angularVelocity = ExtraMath.RandRange(-1.5f, 1.5f),
-                stats = thisTemplate.stats
+                stats = thisTemplate.stats,
+                isTopLevel = true
             };
 
             //Setting position
@@ -62,15 +63,7 @@ public partial class PolygonSpawner : EntitySpawner
             };
             polygonToAdd.AddChild(sprite);
 
-            //Setting physics hitboxes
             CollisionShape2D collider = new()
-            {
-                Shape = thisTemplate.Collider
-            };
-
-            polygonToAdd.AddChild(collider);
-
-            CollisionShape2D collider2 = new()
             {
                 Shape = thisTemplate.Collider
             };
@@ -82,7 +75,7 @@ public partial class PolygonSpawner : EntitySpawner
                 CollisionMask = 0,
                 antiCram = true
             };
-            hitbox.AddChild(collider2);
+            hitbox.AddChild(collider);
 
             polygonToAdd.AddChild(hitbox);
             Spawn(polygonToAdd, 3);

@@ -12,10 +12,6 @@ namespace BossRush2;
 [GlobalClass]
 public partial class Basic : Entity
 {
-	[Export]
-	public Array<TankLoader> currentLoadout = [];
-	int currentTier = 0;
-
 	public override List<string> inputs
 	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire"];
 	public override List<string> variantInputs { get; set; } = ["Target"];
@@ -49,6 +45,7 @@ public partial class Basic : Entity
 	public override void _Ready()
 	{
 		base._Ready();
+		/*
 		stateMachine = new(this);
 		stateMachine.AddLayer("Base", new StateLayer("Idle")
 		{ 
@@ -66,6 +63,7 @@ public partial class Basic : Entity
 			}
 		}.Init()
 		);
+		*/
 	}
 	public override void _Process(double delta)
 	{

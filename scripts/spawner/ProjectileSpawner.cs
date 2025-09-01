@@ -18,7 +18,6 @@ public partial class ProjectileSpawner : EntitySpawner
 	{
 		var toShoot = (Entity)packed.Instantiate();
 		toShoot.owner = owner;
-		toShoot.teams= owner.teams;
 		Spawn(toShoot, zindex);
 
 		toShoot.ApplyTransform(source);

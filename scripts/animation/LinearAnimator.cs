@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace BossRush2;
+namespace BrAnimator;
 
 /// <summary>
 /// Use if you want to animate from a linear viewpoint instead of with Curve2D

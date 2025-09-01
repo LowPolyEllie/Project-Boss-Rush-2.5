@@ -8,7 +8,7 @@ namespace BossRush2;
 /// In game non wall hitbox
 /// </summary>
 [GlobalClass]
-public partial class Hitbox : Area2D
+public partial class Hitbox : Area2D, IBrObject, IEntitySegment
 {
 	/// <summary>
 	/// Currently colliding entities with the hitbox
@@ -22,10 +22,15 @@ public partial class Hitbox : Area2D
 	public bool antiCram;
 
 	/// <summary>
-	/// The node that this hitbox belongs to
+	/// Whatever Entity that uses this hitbox
 	/// </summary>
 	[Export]
-	public Entity owner;
+	public Entity owner { get; set; }
+	/// <summary>
+	/// Always false, just there for information
+	/// </summary>
+	public bool isTopLevel { get; set; } = false; 
+
 	public override void _Ready()
 	{
 		owner ??= this.SearchForParent<Entity>();

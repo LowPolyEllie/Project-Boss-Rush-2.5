@@ -3,7 +3,7 @@ using Godot.Collections;
 
 namespace BossRush2;
 
-public class Controller
+public class Controller : IBrObject
 {
     public InputMachine inputMachine;
     public Entity source;

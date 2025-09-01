@@ -3,7 +3,7 @@ using Godot.Collections;
 
 namespace BossRush2;
 
-public class InputMachine
+public class InputMachine : IBrObject
 {
 	public Array<string> inputRegistry = [];
 	public Array<string> variantinputRegistry = [];

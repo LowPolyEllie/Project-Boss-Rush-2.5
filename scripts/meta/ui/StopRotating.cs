@@ -8,7 +8,7 @@ namespace BossRush2;
 /// </summary>
 [GlobalClass]
 [Tool]
-public partial class StopRotating : Node2D
+public partial class StopRotating : Node2D, IBrObject
 {
 	public override void _EnterTree() => GlobalRotation = 0f;
 	public override void _Ready() => GlobalRotation = 0f;

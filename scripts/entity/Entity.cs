@@ -17,7 +17,7 @@ namespace BossRush2;
 /// <br>Designed to simplify entity creation with default friction, stat scaling, health bar integration, and more.</br>
 /// </remarks>
 [GlobalClass]
-public partial class Entity : Node2D, IInputMachine, IStateMachine
+public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 {
 	/// <summary>
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
@@ -59,16 +59,6 @@ public partial class Entity : Node2D, IInputMachine, IStateMachine
 	/// </remarks>
 	public event Action disableCollision;
 
-	/// <summary>
-	/// Whether the entity can independently collide
-	/// </summary>
-	[Export]
-	public bool isTopLevel = true;
-	/// <summary>
-	/// The entity's owner. Meant for controllable projectiles and potentially damage reflection
-	/// </summary>
-	[Export]
-	public Entity owner;
 	/// <summary>
 	/// The acceleration applied during a frame, <c>delta</c> is already accounted for, so ignore it
 	/// </summary>
@@ -160,25 +150,58 @@ public partial class Entity : Node2D, IInputMachine, IStateMachine
 	}
 
 	/// <summary>
-	/// This represents current health, refer to <c>stats.Health</c> instead if you wish to change that
+	/// This represents current health, refer to <c>stats.Health</c> instead for max health
 	/// </summary>
 	[Export]
 	public float health;
+
+	/// <summary>
+	/// If true, pass the damage it takes over to its owner
+	/// </summary>
+	/// <remarks>
+	/// <br> An Entity can still be top level while doing this </br>
+	[Export]
+	public bool carryDamage = false;
+
+	/// <summary>
+	/// Called when this Entity collides with another Entity
+	/// </summary>
+	/// <remarks>
+	/// <br> Collisions will occur more than once if an Entity has multiple hitboxes </br>
+	/// <br> This is by design to make tanks with piercing abilities stand out more </br>
+	/// <br> If an Entity is not top level, the force applied is passed over to its owner </br>
+	/// </remarks>
 	public void OnCollisionWith(float deltaF, Entity target, bool applyDamage)
 	{
-		if (target is Entity targetEntity)
+		if (isTopLevel)
 		{
 			//Here we go again with the stupid american spelling
-			Vector2 dirVect = (Position - targetEntity.Position).Normalized();
-			float forceStrength = 100f + targetEntity.stats.Knockback * stats.KnockbackMultiplier * targetEntity.velocity.Length();
+			Vector2 dirVect = (Position - target.Position).Normalized();
+			float forceStrength = 100f + target.stats.Knockback * stats.KnockbackMultiplier * target.velocity.Length();
 			acceleration += dirVect * forceStrength * (1 - World.DefaultFriction);
 		}
+		else
+		{
+			owner.OnCollisionWith(deltaF, target, false);
+		}
+		
 		if (applyDamage)
 		{
-			health -= target.stats.Damage * deltaF;
+			float damageTaken = target.stats.Damage;
+			if (carryDamage)
+			{
+				owner.health -= damageTaken;
+			}
+			else
+			{
+				health -= damageTaken;
+			}
 		}
 	}
 
+	/// <summary>
+	/// Registers the input types
+	/// </summary>
 	protected void RegisterInputs()
 	{
 		if (inputMachine is null)
@@ -194,8 +217,17 @@ public partial class Entity : Node2D, IInputMachine, IStateMachine
 			inputMachine.TryRegisterVariantInput(id);
 		}
 	}
+
+	/// <summary>
+	/// General formatting convention for <c>Entity</c> objects: _EnterTree() is typically used for joining Teams
+	/// </summary>
 	public override void _EnterTree()
 	{
+		if (teams.Count == 0 && _teams.Count == 0 && _teamsDebug.Count == 0)
+		{
+			_teams = owner._teams;
+			_teamsDebug = owner._teamsDebug;
+		}
 		foreach ((TeamLayerWrapper layer, TeamWrapper team) in _teamsDebug)
 		{
 			JoinTeam(layer.Name, World.activeWorld.activeTeams.GetTeam(team.Name));
@@ -205,12 +237,13 @@ public partial class Entity : Node2D, IInputMachine, IStateMachine
 			JoinTeam(layer, World.activeWorld.activeTeams.GetTeam(team));
 		}
 	}
+
+	/// <summary>
+	/// Please avoid doing any Team related setup in _Ready(), use that for 
+	/// </summary>
 	public override void _Ready()
 	{
-		if (owner is null && !isTopLevel)
-		{
-			owner = this.SearchForParent<Entity>();
-		}
+		FindOwner();
 
 		health = stats.Health;
 

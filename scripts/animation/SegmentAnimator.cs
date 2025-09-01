@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace BossRush2;
+namespace BrAnimator;
 
 /// <summary>
 /// An abstract base class for every animation pivot in game

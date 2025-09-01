@@ -11,7 +11,7 @@ namespace BossRush2;
 /// <br> One of the few hardcoded nodes, for the purpose of static access </br>
 /// </remarks>
 [GlobalClass]
-public partial class Camera : Camera2D
+public partial class Camera : Camera2D, IBrObject
 {
 	/// <summary>
 	/// The main entity that the camera will follow

@@ -5,7 +5,7 @@ public delegate void WorldInputEventHandler(Godot.InputEvent inputEvent);
 public delegate void WorldProcessEventHandler(double delta);
 public delegate void WorldPhysicsProcessEventHandler(double delta);
 [GlobalClass]
-public partial class WorldInputHandler : Node
+public partial class WorldInputHandler : Node, IBrObject
 {
 	public static event WorldInputEventHandler WorldInputEvent;
 	public static event WorldProcessEventHandler WorldProcessEvent;

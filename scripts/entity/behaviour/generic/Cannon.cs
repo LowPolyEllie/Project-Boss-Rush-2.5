@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using BrAnimator;
 
 namespace BossRush2;
 
@@ -7,8 +8,14 @@ namespace BossRush2;
 /// Loads a <c>PackedScene</c> to shoot as a projectile
 /// </summary>
 [GlobalClass]
-public partial class Cannon : Node2D
+public partial class Cannon : EntitySegment
 {
+	/// <summary>
+	/// The parent's input type that would cause this cannon to shoot
+	/// </summary>
+	[Export]
+	public string shootTrigger = "Fire";
+
 	[Export]
 	public Stats stats;
 
@@ -29,14 +36,13 @@ public partial class Cannon : Node2D
 
 	/// <summary>
 	/// The time is takes after input is pressed before bullet is fired
-	///  
-	/// I feel like this should be a stat -Fox
 	/// </summary>
+	/// <remarks>
+	/// <br> I feel like this should be a stat -Fox </br>
+	/// <br> Its unique to specifically <c>Cannon</c>, and bosses will need more than one delay anyways -Ellie </br>
+	/// </remarks>
 	[Export]
 	public float delay;
-	
-	[Export]
-	public Entity owner;
 
 	/// <summary>
 	/// The scene to instantiate once the bullet fires
@@ -76,7 +82,7 @@ public partial class Cannon : Node2D
 
 	public override void _Ready()
 	{
-		owner ??= this.SearchForParent<Entity>();	
+		FindOwner();
 
 		shootTimer = new Timer()
 		{
@@ -131,7 +137,7 @@ public partial class Cannon : Node2D
 	}
 	public override void _Process(double delta)
 	{
-		inputFiring = owner.inputMachine.TryGetInputEnabled("Fire");
+		inputFiring = owner.inputMachine.TryGetInputEnabled(shootTrigger);
 		animator.StepAnimation(delta);
 	}
 

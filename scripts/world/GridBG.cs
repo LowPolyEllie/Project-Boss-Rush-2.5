@@ -7,7 +7,7 @@ namespace BossRush2;
 /// Draws a grid, based on world boundaries
 /// </summary>
 [Tool]
-public partial class GridBG : Node2D
+public partial class GridBG : Node2D, IBrObject
 {
 	/// <summary>
 	/// Godot just let me pronounce it as colour

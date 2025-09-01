@@ -7,33 +7,33 @@ using System.Linq;
 
 namespace BossRush2;
 
+/// <summary>
+/// To be utilised by other functions here
+/// </summary>
+public enum TargetMode
+{
 	/// <summary>
-	/// To be utilised by other functions here
+	/// Placeholder for when targeting isn't used
 	/// </summary>
-	public enum TargetMode
-	{
-		/// <summary>
-		/// Placeholder for when targeting isn't used
-		/// </summary>
-		NONE,
+	NONE,
 
-		/// <summary>
-		/// Target the player
-		/// </summary>
-		OWNER,
+	/// <summary>
+	/// Target the player
+	/// </summary>
+	OWNER,
 
-		/// <summary>
-		/// Target what the owner of this node is targeting
-		/// </summary>
-		OWNER_TARGET,
+	/// <summary>
+	/// Target what the owner of this node is targeting
+	/// </summary>
+	OWNER_TARGET,
 
-		/// <summary>
-		/// Target the nearest entity in one of the opposing teams
-		/// </summary>
-		NEAREST
-	}
+	/// <summary>
+	/// Target the nearest entity in one of the opposing teams
+	/// </summary>
+	NEAREST
+}
 
-public class Targeter
+public class Targeter : IBrObject
 {
 
 	public TargetMode targetMode = TargetMode.NONE;

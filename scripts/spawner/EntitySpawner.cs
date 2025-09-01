@@ -11,7 +11,7 @@ namespace BossRush2;
 /// <remarks>
 /// <br> Functionality here is minimal, this only exists to simplify a bit of setup code </br>
 /// </remarks>
-public partial class EntitySpawner : Node
+public partial class EntitySpawner : Node, IBrObject
 {
 
 	public override void _Ready()

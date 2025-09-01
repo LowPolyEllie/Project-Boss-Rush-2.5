@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="LinearAnimator" load_steps=3 format=3 uid="uid://bif868w3136y3"]
 
-[ext_resource type="Script" uid="uid://cf8q1vuc3c2tb" path="res://scripts/entity/animation/LinearAnimator.cs" id="1_3epre"]
+[ext_resource type="Script" uid="uid://cf8q1vuc3c2tb" path="res://scripts/animation/LinearAnimator.cs" id="1_3epre"]
 
 [sub_resource type="Curve" id="Curve_vrg2t"]
 _limits = [-8.0, 8.0, 0.0, 0.4]

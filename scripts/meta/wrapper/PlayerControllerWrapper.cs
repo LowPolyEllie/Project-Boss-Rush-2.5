@@ -4,7 +4,7 @@ using Godot.Collections;
 namespace BossRush2;
 
 [GlobalClass]
-public partial class PlayerControllerWrapper : Node
+public partial class PlayerControllerWrapper : Node, IBrObject
 {
     private PlayerController playerController;
     [Export]

@@ -7,7 +7,7 @@ namespace BossRush2;
 /// Basically just World, except for UI
 /// </summary>
 [GlobalClass]
-public partial class UIManager : Control
+public partial class UIManager : Control, IBrObject
 {
 	public static UIManager activeManager { get; set; }
 
