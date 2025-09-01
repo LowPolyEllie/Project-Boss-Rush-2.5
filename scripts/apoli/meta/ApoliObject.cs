@@ -11,7 +11,7 @@ public class ApoliObject
 	public static ParameterCollection GetParameterSet(Type type)
 	{
 		ParameterCollection paramSet = new();
-	
+
 		while (!type.IsEquivalentTo(typeof(ApoliObject)))
 		{
 			ParameterCollection baseSet = (ParameterCollection)type.GetField("parameterSet", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -22,5 +22,15 @@ public class ApoliObject
 			type = type.BaseType;
 		}
 		return paramSet;
+	}
+	public virtual void Init()
+	{
+		foreach (Parameter parameter in parameters)
+		{
+			if (parameter.value.value is ApoliObject obj)
+			{
+				obj.Init();
+			}
+		}
 	}
 }

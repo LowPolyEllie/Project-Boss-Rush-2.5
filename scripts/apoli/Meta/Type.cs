@@ -48,7 +48,7 @@ public class Type
 public class Int: Type {
     public override TypeId type { get; set; } = TypeId.Int;
     public int _value;
-    public override object value {
+    public new int value {
         get {
             return _value;
         }
@@ -63,7 +63,7 @@ public class Int: Type {
 public class Bool: Type {
     public override TypeId type { get; set; } = TypeId.Bool;
     public bool _value;
-    public override object value {
+    public new bool value {
         get {
             return _value;
         }

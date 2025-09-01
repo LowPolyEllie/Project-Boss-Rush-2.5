@@ -18,6 +18,14 @@ public class ParameterCollection : IEnumerable
 	{
 		return parameters[key].value.value;
 	}
+	public T GetValue<T>(string key)
+	{
+		if (parameters[key].value.value is T tValue)
+		{
+			return tValue;
+		}
+		throw new Exception("Value at key " + key + " not of type " + typeof(T).Name);
+	}
 	public TypeId GetType(string key)
 	{
 		return parameters[key].type;

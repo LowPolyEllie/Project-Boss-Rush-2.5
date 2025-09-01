@@ -22,7 +22,7 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	/// <summary>
 	/// The input machine of the entity. Controls everything. Override inputs and variantInputs to register mandatory inputs
 	/// </summary>
-	public InputMachine inputMachine;
+	public InputMachine inputMachine = new();
 	
 	public Controller controller;
 	public StateMachine stateMachine{ get; set; }
@@ -243,6 +243,10 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	/// </summary>
 	public override void _Ready()
 	{
+		Init();
+	}
+	public virtual void Init()
+	{ 
 		FindOwner();
 
 		health = stats.Health;
@@ -267,7 +271,7 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	public void JoinTeam(string layer, Team team)
 	{
 		team.AddMember(this);
-		teams.TryAdd(layer,team);
+		teams.TryAdd(layer, team);
 	}
 	public void LeaveTeam(Team team)
 	{

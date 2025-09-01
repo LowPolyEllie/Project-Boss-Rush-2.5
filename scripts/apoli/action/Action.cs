@@ -9,10 +9,15 @@ using BossRush2;
 using Godot;
 
 namespace Apoli.Actions;
-public enum ActionId {
+
+public enum ActionId
+{
 	AllOf,
 	TargetOwner,
-	Print
+	Print,
+	BeginInput,
+	EndInput,
+	FireInput
 }
 public class Action : ApoliObject
 {

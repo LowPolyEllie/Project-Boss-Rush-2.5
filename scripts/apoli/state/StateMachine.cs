@@ -21,4 +21,11 @@ public class StateMachine
     {
         subject = _subject;
     }
+    public void Init()
+    {
+        foreach (KeyValuePair<string,StateLayer> keyValuePair in stateLayers)
+        {
+            keyValuePair.Value.Init();
+        }
+    }
 }

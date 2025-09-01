@@ -122,6 +122,14 @@ public class InputMachine : IBrObject
 		}
 		return inputValues[id];
 	}
+	public bool HasInput(string id)
+	{
+		return inputRegistry.Contains(id);
+	}
+	public bool HasVariantInput(string id)
+	{
+		return variantinputRegistry.Contains(id);
+	}
 	public Variant GetVariantInput(string id)
 	{
 		if (!variantinputRegistry.Contains(id))
@@ -161,6 +169,14 @@ public class InputEvent {
 	public void Fire()
 	{
 		InputEventDelegate?.Invoke();
+	}
+	public void Listen(InputEventDelegate _delegate)
+	{
+		InputEventDelegate += _delegate;
+	}
+	public void UnListen(InputEventDelegate _delegate)
+	{
+		InputEventDelegate -= _delegate;
 	}
 	public static InputEvent operator +(InputEvent _this, InputEventDelegate _delegate)
 	{

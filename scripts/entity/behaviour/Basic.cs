@@ -46,9 +46,10 @@ public partial class Basic : Entity
 	{
 		base._Ready();
 		/*
+		Init();
 		stateMachine = new(this);
 		stateMachine.AddLayer("Base", new StateLayer("Idle")
-		{ 
+		{
 			new State("Idle"){
 				new PowerBuilder()
 					.SetType(PowerId.ActionOnPhysicsTick)
@@ -61,8 +62,9 @@ public partial class Basic : Entity
 						.Build()))
 				.Build()
 			}
-		}.Init()
+		}
 		);
+		stateMachine.Init();
 		*/
 	}
 	public override void _Process(double delta)

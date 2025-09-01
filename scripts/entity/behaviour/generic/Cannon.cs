@@ -66,10 +66,11 @@ public partial class Cannon : EntitySegment
 	public bool onDelay = false;
 	public bool isShooting => 
 		(autoFire ||
-		inputFiring) &&
+		inputFiring || inputFireEventBuffer) &&
 		(maxProjectiles == -1 || currentProjectiles < maxProjectiles);
 	
 	public bool inputFiring;
+	protected bool inputFireEventBuffer = false;
 	[Export]
 	public Node2D body;
 	[Export]
@@ -83,6 +84,11 @@ public partial class Cannon : EntitySegment
 	public override void _Ready()
 	{
 		FindOwner();
+		owner ??= this.SearchForParent<Entity>();
+		if (owner.inputMachine.HasInput(shootTrigger))
+		{
+			owner.inputMachine.GetInputEvent(shootTrigger).Listen(shootBufferEvent);
+		}
 
 		shootTimer = new Timer()
 		{
@@ -106,6 +112,10 @@ public partial class Cannon : EntitySegment
 		animator.subject = body;
 	}
 
+	public void shootBufferEvent()
+	{
+		inputFireEventBuffer = true;
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
@@ -134,6 +144,7 @@ public partial class Cannon : EntitySegment
 				delayTimer.Stop();
 			}
 		}
+		inputFireEventBuffer = false;
 	}
 	public override void _Process(double delta)
 	{

@@ -46,18 +46,6 @@ public class TeamLayerCollection
 		}
 		return null;
 	}
-	public List<Entity> GetEntitiesInLayers(List<string> teams)
-	{
-		List<Entity> ret = [];
-		foreach (string team in teams)
-		{
-			if (HasTeam(team))
-			{
-				ret.AddRange(GetTeam(team).members);
-			}
-		}
-		return ret;
-	}
 	//Singular team constructor
 	public TeamLayerCollection()
 	{

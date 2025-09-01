@@ -39,6 +39,14 @@ public class StateLayer : ICollection<State>
     {
         return states.Find(state => state.name == name);
     }
+    public void SetState(string name)
+    {
+        currentState = name;
+    }
+    public bool HasState(string name)
+    {
+        return states.Find(state => state.name == name) is not null;
+    }
     public void Add(State state)
     {
         state.stateLayer = this;
@@ -48,10 +56,14 @@ public class StateLayer : ICollection<State>
     {
         return states.Remove(state);
     }
-    public StateLayer Init()
+    public void Init()
     {
+		foreach (State state in states)
+		{
+			state.Init();
+		}
+
         currentState = initialState;
-        return this;
     }
     //The rest are just filler, can safely ignore vvv
     public int Count

@@ -50,7 +50,6 @@ public class State:ICollection<Power>
 	public void AddPower(Power power)
 	{
 		power.state = this;
-		power.Init();
 		powers.Add(power);
 	}
 	public void Add(Power state)
@@ -60,6 +59,14 @@ public class State:ICollection<Power>
 	public bool Remove(Power state)
 	{
 		return powers.Remove(state);
+	}
+
+	public void Init()
+	{
+		foreach (Power power in powers)
+		{
+			power.Init();
+		}
 	}
 
 	//The rest are just filler, can safely ignore vvv

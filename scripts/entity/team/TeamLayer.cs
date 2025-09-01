@@ -40,4 +40,16 @@ public class TeamLayer
 	{
 		teams.Remove(team);
 	}
+	public List<Entity> GetEntitiesInTeams(List<string> teams)
+	{
+		List<Entity> ret = [];
+		foreach (string team in teams)
+		{
+			if (HasTeam(team))
+			{
+				ret.AddRange(GetTeam(team).members);
+			}
+		}
+		return ret;
+	}
 }

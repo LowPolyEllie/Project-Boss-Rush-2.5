@@ -16,13 +16,14 @@ public enum PowerId
 	ActionOnCallback,
 	ActionOnInput,
 	Variable,
-	ActionOnPhysicsTick
+	ActionOnPhysicsTick,
+	StateChangeOnDelay
 }
 public class Power : ApoliObject
 {
 	public State state;
 	public virtual PowerId type { get; set; }
-	public virtual void Init()
+	public override void Init()
 	{
 		state.StateEnterEvent += OnStateEnter;
 		state.StateLeaveEvent += OnStateLeave;

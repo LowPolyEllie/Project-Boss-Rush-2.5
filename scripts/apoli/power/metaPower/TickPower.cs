@@ -16,6 +16,7 @@ public class TickPower : Power
 }
 public class PhysicsTickPower : TickPower
 {
+    public override PowerId type { get; set; } = PowerId.ActionOnPhysicsTick;
 	public override void Tick(double delta)
 	{
 		((Action)parameters.GetValue("Action")).DoAction(state.stateLayer.stateMachine.subject);
@@ -23,7 +24,6 @@ public class PhysicsTickPower : TickPower
 	public override void OnStateEnter()
 	{
 		WorldInputHandler.WorldPhysicsProcessEvent += Tick;
-		GD.Print("meow");
 	}
 	public override void OnStateLeave()
 	{ 

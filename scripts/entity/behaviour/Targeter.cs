@@ -73,7 +73,7 @@ public class Targeter : IBrObject
 			TargetMode.NONE => new(),
 			TargetMode.OWNER => new(entity.owner),
 			TargetMode.OWNER_TARGET => entity.owner.inputMachine.variantinputRegistry.Contains("Target") ? new((Vector2)entity.owner.inputMachine.GetVariantInput("Target")) : new(),
-			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeams.GetEntitiesInLayers([.. targets.ToArray()]), entity)),
+			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeams.GetLayer("Side").GetEntitiesInTeams([.. targets.ToArray()]), entity)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
 	}
