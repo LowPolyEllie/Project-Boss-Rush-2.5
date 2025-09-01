@@ -42,6 +42,7 @@ public partial class Turret : Entity
 
 	public override void _Ready()
 	{
+		Init();
 		owner ??= this.SearchForParent<Entity>();
 		targeter.targetMode = targetMode;
 		targeter.targets = targets;
@@ -58,11 +59,11 @@ public partial class Turret : Entity
 
 		rotation = Mathf.LerpAngle(rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
 		GlobalRotation = rotation;
+		inputMachine.SetInputEnabled("Fire", owner.inputMachine.TryGetInputEnabled(shootTrigger));
 	}
 
 	public override void _Process(double delta)
 	{
 		GlobalRotation = rotation;
-		inputMachine.SetInputEnabled("Fire", owner.inputMachine.TryGetInputEnabled(shootTrigger));
 	}
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dan1w4kldaxwe"]
+[gd_scene load_steps=22 format=3 uid="uid://dan1w4kldaxwe"]
 
 [ext_resource type="Script" uid="uid://tb04h3q0pgqj" path="res://scripts/entity/behaviour/player/Player.cs" id="1_g7rlm"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_g7rlm"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://1tt5gsaxvm5w" path="res://scenes/player/projectiles/BasicBullet.tscn" id="16_1fd1x"]
 [ext_resource type="Texture2D" uid="uid://0rpbrgmc2gx1" path="res://textures/player/cannon/TurretBasic.svg" id="16_g7rlm"]
 [ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="17_1fd1x"]
+[ext_resource type="Texture2D" uid="uid://brug1ufdts2pk" path="res://textures/player/cannon/BasicCannon.svg" id="17_nlqqo"]
 [ext_resource type="Texture2D" uid="uid://cgyhcc45p6am7" path="res://textures/player/cannon/SmallCannon.svg" id="18_u3rfm"]
 
 [sub_resource type="Resource" id="Resource_ntk6r"]
@@ -130,3 +131,20 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 
 [node name="CannonSprite" type="Sprite2D" parent="Turret/Cannon/Body"]
 texture = ExtResource("18_u3rfm")
+
+[node name="Cannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(15, 0)
+script = ExtResource("15_jley8")
+stats = SubResource("Resource_b2qcq")
+toShoot = ExtResource("16_1fd1x")
+body = NodePath("Body")
+animator = ExtResource("17_1fd1x")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="Cannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="Cannon/Body"]
+position = Vector2(3, 0)
+scale = Vector2(1.15789, 1)
+texture = ExtResource("17_nlqqo")

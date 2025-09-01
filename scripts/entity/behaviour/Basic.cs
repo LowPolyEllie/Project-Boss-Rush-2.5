@@ -44,7 +44,7 @@ public partial class Basic : Entity
 	}
 	public override void _Ready()
 	{
-		base._Ready();
+		Init();
 		/*
 		Init();
 		stateMachine = new(this);

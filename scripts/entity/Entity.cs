@@ -25,9 +25,15 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	public InputMachine inputMachine = new();
 	
 	public Controller controller;
-	public StateMachine stateMachine{ get; set; }
+	public StateMachine stateMachine { get; set; }
 	public virtual List<string> inputs { get; set; } = [];
 	public virtual List<string> variantInputs { get; set; } = [];
+
+	/*[Export]
+	public virtual Array<string> inputRegistry { get; set; } = [];
+	[Export]
+	public virtual Array<string> variantInputRegistry { get; set; } = [];*/
+	
 	/// <summary>
 	/// Teams determine collision masks, collision layers, groups, and targeting queries
 	/// </summary>
@@ -204,10 +210,6 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	/// </summary>
 	protected void RegisterInputs()
 	{
-		if (inputMachine is null)
-		{
-			inputMachine = new();
-		}
 		foreach (string id in inputs)
 		{
 			inputMachine.TryRegisterInput(id);
@@ -223,6 +225,8 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	/// </summary>
 	public override void _EnterTree()
 	{
+		FindOwner();
+
 		if (teams.Count == 0 && _teams.Count == 0 && _teamsDebug.Count == 0)
 		{
 			_teams = owner._teams;
@@ -247,8 +251,6 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	}
 	public virtual void Init()
 	{ 
-		FindOwner();
-
 		health = stats.Health;
 
 		TreeExiting += () => disableCollision?.Invoke();
