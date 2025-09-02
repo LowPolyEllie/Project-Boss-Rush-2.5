@@ -13,7 +13,7 @@ namespace BossRush2;
 public partial class Basic : Entity
 {
 	public override List<string> inputs
-	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire", "Fire2"];
+	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire", "Fire2","TiltLeft","TiltRight"];
 	public override List<string> variantInputs { get; set; } = ["Target"];
 
 	public void MovementControls()
@@ -22,11 +22,11 @@ public partial class Basic : Entity
 		Vector2 controlVector = new();
 		if (inputMachine.GetInputEnabled("Up"))
 		{
-			controlVector.Y -= 1;
+			controlVector.Y += 1;
 		}
 		if (inputMachine.GetInputEnabled("Down"))
 		{
-			controlVector.Y += 1;
+			controlVector.Y -= 1;
 		}
 		if (inputMachine.GetInputEnabled("Left"))
 		{
@@ -36,10 +36,18 @@ public partial class Basic : Entity
 		{
 			controlVector.X += 1;
 		}
+		if (inputMachine.GetInputEnabled("TiltLeft"))
+		{
+			controller.basis.axisAngle -= 5;
+		}
+		if (inputMachine.GetInputEnabled("TiltRight"))
+		{
+			controller.basis.axisAngle += 5;
+		}
 		//Normalise and apply if not zero
 		if (controlVector != Vector2.Zero)
 		{
-			acceleration += controlVector.Normalized() * GetAcceleration();
+			acceleration += controller.basis.RotateControlVector(controlVector) * GetAcceleration();
 		}
 	}
 	public override void _Ready()
