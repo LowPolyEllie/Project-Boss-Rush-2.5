@@ -1,10 +1,12 @@
 using Godot;
 using Godot.Collections;
+using System;
 
 namespace BossRush2;
 
 public class PlayerController : Controller, IBrObject
 {
+	public Entity player;
 	public Camera camera;
 	private bool _active = false;
 	public override bool active
@@ -22,7 +24,7 @@ public class PlayerController : Controller, IBrObject
 		base.InitInputMachine();
 
 		camera.target = new(source);
-		
+
 	}
 	public override void ProcessInput(double delta)
 	{

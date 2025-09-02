@@ -6,9 +6,25 @@ namespace BossRush2;
 [GlobalClass]
 public partial class PlayerControllerWrapper : Node, IBrObject
 {
-    private PlayerController playerController;
+    public PlayerController playerController
+    {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// Camera that this controller uses
+    /// </summary>
     [Export]
     public Camera camera { get; set; }
+    /// <summary>
+    /// What this controller is controlling
+    /// </summary>
+    [Export]
+    public Entity source { get; set; }
+    /// <summary>
+    /// The main player node
+    /// </summary>
     [Export]
     public Entity player { get; set; }
 
@@ -31,7 +47,8 @@ public partial class PlayerControllerWrapper : Node, IBrObject
         {
             keyMapping = keyMapping,
             variantInput = variantInput,
-            source = player,
+            source = source,
+            player = player,
             camera = camera,
             active = active
         };

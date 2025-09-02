@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://bq3sdv51ml0ap"]
 
-[ext_resource type="Script" uid="uid://tb04h3q0pgqj" path="res://scripts/entity/behaviour/player/Player.cs" id="1_88eks"]
+[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_88eks"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_jdtxe"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_fg80f"]
 [ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_h4dly"]
@@ -56,18 +56,17 @@ _teams = Dictionary[String, String]({
 })
 stats = SubResource("Resource_ntk6r")
 isTopLevel = true
-metadata/_custom_type_script = "uid://tb04h3q0pgqj"
+metadata/_custom_type_script = "uid://d0rnginli70t2"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("3_fg80f")
 
 [node name="StopRotating" type="Node2D" parent="."]
+show_behind_parent = true
 script = ExtResource("4_h4dly")
 metadata/_custom_type_script = "uid://jrsq1fmp0ncl"
 
 [node name="HealthBar" type="TextureProgressBar" parent="StopRotating"]
-z_index = 20
-z_as_relative = false
 offset_left = -42.0
 offset_top = 40.0
 offset_right = 42.0

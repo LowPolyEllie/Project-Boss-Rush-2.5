@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwc0pcyimcjno"]
+[gd_scene load_steps=4 format=3 uid="uid://bwc0pcyimcjno"]
 
 [ext_resource type="Script" uid="uid://dldy8lw1hx732" path="res://scripts/meta/ui/UIManager.cs" id="1_dj8aq"]
+[ext_resource type="Script" uid="uid://cr0aj1q25weoh" path="res://scripts/debug/Upgrade.cs" id="2_5en4g"]
+[ext_resource type="Script" uid="uid://okycbf5r6qcm" path="res://scripts/debug/Downgrade.cs" id="3_ua6yw"]
 
 [node name="UIManager" type="Control"]
 layout_mode = 3
@@ -8,3 +10,25 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_dj8aq")
+
+[node name="Debug" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Upgrade" type="Button" parent="Debug/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Upgrade"
+script = ExtResource("2_5en4g")
+
+[node name="Downgrade" type="Button" parent="Debug/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Downgrade"
+script = ExtResource("3_ua6yw")

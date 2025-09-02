@@ -38,12 +38,16 @@ public partial class World : Node, IBrObject
 			_activeCamera = value;
 		}
 	}
-	public PlayerController activePlayerController { get; set; }
 
+	public PlayerController activePlayerController { get; set; }
+	[Export]
+	private PlayerControllerWrapper activePlayerControllerWrapper { get; set; }
 	[Export]
 	public PolygonSpawner activePolygonSpawner { get; set; }
 	[Export]
 	public ProjectileSpawner activeProjectileSpawner { get; set; }
+	[Export]
+	public TankUpgrader activePlayerUpgrader { get; set; }
 	[Export]
 	public Node teamRegistry { get; set; }
 	public TeamLayerCollection activeTeams = new();
@@ -117,6 +121,7 @@ public partial class World : Node, IBrObject
 	//Secondary initialisation, called after every other node's _Ready() has been called
 	public override void _Ready()
 	{
+		activePlayerController = activePlayerControllerWrapper.playerController;
 		EmitSignal(SignalName.InitSetup);
 	}
 }

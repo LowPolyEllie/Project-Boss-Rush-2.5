@@ -46,7 +46,6 @@ public partial class Basic : Entity
 	{
 		Init();
 		/*
-		Init();
 		stateMachine = new(this);
 		stateMachine.AddLayer("Base", new StateLayer("Idle")
 		{

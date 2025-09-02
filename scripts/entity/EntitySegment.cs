@@ -6,6 +6,7 @@ namespace BossRush2;
 /// <summary>
 /// Base class for in game objects that behave independantly but are related to <c>Entity</c>
 /// </summary>
+[GlobalClass]
 public partial class EntitySegment : Node2D, IBrObject, IEntitySegment
 {
 	/// <summary>
