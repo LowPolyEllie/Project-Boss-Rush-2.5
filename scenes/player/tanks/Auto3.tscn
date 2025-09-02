@@ -1,0 +1,186 @@
+[gd_scene load_steps=21 format=3 uid="uid://jea1tiwx25aq"]
+
+[ext_resource type="Script" uid="uid://tb04h3q0pgqj" path="res://scripts/entity/behaviour/player/Player.cs" id="1_v33bl"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_2pfwo"]
+[ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_gwh67"]
+[ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_v8fwu"]
+[ext_resource type="Texture2D" uid="uid://cnmin7f08pbx6" path="res://textures/ui/bars/HPEmpty.svg" id="5_q3aey"]
+[ext_resource type="Texture2D" uid="uid://cahhdkpvuhqld" path="res://textures/ui/bars/BarFrame.svg" id="6_d4rbi"]
+[ext_resource type="Texture2D" uid="uid://bmikghvtehpng" path="res://textures/ui/bars/HPHigh.svg" id="7_06icu"]
+[ext_resource type="Script" uid="uid://ciktamhd63plw" path="res://scripts/meta/ui/bars/HealthBar.cs" id="8_qg1x0"]
+[ext_resource type="Resource" uid="uid://1o0bq8wg4pec" path="res://data/ui/bars/hpbar/HPBar.tres" id="9_r6fba"]
+[ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="10_fhup6"]
+[ext_resource type="Script" uid="uid://ctlkn3fghegrb" path="res://scripts/entity/behaviour/generic/Cannon.cs" id="11_0lxab"]
+[ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="13_rdfl2"]
+[ext_resource type="Script" uid="uid://mo0d5qofkhx" path="res://scripts/entity/behaviour/generic/Turret.cs" id="15_47kf3"]
+[ext_resource type="Texture2D" uid="uid://0rpbrgmc2gx1" path="res://textures/player/cannon/TurretBasic.svg" id="16_ulf1h"]
+[ext_resource type="PackedScene" uid="uid://g7mv4netbpkr" path="res://scenes/player/projectiles/SmallBullet.tscn" id="17_jec6v"]
+[ext_resource type="Texture2D" uid="uid://cgyhcc45p6am7" path="res://textures/player/cannon/SmallCannon.svg" id="18_ngued"]
+
+[sub_resource type="Resource" id="Resource_ntk6r"]
+script = ExtResource("2_2pfwo")
+Damage = 10.0
+Health = 100.0
+Speed = 250.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 100.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o6odb"]
+radius = 20.0
+
+[sub_resource type="Resource" id="Resource_kiex2"]
+script = ExtResource("2_2pfwo")
+Damage = 0.0
+Health = 1.0
+Speed = 0.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 100.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="Resource" id="Resource_b2qcq"]
+script = ExtResource("2_2pfwo")
+Damage = 2.0
+Health = 5.0
+Speed = 300.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 1.0
+LifeTime = -1.0
+DoApply = true
+Extra = Dictionary[String, float]({})
+metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[node name="Basic" type="Node2D"]
+z_index = 5
+script = ExtResource("1_v33bl")
+_teams = Dictionary[String, String]({
+"Side": "Player"
+})
+stats = SubResource("Resource_ntk6r")
+isTopLevel = true
+metadata/_custom_type_script = "uid://tb04h3q0pgqj"
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_gwh67")
+
+[node name="StopRotating" type="Node2D" parent="."]
+script = ExtResource("4_v8fwu")
+metadata/_custom_type_script = "uid://jrsq1fmp0ncl"
+
+[node name="HealthBar" type="TextureProgressBar" parent="StopRotating"]
+z_index = 20
+z_as_relative = false
+offset_left = -42.0
+offset_top = 40.0
+offset_right = 42.0
+offset_bottom = 80.0
+value = 100.0
+texture_under = ExtResource("5_q3aey")
+texture_over = ExtResource("6_d4rbi")
+texture_progress = ExtResource("7_06icu")
+script = ExtResource("8_qg1x0")
+Interpolation = 0.9
+TexturePool = ExtResource("9_r6fba")
+metadata/_custom_type_script = "uid://ciktamhd63plw"
+
+[node name="Hitbox" type="Area2D" parent="."]
+script = ExtResource("10_fhup6")
+metadata/_custom_type_script = "uid://8au7v2dw2h03"
+
+[node name="Collider" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_o6odb")
+
+[node name="Turret" type="Node2D" parent="."]
+position = Vector2(0, -40)
+script = ExtResource("15_47kf3")
+targetMode = 2
+targets = Array[String]([])
+accuracy = 0.95
+stats = SubResource("Resource_kiex2")
+metadata/_custom_type_script = "uid://mo0d5qofkhx"
+
+[node name="TurretSprite" type="Sprite2D" parent="Turret"]
+texture = ExtResource("16_ulf1h")
+
+[node name="Cannon" type="Node2D" parent="Turret" node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(15, 0)
+script = ExtResource("11_0lxab")
+stats = SubResource("Resource_b2qcq")
+toShoot = ExtResource("17_jec6v")
+body = NodePath("Body")
+animator = ExtResource("13_rdfl2")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="Turret/Cannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="Turret/Cannon/Body"]
+texture = ExtResource("18_ngued")
+
+[node name="Turret2" type="Node2D" parent="."]
+position = Vector2(0, 40)
+script = ExtResource("15_47kf3")
+targetMode = 2
+targets = Array[String]([])
+accuracy = 0.95
+stats = SubResource("Resource_kiex2")
+metadata/_custom_type_script = "uid://mo0d5qofkhx"
+
+[node name="TurretSprite" type="Sprite2D" parent="Turret2"]
+texture = ExtResource("16_ulf1h")
+
+[node name="Cannon" type="Node2D" parent="Turret2" node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(15, 0)
+script = ExtResource("11_0lxab")
+stats = SubResource("Resource_b2qcq")
+toShoot = ExtResource("17_jec6v")
+body = NodePath("Body")
+animator = ExtResource("13_rdfl2")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="Turret2/Cannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="Turret2/Cannon/Body"]
+texture = ExtResource("18_ngued")
+
+[node name="Turret3" type="Node2D" parent="."]
+script = ExtResource("15_47kf3")
+targetMode = 2
+targets = Array[String]([])
+accuracy = 0.95
+stats = SubResource("Resource_kiex2")
+metadata/_custom_type_script = "uid://mo0d5qofkhx"
+
+[node name="TurretSprite" type="Sprite2D" parent="Turret3"]
+texture = ExtResource("16_ulf1h")
+
+[node name="Cannon" type="Node2D" parent="Turret3" node_paths=PackedStringArray("body")]
+show_behind_parent = true
+position = Vector2(15, 0)
+script = ExtResource("11_0lxab")
+stats = SubResource("Resource_b2qcq")
+toShoot = ExtResource("17_jec6v")
+body = NodePath("Body")
+animator = ExtResource("13_rdfl2")
+metadata/_custom_type_script = "uid://ctlkn3fghegrb"
+
+[node name="Body" type="Node2D" parent="Turret3/Cannon"]
+
+[node name="CannonSprite" type="Sprite2D" parent="Turret3/Cannon/Body"]
+texture = ExtResource("18_ngued")

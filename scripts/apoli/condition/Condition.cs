@@ -14,7 +14,8 @@ public enum ConditionId
 {
 	Controller
 }
-public class Condition : ApoliObject {
+public class Condition : ApoliObject
+{
 	public virtual ConditionId type { get; set; }
 	public virtual bool CheckCondition() { return false; }
 }

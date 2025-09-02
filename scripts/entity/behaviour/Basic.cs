@@ -13,7 +13,7 @@ namespace BossRush2;
 public partial class Basic : Entity
 {
 	public override List<string> inputs
-	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire"];
+	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire", "Fire2"];
 	public override List<string> variantInputs { get; set; } = ["Target"];
 
 	public void MovementControls()

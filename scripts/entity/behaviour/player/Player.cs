@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace BossRush2;
 
@@ -13,6 +14,12 @@ namespace BossRush2;
 [GlobalClass]
 public partial class Player : Basic
 {
+	public override List<string> inputs
+	{ get; set; } = [
+		"Up", "Down", "Left", "Right", "Fire", "Fire2", //From Basic
+		"Upgrade", "Downgrade"
+	];
+
 	/// <summary>
 	/// The current loadout, being used by the Player
 	/// </summary>

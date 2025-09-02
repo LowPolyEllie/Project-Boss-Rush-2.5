@@ -159,7 +159,7 @@ public partial class Cannon : EntitySegment
 	{
 		animator.StartAnimation();
 
-		Entity proj = World.activeWorld.activeProjectileSpawner.Shoot(toShoot, this, stats, owner.ZIndex - 1, owner:owner);
+		Entity proj = World.activeWorld.activeProjectileSpawner.Shoot(toShoot, this, stats, owner.TrueZIndex() - 1, owner:owner);
 		currentProjectiles += 1;
 		proj.TreeExited += () => currentProjectiles -= 1;
 

@@ -39,11 +39,20 @@ script = ExtResource("3_yxlcp")
 metadata/_custom_type_script = "uid://bjr20qw7hcsce"
 
 [node name="Basic" parent="." instance=ExtResource("4_3p2gp")]
+currentLoadout = Array[Object]([])
 
 [node name="PlayerControllerWrapper" type="Node" parent="." node_paths=PackedStringArray("camera", "player")]
 script = ExtResource("10_e2s0e")
 camera = NodePath("../Camera")
 player = NodePath("../Basic")
+keyMapping = Dictionary[String, int]({
+"Down": 83,
+"Fire": 4194401,
+"Fire2": 4194402,
+"Left": 65,
+"Right": 68,
+"Up": 87
+})
 active = true
 metadata/_custom_type_script = "uid://58m5oopp0viv"
 
