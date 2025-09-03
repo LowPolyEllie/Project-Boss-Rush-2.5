@@ -46,26 +46,6 @@ public partial class Basic : Entity
 	public override void _Ready()
 	{
 		Init();
-		/*
-		stateMachine = new(this);
-		stateMachine.AddLayer("Base", new StateLayer("Idle")
-		{
-			new State("Idle"){
-				new PowerBuilder()
-					.SetType(PowerId.ActionOnPhysicsTick)
-					.SetParam("Action", new ActionType(
-						new ActionBuilder()
-							.SetType(ActionId.Print)
-							.SetParam("Message",
-								Type.FromValue("MEOW")
-							)
-						.Build()))
-				.Build()
-			}
-		}
-		);
-		stateMachine.Init();
-		*/
 	}
 	public override void _Process(double delta)
 	{

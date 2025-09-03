@@ -16,8 +16,8 @@ public partial class Tutorial : Basic
 		{
 			new State("Idle"){
 				new PowerBuilder<ActionOnPhysicsTick>()
-					.SetParam("EntityAction", new Type<EntityAction>(
-						(EntityAction)new ActionBuilder<Print>()
+					.SetParam("EntityAction", new Type<IAction<Entity>>(
+						(IAction<Entity>)new ActionBuilder<Print>()
 							.SetParam("Message",
 								Type.FromValue("CMONNNN")
 							)

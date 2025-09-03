@@ -6,7 +6,7 @@ public class Print: NodeAction<Node> {
 	public new static ParameterCollection parameterSet = new(
 		new ParameterInit<string>("Message","")
 	);
-	public override void _DoNodeAction(Node subject)
+	public override void DoAction(Node subject)
 	{
 		if (!parameters.HasParam("Message"))
 		{
