@@ -1,76 +1,49 @@
+using System.Reflection.Metadata;
 using Apoli.Types;
-using Apoli.Actions;
-using Apoli.Powers;
-using Godot;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System;
-using Apoli.Conditions;
 
 namespace Apoli;
 
-public class Parameter //: ICloneable
+public class Parameter
 {
-	public Types.Type value { get; set; }
+	public virtual Type value { get; set; }
 	public TypeId type { get; set; }
-	public static Dictionary<PowerId, ParameterCollection> powerParameters = new()
+}
+public class Parameter<T> : Parameter //: ICloneable
+{
+	public Type<T> _value;
+    public override Type value
 	{
-		{PowerId.ActionOnCallback,new(
-			new("ActionOnStateEnter",TypeId.Action),
-			new("ActionOnStateLeave",TypeId.Action)
-		)},
-		{PowerId.ActionOnInput,new(
-			new("Action",TypeId.Action),
-			new("Input",TypeId.String,new Types.String("Fire")),
-			new("Press",TypeId.Bool,true)
-		)},
-		{PowerId.Variable,new(
-			new("Type",TypeId.TypeIdType),
-			new("Value",TypeId.Bool,true)
-		)},
-		{PowerId.ActionOnPhysicsTick,new(
-			new("Action",TypeId.Action),
-			new("Interval",TypeId.Bool,true)
-		)}
-	};
-	public static Dictionary<ActionId, ParameterCollection> actionParameters = new()
-	{
-		{ActionId.AllOf,new(
-			new ParameterCollectionInitParam("Actions",TypeId.ActionCollection)
-		)},
-		{ActionId.Print,new(
-			new ParameterCollectionInitParam("Message",TypeId.String)
-		)}
-	};
-	public static Dictionary<ConditionId, ParameterCollection> conditionParameters = new()
-	{
-		{ConditionId.Controller,new(
-			new ParameterCollectionInitParam("PlayerController",TypeId.Bool)
-		)}
-	};
-	public Parameter(TypeId _type, Types.Type _value)
-	{
-		value = _value;
-		type = _type;
+		get
+		{
+			return _value;
+		}
+		set
+		{
+			_value = (Type<T>)value;
+		}
 	}
-	public Parameter(TypeId _type, object _value)
+	public Parameter(TypeId _type, Type<T> __value)
 	{
-		value = Types.Type.FromValue(_value);
+		value = __value;
 		type = _type;
 	}
 	public Parameter(TypeId _type)
 	{
 		type = _type;
 	}
-	public Parameter(bool _bool)
+	public Parameter(TypeId _type, Type __value)
 	{
-		type = TypeId.Bool;
-		value = new Bool(_bool);
+		type = _type;
+		value = __value;
 	}
-	public Parameter(string _string)
+	public Parameter() { }
+	public static Parameter<T> FromValue(T __value)
 	{
-		type = TypeId.String;
-		value = new Types.String(_string);
+		return new()
+		{
+			type = Type.typeIdMatch.GetFirstKey(typeof(T)),
+			value = new Type<T>(__value)
+		};
 	}
 	/*public object Clone()
 	{
@@ -78,7 +51,7 @@ public class Parameter //: ICloneable
 	}*/
 	public override string ToString()
 	{
-		return value.ToString()+"("+type.ToString()+")";
+		return value.ToString() + "(" + type.ToString() + ")";
 	}
 
 }

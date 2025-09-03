@@ -1,8 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Apoli.Types;
+using Godot;
 
 namespace Apoli;
 
@@ -24,17 +24,29 @@ public class ParameterCollection : IEnumerable
 		{
 			return tValue;
 		}
-		throw new Exception("Value at key " + key + " not of type " + typeof(T).Name);
+		throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
+	}
+	public T GetValue<T>(string key, Node subject)
+	{
+		if (parameters[key].value.value is T)
+		{
+			return (T)parameters[key].value.GetValue(subject);
+		}
+		throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
 	}
 	public TypeId GetType(string key)
 	{
 		return parameters[key].type;
 	}
+	public Parameter GetParam(string key)
+	{
+		return parameters[key];
+	}
 	public bool HasParam(string key)
 	{
 		return parameters.ContainsKey(key);
 	}
-	public void SetParam(string key, Types.Type value)
+	public void SetValue(string key, Type value)
 	{
 		if (HasParam(key))
 		{
@@ -45,6 +57,10 @@ public class ParameterCollection : IEnumerable
 			throw new KeyNotFoundException("No key called " + key);
 		}
 	}
+	public void SetParam(string key, Parameter parameter)
+	{
+		parameters[key] = parameter;
+	}
 	public void AddFrom(ParameterCollection collection)
 	{
 		foreach (var keyValuePair in collection.parameters)
@@ -52,16 +68,16 @@ public class ParameterCollection : IEnumerable
 			SetParam(keyValuePair.Key, keyValuePair.Value);
 		}
 	}
-	public void SetParam(string key, Parameter parameter)
-	{
-		parameters[key] = parameter;
-	}
 	public ParameterCollection Clone()
 	{
 		ParameterCollection newCollection = new();
-		foreach (KeyValuePair<string, Parameter> kp in parameters)
+		foreach (KeyValuePair<string, Parameter> keyValuePair in parameters)
 		{
-			parameters.Add(kp.Key, new(kp.Value.type, kp.Value.value));
+			parameters.Add(keyValuePair.Key, new Parameter()
+			{
+				type = keyValuePair.Value.type,
+				value = keyValuePair.Value.value
+			});
 		}
 		return newCollection;
 	}
@@ -69,14 +85,7 @@ public class ParameterCollection : IEnumerable
 	{
 		foreach (ParameterCollectionInitParam arg in args)
 		{
-			if (arg.value is not null)
-			{
-				parameters.Add(arg.name, new(arg.type, arg.value));
-			}
-			else
-			{
-				parameters.Add(arg.name, new(arg.type));
-			}
+			parameters.Add(arg.name, arg.ToParameter());
 		}
 	}
 	public override string ToString()
@@ -93,13 +102,66 @@ public class ParameterCollectionInitParam
 {
 	public string name;
 	public TypeId type;
-	public object value;
-	public ParameterCollectionInitParam(string _name, TypeId _type, object _value = null)
+	public virtual object value { get; set; }
+	public virtual Parameter ToParameter()
+	{
+		return new()
+		{
+			type = type,
+			value = Types.Type.FromValue(value)
+		};
+	}
+}
+public class ParameterInit<T> : ParameterCollectionInitParam
+{
+	public T _value;
+    public override object value
+	{
+		get
+		{
+			return _value;
+		}
+		set
+		{
+			_value = (T)value;
+		}
+	}
+	public ParameterInit(string _name, TypeId _type, T __value)
 	{
 		name = _name;
 		type = _type;
-		value = _value;
+		value = __value;
 	}
+	public ParameterInit(string _name, TypeId _type)
+	{
+		name = _name;
+		type = _type;
+	}
+	public ParameterInit(string _name, T __value)
+	{
+		name = _name;
+		type = Type.typeIdMatch.GetFirstKey(typeof(T));
+		value = __value;
+	}
+	public ParameterInit(string _name, Type<T> __value)
+	{
+		name = _name;
+		type = Type.typeIdMatch.GetFirstKey(typeof(T));
+		value = __value.value;
+	}
+	public ParameterInit(string _name)
+	{
+		name = _name;
+		type = Type.typeIdMatch.GetFirstKey(typeof(T));
+	}
+    public override Parameter ToParameter()
+    {
+        return new Parameter<T>()
+		{
+			type = type,
+			value = new Type<T>(_value)
+		};
+    }
 }
 public class ParameterEnumerator : IEnumerator
 {
@@ -144,9 +206,9 @@ public class ParameterEnumerator : IEnumerator
 			{
 				return _parameter[position];
 			}
-			catch (IndexOutOfRangeException)
+			catch (System.IndexOutOfRangeException)
 			{
-				throw new InvalidOperationException();
+				throw new System.InvalidOperationException();
 			}
 		}
 	}

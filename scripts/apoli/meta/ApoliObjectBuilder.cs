@@ -9,12 +9,12 @@ namespace Apoli;
 public class ApoliObjectBuilder
 {
 	public virtual Dictionary<Enum, Type> apoliIdMatch { get; set; } = [];
-	private Enum type;
-	private Type internalType;
-	private ParameterCollection _parameters = new();
+	protected Enum type;
+	protected Type internalType;
+	protected ParameterCollection _parameters = new();
 	public ApoliObject _Build()
 	{
-		if (Convert.ToInt32(type) == 0) throw new Exception("PowerBuilder: No power type specified");
+		if (Convert.ToInt32(type) == 0) throw new Exception("ApoliObjectBuilder: No ApoliObject type specified");
 
 		ApoliObject newObject;
 		newObject = (ApoliObject)Activator.CreateInstance(internalType);
@@ -23,15 +23,16 @@ public class ApoliObjectBuilder
 	}
 	public ApoliObjectBuilder _SetParam(string Key, Types.Type Value)
 	{
+		GD.Print(Key);
 		if (!_parameters.HasParam(Key))
 		{
-			throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use PowerBuilder.SetType() before setting values");
+			throw new KeyNotFoundException("No keys matching \"" + Key + "\" found. use ApoliObjectBuilder.SetType() before setting values");
 		}
 		if (_parameters.GetType(Key) != Value.type)
 		{
 			throw new TypeLoadException("Wrong Apoli type: Expected " + _parameters.GetType(Key) + ", got " + Value.type);
 		}
-		_parameters.SetParam(Key, Value);
+		_parameters.SetValue(Key, Value);
 		return this;
 	}
 	public ApoliObjectBuilder _SetType(Enum _type)

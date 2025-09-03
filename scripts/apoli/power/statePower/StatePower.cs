@@ -11,7 +11,7 @@ namespace Apoli.Powers;
 public class StatePower : Power
 {
 	public new static ParameterCollection parameterSet = new(
-		new ParameterCollectionInitParam("State",TypeId.String,"")
+		new ParameterInit<string>("State")
 	);
 }
 public class StateChangeOnDelay : StatePower
@@ -20,7 +20,7 @@ public class StateChangeOnDelay : StatePower
     private int timer = 0;
     private string targetState;
 	public new static ParameterCollection parameterSet = new(
-        new ParameterCollectionInitParam("Delay", TypeId.Int, "")
+        new ParameterInit<int>("Delay", 0)
     );
     public void Tick(double delta)
     {

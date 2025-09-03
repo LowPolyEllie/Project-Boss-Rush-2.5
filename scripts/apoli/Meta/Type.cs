@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices.Marshalling;
+using System.Linq;
 using Apoli.Actions;
+using Apoli.Conditions;
 using Apoli.Powers;
+using Apoli.ValueFunctions;
+using BossRush2;
 using Godot;
 
 namespace Apoli.Types;
@@ -16,137 +15,103 @@ public enum TypeId
     String,
     Float,
     Int,
+    Bool,
+    Variant,
+    TypeId,
+
     Power,
     PowerCollection,
     Action,
     ActionCollection,
     Condition,
     ConditionCollection,
-    Bool,
-    TypeIdType,
-    Variant
+
+    ValueFunction
 }
 public class Type
 {
-    public string id;
+    public static Dictionary<TypeId, System.Type> typeIdMatch = new()
+    {
+        {TypeId.String,typeof(string)},
+        {TypeId.Float,typeof(float)},
+        {TypeId.Int,typeof(int)},
+        {TypeId.Bool,typeof(bool)},
+        {TypeId.Variant,typeof(Variant)},
+        {TypeId.TypeId,typeof(TypeId)},
+
+        {TypeId.Power,typeof(Power)},
+        {TypeId.Action,typeof(Action)},
+        {TypeId.Condition,typeof(Condition)},
+
+        {TypeId.ValueFunction,typeof(ValueFunction)}
+    };
+    protected static TypeId[] genericTypes = [
+        TypeId.Int,
+        TypeId.String,
+        TypeId.Float,
+        TypeId.Bool
+    ];
+    protected static TypeId[] apoliObjectTypes = [
+        TypeId.Power,
+        TypeId.Action,
+        TypeId.Condition,
+        TypeId.ValueFunction
+    ];
+    protected static TypeId[] collectionTypes = [
+        TypeId.PowerCollection,
+        TypeId.ActionCollection,
+        TypeId.ConditionCollection
+    ];
     public virtual TypeId type { get; set; }
     public virtual object value { get; set; }
-    public static Type FromValue(object value)
+    public virtual bool isGeneric { get; }
+    public virtual bool isApoliObject { get; }
+    public virtual bool isCollection { get; }
+    
+    public static Type FromValue<T>(T value)
     {
-        switch (value)
+        return new Type<T>(value);
+    }
+
+    public ValueFunction valueFunction;
+    public object GetValue(Node subject)
+    {
+        if (valueFunction is null)
         {
-            case bool boolValue:
-                return new Bool(boolValue);
-            case string strValue:
-                return new String(strValue);
-            case int intValue:
-                return new Int(intValue);
+            return value;
         }
-        return new Type();
+        return valueFunction.ReturnValue(subject);
     }
 }
-public class Int: Type {
-    public override TypeId type { get; set; } = TypeId.Int;
-    public int _value;
-    public new int value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (int) value;
+public class Type<T> : Type
+{
+    public string id;
+    public virtual T _value { get; set; }
+    public override object value { get => _value; set => _value = (T)value; }
+    public Type(T _value)
+    {
+        value = _value;
+        type = typeIdMatch.GetFirstKey(typeof(T));
+    }
+    public override bool isGeneric
+    {
+        get
+        {
+            return genericTypes.Contains(type);
         }
     }
-    public Int(int __value = 0) {
-        value = __value;
-    }
-}
-public class Bool: Type {
-    public override TypeId type { get; set; } = TypeId.Bool;
-    public bool _value;
-    public new bool value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (bool) value;
+    public override bool isApoliObject
+    {
+        get
+        {
+            return apoliObjectTypes.Contains(type);
         }
     }
-    public Bool(bool __value = true) {
-        value = __value;
-    }
-}
-public class TypeIdType: Type {
-    public override TypeId type { get; set; } = TypeId.TypeIdType;
-    public TypeId _value;
-    public override object value {
-        get {
-            return _value;
+    public override bool isCollection
+    {
+        get
+        {
+            return collectionTypes.Contains(type);
         }
-        set {
-            _value = (TypeId) value;
-        }
-    }
-    public TypeIdType(TypeId __value) {
-        value = __value;
-    }
-}
-public class String: Type {
-    public override TypeId type { get; set; } = TypeId.String;
-    public string _value;
-    public override object value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (string) value;
-        }
-    }
-    public String(string __value = "") {
-        value = __value;
-    }
-}
-public class PowerType: Type {
-    public override TypeId type { get; set; } = TypeId.Power;
-    public Powers.Power _value;
-    public override object value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (Powers.Power) value;
-        }
-    }
-    public PowerType(Powers.Power __value = null) {
-        value = __value;
-    }
-}
-public class ActionType: Type {
-    public override TypeId type { get; set; } = TypeId.Action;
-    public Actions.Action _value;
-    public override object value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (Actions.Action) value;
-        }
-    }
-    public ActionType(Actions.Action __value = null) {
-        value = __value;
-    }
-}
-public class ActionCollection: Type {
-    public override TypeId type { get; set; } = TypeId.ActionCollection;
-    public List<Actions.Action> _value;
-    public override object value {
-        get {
-            return _value;
-        }
-        set {
-            _value = (List<Actions.Action>) value;
-        }
-    }
-    public ActionCollection(List<Actions.Action> __value = null) {
-        value = __value == null? [] : __value;
     }
 }

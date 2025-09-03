@@ -10,8 +10,8 @@ public class TickPower : Power
 {
 	public virtual void Tick(double delta) { }
 	public new static ParameterCollection parameterSet = new(
-		new ParameterCollectionInitParam("Interval",TypeId.Int,""),
-		new ParameterCollectionInitParam("Action",TypeId.Action,"")
+		new ParameterInit<int>("Interval",1),
+		new ParameterInit<Action>("Action")
 	);
 }
 public class PhysicsTickPower : TickPower

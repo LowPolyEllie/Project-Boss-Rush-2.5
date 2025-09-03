@@ -21,7 +21,7 @@ public partial class Tutorial : Basic
 			new State("Idle"){
 				new PowerBuilder()
 					.SetType(PowerId.ActionOnPhysicsTick)
-					.SetParam("Action", new ActionType(
+					.SetParam("Action", new Type<Action>(
 						new ActionBuilder()
 							.SetType(ActionId.Print)
 							.SetParam("Message",

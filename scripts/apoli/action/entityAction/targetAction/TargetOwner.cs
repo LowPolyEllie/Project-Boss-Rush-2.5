@@ -9,8 +9,8 @@ namespace Apoli.Actions;
 public class TargetOwner : TargetAction
 {
     public override ActionId type { get; set; } = ActionId.TargetOwner;
-    public override void DoAction(Node subject)
+    public override void DoEntityAction(Entity subject)
     {
-        ((Action)parameters.GetValue("Action")).DoAction((Entity)subject.Owner);
+        parameters.GetValue<Action>("Action",subject).DoAction(subject.Owner);
     }
 }

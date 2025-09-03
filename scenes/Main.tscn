@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://6mehkqxcptea"]
+[gd_scene load_steps=27 format=3 uid="uid://6mehkqxcptea"]
 
 [ext_resource type="Script" uid="uid://gpok6wqhadog" path="res://scripts/world/World.cs" id="1_1nqs0"]
 [ext_resource type="Script" uid="uid://ben0wt2lg5lyf" path="res://scripts/world/GridBG.cs" id="2_1iba3"]
@@ -22,6 +22,23 @@
 [ext_resource type="Script" uid="uid://bwi6mdpjp6nvf" path="res://scripts/spawner/ProjectileSpawner.cs" id="18_kxyth"]
 [ext_resource type="Script" uid="uid://bymkl0nf3per4" path="res://scripts/entity/team/wrapper/TeamLayerWrapper.cs" id="19_cobve"]
 [ext_resource type="Script" uid="uid://bbfiusnelu16g" path="res://scripts/entity/team/wrapper/TeamWrapper.cs" id="20_cmqll"]
+[ext_resource type="Script" uid="uid://dlcip2oa3egiv" path="res://scripts/entity/behaviour/boss/Tutorial.cs" id="23_ebg2g"]
+[ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="24_2ofn6"]
+[ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="24_xa025"]
+
+[sub_resource type="Resource" id="Resource_36rkl"]
+script = ExtResource("24_xa025")
+Damage = 1.0
+Health = 1.0
+Speed = 1.0
+HealthRegen = 0.0
+RegenDelay = 0.0
+Knockback = 1.0
+KnockbackMultiplier = 1.0
+ReboundForce = 100.0
+LifeTime = -1.0
+DoApply = false
+Extra = Dictionary[String, float]({})
 
 [node name="World" type="Node" node_paths=PackedStringArray("activePlayerControllerWrapper", "activePolygonSpawner", "activeProjectileSpawner", "activePlayerUpgrader", "teamRegistry")]
 script = ExtResource("1_1nqs0")
@@ -115,3 +132,16 @@ script = ExtResource("20_cmqll")
 collisionLayer = 3
 collisionMask = [NodePath("../Player"), NodePath("../Polygon")]
 metadata/_custom_type_script = "uid://bbfiusnelu16g"
+
+[node name="Tutorial" type="Node2D" parent="." node_paths=PackedStringArray("teamsWrapper")]
+position = Vector2(82, -62)
+script = ExtResource("23_ebg2g")
+teamsWrapper = {
+NodePath("../Teams/Side"): NodePath("../Teams/Side/Boss")
+}
+stats = SubResource("Resource_36rkl")
+isTopLevel = true
+metadata/_custom_type_script = "uid://dlcip2oa3egiv"
+
+[node name="Sprite" type="Sprite2D" parent="Tutorial"]
+texture = ExtResource("24_2ofn6")

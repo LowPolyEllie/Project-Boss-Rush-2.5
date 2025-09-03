@@ -5,7 +5,7 @@ namespace Apoli.Actions;
 public class Print: Action {
 	public override ActionId type { get; set; } = ActionId.Print;
 	public new static ParameterCollection parameterSet = new(
-		new ParameterCollectionInitParam("Message",TypeId.String,"")
+		new ParameterInit<string>("Message","")
 	);
 	public override void DoAction(Node subject)
 	{

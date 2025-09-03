@@ -27,9 +27,9 @@ public class ApoliObject
 	{
 		foreach (Parameter parameter in parameters)
 		{
-			if (parameter.value.value is ApoliObject obj)
+			if (parameter.value.isApoliObject)
 			{
-				obj.Init();
+				((ApoliObject)parameter.value.value)?.Init();
 			}
 		}
 	}

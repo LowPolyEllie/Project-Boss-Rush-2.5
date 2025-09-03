@@ -9,7 +9,7 @@ public class InputAction : EntityAction
 {
     protected string input;
 	public new static ParameterCollection parameterSet = new(
-        new ParameterCollectionInitParam("Input", TypeId.String, "")
+        new ParameterInit<string>("Input", "")
     );
     public override void Init()
     {

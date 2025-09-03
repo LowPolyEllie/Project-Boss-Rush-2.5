@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Apoli.Conditions;
 using Apoli.Powers;
 using Apoli.Types;
 using BossRush2;
@@ -25,6 +26,6 @@ public class Action : ApoliObject
 	public virtual ActionId type { get; set; }
 	public virtual void DoAction(Node subject) { }
     public new static ParameterCollection parameterSet = new(
-        new ParameterCollectionInitParam("Condition",TypeId.Condition,"")
+        new ParameterInit<Condition>("Condition")
     );
 }

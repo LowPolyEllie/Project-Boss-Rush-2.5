@@ -45,17 +45,17 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	[Export]
 	public Godot.Collections.Dictionary<string, string> _teams { get; set; } = [];
 
-	/// <summary>
-	/// Only use for debugging purposes
-	/// </summary>
 	[Export]
-	public Godot.Collections.Dictionary<TeamLayerWrapper, TeamWrapper> _teamsDebug { get; set; } = [];
+	/// <summary>
+	/// For when you don't want to use strings. Why the hell would you?
+	/// </summary>
+	public Godot.Collections.Dictionary<TeamLayerWrapper, TeamWrapper> teamsWrapper { get; set; } = [];
 
 	/// <summary>
 	/// The instance of <c>Stats</c>, used for a variety of reasons
 	/// </summary>
 	[Export]
-	public Stats stats { get; set; }
+	public Stats stats { get; set; } = new();
 
 	/// <summary>
 	/// Triggers all hitboxes to forget it, and may also destroy its own hitbox
@@ -227,12 +227,12 @@ public partial class Entity : EntitySegment, IInputMachine, IStateMachine
 	{
 		FindOwner();
 
-		if (teams.Count == 0 && _teams.Count == 0 && _teamsDebug.Count == 0)
+		if (teams.Count == 0 && _teams.Count == 0 && teamsWrapper.Count == 0)
 		{
 			_teams = owner._teams;
-			_teamsDebug = owner._teamsDebug;
+			teamsWrapper = owner.teamsWrapper;
 		}
-		foreach ((TeamLayerWrapper layer, TeamWrapper team) in _teamsDebug)
+		foreach ((TeamLayerWrapper layer, TeamWrapper team) in teamsWrapper)
 		{
 			JoinTeam(layer.Name, World.activeWorld.activeTeams.GetTeam(team.Name));
 		}

@@ -7,6 +7,7 @@ using Apoli.Actions;
 using Godot;
 using System;
 using Apoli.States;
+using Apoli.Conditions;
 
 namespace Apoli.Powers;
 
@@ -37,7 +38,7 @@ public class Power : ApoliObject
 
 	}
 	public new static ParameterCollection parameterSet = new(
-		new ParameterCollectionInitParam("Condition", TypeId.Condition, "")
+		new ParameterInit<Condition>("Condition")
 	);
 }
 public class ActionOnCallback : Power
