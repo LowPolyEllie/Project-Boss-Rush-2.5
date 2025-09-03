@@ -30,32 +30,41 @@ public enum TargetMode
 	/// <summary>
 	/// Target the nearest entity in one of the opposing teams
 	/// </summary>
-	NEAREST
+	PLAYER
 }
 
 public class Targeter : IBrObject
 {
-
-	public TargetMode targetMode = TargetMode.NONE;
+	private TargetMode _targetMode = TargetMode.NONE;
+	public TargetMode targetMode
+	{
+		get => _targetMode;
+		set
+		{
+			_targetMode = value;
+			ResetTarget();
+		}
+	}
 
 	/// <summary>
 	/// The teams that this node will target
 	/// </summary>
 	public Array<string> targets = [];
 
+	public Entity subject;
 	public Target currentTarget;
 
 	/// <summary>
 	/// Finds the closest Entity to this node from a list
 	/// </summary>
-	public Entity FindClosestEntity(List<Entity> entityArray, Entity entity)
+	public Entity FindClosestEntity(List<Entity> entityArray)
 	{
 		float closest = -1f;
 		Entity closestEntity = null;
 
 		foreach (var thisEntity in entityArray)
 		{
-			float dist = entity.GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
+			float dist = subject.GlobalPosition.DistanceSquaredTo(thisEntity.GlobalPosition);
 			if (dist < closest || closest < 0f)
 			{
 				closest = dist;
@@ -66,33 +75,55 @@ public class Targeter : IBrObject
 		return closestEntity;
 	}
 
-	public void ResetTarget(Entity entity)
+	/// <summary>
+	/// Automatically called if TargetMode changes
+	/// </summary>
+	public void ResetTarget()
 	{
 		currentTarget = targetMode switch
 		{
 			TargetMode.NONE => new(),
-			TargetMode.OWNER => new(entity.owner),
-			TargetMode.OWNER_TARGET => entity.owner.inputMachine.variantinputRegistry.Contains("Target") ? new((Vector2)entity.owner.inputMachine.GetVariantInput("Target")) : new(),
-			TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeams.GetLayer("Side").GetEntitiesInTeams([.. targets.ToArray()]), entity)),
+			TargetMode.OWNER => new(subject.owner),
+			TargetMode.OWNER_TARGET => subject.owner.inputMachine.variantinputRegistry.Contains("Target") ? new((Vector2)subject.owner.inputMachine.GetVariantInput("Target")) : null,
+			TargetMode.PLAYER => new(World.activeWorld.activePlayerController.player),
+			// Disabled temporarily
+			// TargetMode.NEAREST => new(FindClosestEntity(World.activeWorld.activeTeams.GetLayer("Side").GetEntitiesInTeams([.. targets.ToArray()]), subject)),
 			_ => throw new FileNotFoundException("Error, YourBrain.exe is not found")
 		};
 	}
+
+	//Wrapper functions
+	public Vector2 GetTargetPosition()
+	{
+		return currentTarget.GetTargetPosition();
+	}
+	public Vector2? GetTargetPositionOrNull()
+	{
+		return currentTarget.GetTargetPositionOrNull();
+	}
+	/// <summary>
+	/// Returns <c>defaultRot</c> if in case of emptyTarget
+	/// </summary>
+	public float GetTargetDirection(float defaultRot)
+	{
+		return currentTarget.GetTargetDirection(subject.GlobalPosition,defaultRot);
+	}
 }
-public class Target
+public class Target : IBrObject
 {
 	Node2D TargetEntity;
 	Vector2 TargetPosition = new();
-	public Target()
-	{
-		
-	 }
+	bool emptyTarget = true;
+	public Target() { }
 	public Target(Node2D _TargetEntity)
 	{
 		TargetEntity = _TargetEntity;
+		emptyTarget = false;
 	}
 	public Target(Vector2 _TargetPosition)
 	{
 		TargetPosition = _TargetPosition;
+		emptyTarget = false;
 	}
 	public Vector2 GetTargetPosition()
 	{
@@ -101,5 +132,33 @@ public class Target
 			return TargetEntity.GlobalPosition;
 		}
 		return TargetPosition;
+	}
+	public Vector2? GetTargetPositionOrNull()
+	{
+		if (emptyTarget)
+		{
+			return null;
+		}
+		else
+		{
+			if (TargetEntity is not null)
+			{
+				return TargetEntity.GlobalPosition;
+			}
+			return TargetPosition;
+		}
+
+	}
+	public float GetTargetDirection(Vector2 subject, float defaultRot)
+	{
+		if (emptyTarget)
+		{
+			return defaultRot;
+		}
+		else
+		{
+			Vector2 targPos = GetTargetPosition();
+			return subject.AngleToPoint(targPos);
+		}
 	}
 }

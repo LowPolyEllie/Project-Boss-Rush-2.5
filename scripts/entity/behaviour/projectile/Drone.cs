@@ -36,16 +36,14 @@ public partial class Drone : Basic
 
 	public override void _Ready()
 	{
-		targeter.targetMode = targetMode;
+		targeter.subject = this;
 		targeter.targets = targets;
+		targeter.targetMode = targetMode;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		targeter.ResetTarget(this);
-
-		Vector2 targetPos = targeter.currentTarget.GetTargetPosition();
-		float targetRot = GlobalPosition.AngleToPoint(targetPos);
+		float targetRot = targeter.GetTargetDirection(Rotation);
 
 		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
 

@@ -36,20 +36,21 @@ public partial class Minion : Drone
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		targeter.ResetTarget(this);
-		Vector2 targetPos = targeter.currentTarget.GetTargetPosition();
-		
-		if (ignoreFollowLimit || Position.DistanceSquaredTo(targetPos) > followLimit * followLimit)
+		Vector2? targetPos = targeter.GetTargetPositionOrNull();
+		if (targetPos is Vector2 trueTargetPos)
 		{
-			acceleration += Vector2.FromAngle(Rotation) * GetAcceleration();
-		}
-		else
-		{
-			acceleration -= Vector2.FromAngle(Rotation) * GetAcceleration();
-			acceleration += Vector2.FromAngle(Rotation - Mathf.Pi / 2) * GetAcceleration();
+			if (ignoreFollowLimit || Position.DistanceSquaredTo(trueTargetPos) > followLimit * followLimit)
+			{
+				acceleration += Vector2.FromAngle(Rotation) * GetAcceleration();
+			}
+			else
+			{
+				acceleration -= Vector2.FromAngle(Rotation) * GetAcceleration();
+				acceleration += Vector2.FromAngle(Rotation - Mathf.Pi / 2) * GetAcceleration();
+			}
 		}
 
-		float targetRot = GlobalPosition.AngleToPoint(targetPos);
+		float targetRot = targeter.GetTargetDirection(Rotation);
 
 		float newAccuracy = useMinionAccuracy ? minionAccuracy : accuracy;
 		

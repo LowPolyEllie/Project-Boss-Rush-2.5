@@ -34,6 +34,8 @@ public partial class Turret : Entity
 	/// </summary>
 	public float rotation;
 
+	public float startingRot;
+
 	/// <summary>
 	/// Interpolation point for how fast the turret turns
 	/// </summary>
@@ -44,18 +46,17 @@ public partial class Turret : Entity
 	{
 		Init();
 		owner ??= this.SearchForParent<Entity>();
-		targeter.targetMode = targetMode;
+		targeter.subject = this;
 		targeter.targets = targets;
+		targeter.targetMode = targetMode;
 		rotation = GlobalRotation;
+		startingRot = Rotation;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
-		targeter.ResetTarget(this);
-
-		Vector2 targetPos = targeter.currentTarget.GetTargetPosition();
-		float targetRot = GlobalPosition.AngleToPoint(targetPos);
+		float targetRot = targeter.GetTargetDirection(startingRot + GetParent<Node2D>().GlobalRotation);
 
 		rotation = Mathf.LerpAngle(rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
 		GlobalRotation = rotation;
@@ -65,5 +66,12 @@ public partial class Turret : Entity
 	public override void _Process(double delta)
 	{
 		GlobalRotation = rotation;
+		if (controllable)
+		{
+			targeter.targetMode =
+			owner.inputMachine.TryGetInputEnabled(shootTrigger) ?
+			TargetMode.OWNER_TARGET : TargetMode.NONE;
+			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled(shootTrigger));
+		}
 	}
 }
