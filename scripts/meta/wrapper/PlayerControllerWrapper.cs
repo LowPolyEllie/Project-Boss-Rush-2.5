@@ -6,11 +6,7 @@ namespace BossRush2;
 [GlobalClass]
 public partial class PlayerControllerWrapper : Node, IBrObject
 {
-    public PlayerController playerController
-    {
-        get;
-        private set;
-    }
+    public PlayerController playerController;
 
     /// <summary>
     /// Camera that this controller uses
@@ -30,15 +26,17 @@ public partial class PlayerControllerWrapper : Node, IBrObject
 
     [Export]
     public Dictionary<string, Key> keyMapping = new()
-    { 
+    {
         {"Up",Key.W },
         {"Down",Key.S },
         {"Left",Key.A },
         {"Right",Key.D },
-        {"Fire",Key.Launch1 }
+        {"Fire",Key.Launch1 },
+        {"TiltLeft",Key.Q},
+        {"TiltRight",Key.E}
     };
     [Export]
-    public Array<string> variantInput = ["Target"];
+    public Array<string> variantInputs = ["Target"];
     [Export]
     public bool active { get; set; }
     public override void _Ready()
@@ -46,12 +44,14 @@ public partial class PlayerControllerWrapper : Node, IBrObject
         playerController = new()
         {
             keyMapping = keyMapping,
-            variantInput = variantInput,
+            variantInputs = variantInputs,
+            inputs = [..keyMapping.Keys],
             source = source,
             player = player,
             camera = camera,
             active = active
         };
-        playerController.InitInputMachine();
+        source.controller = playerController;
+        playerController.Init();
     }
 }

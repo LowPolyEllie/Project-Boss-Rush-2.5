@@ -121,7 +121,7 @@ public partial class World : Node, IBrObject
 	//Secondary initialisation, called after every other node's _Ready() has been called
 	public override void _Ready()
 	{
-		activePlayerController = activePlayerControllerWrapper.playerController;
+		activePlayerController = activePlayerControllerWrapper?.playerController;
 		EmitSignal(SignalName.InitSetup);
 	}
 }
