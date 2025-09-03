@@ -1,14 +1,11 @@
-using Godot;
-using Apoli.Types;
 using BossRush2;
-using Apoli.Powers;
 
 namespace Apoli.Actions;
 
 public class InputAction : EntityAction
 {
     protected string input;
-	public new static ParameterCollection parameterSet = new(
+    public new static ParameterCollection parameterSet = new(
         new ParameterInit<string>("Input", "")
     );
     public override void Init()
@@ -19,7 +16,7 @@ public class InputAction : EntityAction
 public class BeginInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.BeginInput;
-    public override void DoEntityAction(Entity subject)
+    public override void _DoEntityAction(Entity subject)
     {
         subject.inputMachine.InputEnable(input);
     }
@@ -27,7 +24,7 @@ public class BeginInput : InputAction
 public class EndInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.EndInput;
-    public override void DoEntityAction(Entity subject)
+    public override void _DoEntityAction(Entity subject)
     {
         subject.inputMachine.InputDisable(input);
     }
@@ -35,7 +32,7 @@ public class EndInput : InputAction
 public class FireInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.FireInput;
-    public override void DoEntityAction(Entity subject)
+    public override void _DoEntityAction(Entity subject)
     {
         subject.inputMachine.InputFire(input);
     }

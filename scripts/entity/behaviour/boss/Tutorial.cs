@@ -1,11 +1,7 @@
 using Godot;
-using Godot.Collections;
-using Apoli;
 using Apoli.Powers;
 using Apoli.Types;
 using Apoli.Actions;
-using Microsoft.VisualBasic;
-using System.Collections.Generic;
 using Apoli.States;
 namespace BossRush2;
 
@@ -19,11 +15,9 @@ public partial class Tutorial : Basic
 		stateMachine.AddLayer("Base", new StateLayer("Idle")
 		{
 			new State("Idle"){
-				new PowerBuilder()
-					.SetType(PowerId.ActionOnPhysicsTick)
-					.SetParam("Action", new Type<Action>(
-						new ActionBuilder()
-							.SetType(ActionId.Print)
+				new PowerBuilder<ActionOnPhysicsTick>()
+					.SetParam("EntityAction", new Type<EntityAction>(
+						(EntityAction)new ActionBuilder<Print>()
 							.SetParam("Message",
 								Type.FromValue("CMONNNN")
 							)

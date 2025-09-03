@@ -1,14 +1,13 @@
 using Godot;
-using Apoli.Types;
 using BossRush2;
 
 namespace Apoli.ValueFunctions;
 
-public class EntityValueFunction<T> : ValueFunction<T>
+public class EntityValueFunction<ReturnType> : ValueFunction<ReturnType,Entity>
 {
 	public override object ReturnValue(Node subject)
 	{
 		return ReturnEntityValue((Entity)subject);
 	}
-	public virtual T ReturnEntityValue(Entity subject) { return default; }
+	public virtual ReturnType ReturnEntityValue(Entity subject) { return default; }
 }

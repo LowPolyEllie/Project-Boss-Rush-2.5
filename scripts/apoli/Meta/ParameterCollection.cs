@@ -34,7 +34,7 @@ public class ParameterCollection : IEnumerable
 		}
 		throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
 	}
-	public TypeId GetType(string key)
+	public System.Type GetType(string key)
 	{
 		return parameters[key].type;
 	}
@@ -75,7 +75,6 @@ public class ParameterCollection : IEnumerable
 		{
 			parameters.Add(keyValuePair.Key, new Parameter()
 			{
-				type = keyValuePair.Value.type,
 				value = keyValuePair.Value.value
 			});
 		}
@@ -101,13 +100,11 @@ public class ParameterCollection : IEnumerable
 public class ParameterCollectionInitParam
 {
 	public string name;
-	public TypeId type;
 	public virtual object value { get; set; }
 	public virtual Parameter ToParameter()
 	{
 		return new()
 		{
-			type = type,
 			value = Types.Type.FromValue(value)
 		};
 	}
@@ -126,39 +123,24 @@ public class ParameterInit<T> : ParameterCollectionInitParam
 			_value = (T)value;
 		}
 	}
-	public ParameterInit(string _name, TypeId _type, T __value)
-	{
-		name = _name;
-		type = _type;
-		value = __value;
-	}
-	public ParameterInit(string _name, TypeId _type)
-	{
-		name = _name;
-		type = _type;
-	}
 	public ParameterInit(string _name, T __value)
 	{
 		name = _name;
-		type = Type.typeIdMatch.GetFirstKey(typeof(T));
 		value = __value;
 	}
 	public ParameterInit(string _name, Type<T> __value)
 	{
 		name = _name;
-		type = Type.typeIdMatch.GetFirstKey(typeof(T));
 		value = __value.value;
 	}
 	public ParameterInit(string _name)
 	{
 		name = _name;
-		type = Type.typeIdMatch.GetFirstKey(typeof(T));
 	}
     public override Parameter ToParameter()
     {
         return new Parameter<T>()
 		{
-			type = type,
 			value = new Type<T>(_value)
 		};
     }

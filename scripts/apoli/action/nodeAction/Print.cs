@@ -1,13 +1,12 @@
 using Godot;
-using Apoli.Types;
 
 namespace Apoli.Actions;
-public class Print: Action {
+public class Print: NodeAction<Node> {
 	public override ActionId type { get; set; } = ActionId.Print;
 	public new static ParameterCollection parameterSet = new(
 		new ParameterInit<string>("Message","")
 	);
-	public override void DoAction(Node subject)
+	public override void _DoNodeAction(Node subject)
 	{
 		if (!parameters.HasParam("Message"))
 		{

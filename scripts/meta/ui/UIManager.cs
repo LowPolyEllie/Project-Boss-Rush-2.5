@@ -11,7 +11,7 @@ public partial class UIManager : Control, IBrObject
 {
 	public static UIManager activeManager { get; set; }
 
-    public override void _EnterTree()
+	public override void _EnterTree()
 	{
 		activeManager = this;
 	}

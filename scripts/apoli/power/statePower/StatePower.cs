@@ -1,11 +1,3 @@
-
-
-using Apoli.Actions;
-using BossRush2;
-using Apoli.Types;
-using Godot;
-using Apoli.States;
-
 namespace Apoli.Powers;
 
 public class StatePower : Power

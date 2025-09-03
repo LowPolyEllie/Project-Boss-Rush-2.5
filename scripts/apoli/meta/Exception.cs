@@ -10,4 +10,8 @@ namespace Apoli
     {
         public InvalidParameterException(string msg):base(msg){}
     }
+    public class TypeUnsetException : ApoliException
+    {
+        public TypeUnsetException(string msg):base(msg){}
+    }
 }

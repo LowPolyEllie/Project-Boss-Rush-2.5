@@ -1,13 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Apoli.Types;
-using Apoli.Actions;
-using Godot;
-using System;
 using Apoli.States;
-using Apoli.Conditions;
 
 namespace Apoli.Powers;
 
@@ -38,7 +29,7 @@ public class Power : ApoliObject
 
 	}
 	public new static ParameterCollection parameterSet = new(
-		new ParameterInit<Condition>("Condition")
+		new ParameterInit<bool>("EntityCondition")
 	);
 }
 public class ActionOnCallback : Power
