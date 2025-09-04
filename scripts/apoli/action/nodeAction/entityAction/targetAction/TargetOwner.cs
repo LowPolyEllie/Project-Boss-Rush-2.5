@@ -10,6 +10,6 @@ public class TargetOwner : TargetAction
     public override ActionId type { get; set; } = ActionId.TargetOwner;
     public override void DoAction(Entity subject)
     {
-        parameters.GetValue<EntityAction>("EntityAction", subject).DoAction((Entity)subject.Owner);
+        GetValue<EntityAction>("EntityAction", subject).DoAction((Entity)subject.Owner);
     }
 }

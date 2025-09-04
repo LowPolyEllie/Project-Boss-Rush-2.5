@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Apoli.Types;
 
 namespace Apoli;
 
@@ -24,11 +25,12 @@ public class ApoliObject
 	}
 	public virtual void Init()
 	{
+		
 		foreach (Parameter parameter in parameters)
 		{
-			if (parameter.value.isApoliObject)
+			if (((IValue)parameter.value).GetUndefinedValue().GetType().IsAssignableTo(typeof(ApoliObject)))
 			{
-				((ApoliObject)parameter.value.value)?.Init();
+				((ApoliObject)((IValue)parameter.value).GetUndefinedValue())?.Init();
 			}
 		}
 	}

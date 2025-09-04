@@ -23,7 +23,11 @@ public interface IAction<in Subject>
 {
 	public void DoAction(Subject subject);
 }
-public class Action<Subject> : Action,IAction<Subject>
+public class Action<Subject> : Action, IAction<Subject>
 {
-	public virtual void DoAction(Subject subject) {}
+	public virtual void DoAction(Subject subject) { }
+	
+	public T GetValue<T>(string key, Subject subject){
+		return parameters.GetValue<T, Subject>(key, subject);
+	}
 }

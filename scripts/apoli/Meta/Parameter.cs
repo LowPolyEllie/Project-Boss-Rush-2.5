@@ -4,7 +4,7 @@ namespace Apoli;
 
 public class Parameter
 {
-	public virtual Type value { get; set; }
+	public virtual object value { get; set; }
 	public virtual System.Type type { get;}
 
 }
@@ -12,7 +12,7 @@ public class Parameter<T> : Parameter
 {
 	public Type<T> _value;
 	public override System.Type type { get; } = typeof(T);
-    public override Type value
+    public new IValue<T> value
 	{
 		get
 		{

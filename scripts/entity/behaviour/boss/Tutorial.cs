@@ -3,6 +3,7 @@ using Apoli.Powers;
 using Apoli.Types;
 using Apoli.Actions;
 using Apoli.States;
+using Apoli.ValueFunctions;
 namespace BossRush2;
 
 [GlobalClass]
@@ -16,12 +17,19 @@ public partial class Tutorial : Basic
 		{
 			new State("Idle"){
 				new PowerBuilder<ActionOnPhysicsTick>()
-					.SetParam("EntityAction", new Type<IAction<Entity>>(
-						(IAction<Entity>)new ActionBuilder<Print>()
-							.SetParam("Message",
-								Type.FromValue("CMONNNN")
-							)
-						.Build()))
+				.SetParam<IAction<Entity>>("EntityAction",
+					new ActionBuilder<Print<Entity>>()
+					.SetParam<string>("Message",
+						new ValueFunctionBuilder<Concat<Entity>>()
+						.SetParam("String1","MY NAME IS ")
+						.SetParam<string>("String2",
+							new ValueFunctionBuilder<GetName>()
+							.Build()
+						)
+						.Build()
+					)
+					.Build()
+				)
 				.Build()
 			}
 		}
