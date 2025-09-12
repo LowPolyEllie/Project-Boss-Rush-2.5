@@ -31,6 +31,7 @@ public partial class Drone : Basic
 
     public override void _Ready()
     {
+		Init();
 		initTargetMode = targeter.targetMode;
     }
 
