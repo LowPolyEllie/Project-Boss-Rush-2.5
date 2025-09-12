@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 namespace BossRush2;
 
@@ -9,7 +10,7 @@ namespace BossRush2;
 public partial class TeamTarget : Resource, IBrObject
 {
     [Export]
-    public string teamLayer, team;
+    public Dictionary<string,string> teamData;
     [Export]
     public float distanceMultiplier = 1f;
 

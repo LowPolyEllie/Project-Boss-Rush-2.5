@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dh310ju1p6x8d"]
+[gd_resource type="Resource" script_class="TankLoader" load_steps=3 format=3 uid="uid://dh310ju1p6x8d"]
 
 [ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/tank/TankLoader.cs" id="1_3nov8"]
 [ext_resource type="PackedScene" uid="uid://bq3sdv51ml0ap" path="res://scenes/player/tanks/TripleShot.tscn" id="2_3nov8"]

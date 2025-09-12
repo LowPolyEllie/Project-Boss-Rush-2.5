@@ -27,8 +27,7 @@ metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
 [sub_resource type="Resource" id="Resource_eukjb"]
 script = ExtResource("6_75lr2")
-teamLayer = "Side"
-team = "Polygon"
+teamData = null
 distanceMultiplier = 1.0
 metadata/_custom_type_script = "uid://ctkjd0bbwtktq"
 

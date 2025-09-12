@@ -61,23 +61,26 @@ public partial class Targeter : EntitySegment, IBrObject
 				float closestDist = -1f;
 				Entity closestEntity = null;
 				var activeTeams = World.activeWorld.activeTeams;
-				foreach (var thisTeam in targets)
+				foreach (var thisTeamGroup in targets)
 				{
-					foreach (
-						var thisEntity in
-						activeTeams.GetLayer(thisTeam.teamLayer).GetTeam(thisTeam.team).members
-					)
+					foreach (var thisTeam in thisTeamGroup.teamData)
 					{
-						float distSquared =
-							thisEntity.GlobalPosition.DistanceSquaredTo(GlobalPosition)
-							* thisTeam.distanceMultiplier;
-						if (
-							closestDist < 0 ||
-							distSquared < closestDist
+						foreach (
+							var thisEntity in
+							activeTeams.GetLayer(thisTeam.Key).GetTeam(thisTeam.Value).members
 						)
 						{
-							closestDist = distSquared;
-							closestEntity = thisEntity;
+							float distSquared =
+								thisEntity.GlobalPosition.DistanceSquaredTo(GlobalPosition)
+								* thisTeamGroup.distanceMultiplier;
+							if (
+								closestDist < 0 ||
+								distSquared < closestDist
+							)
+							{
+								closestDist = distSquared;
+								closestEntity = thisEntity;
+							}
 						}
 					}
 				}
