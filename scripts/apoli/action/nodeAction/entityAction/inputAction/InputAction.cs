@@ -16,7 +16,7 @@ public class InputAction : EntityAction
 public class BeginInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.BeginInput;
-    public override void _DoEntityAction(Entity subject)
+    public override void DoAction(Entity subject)
     {
         subject.inputMachine.InputEnable(input);
     }
@@ -24,7 +24,7 @@ public class BeginInput : InputAction
 public class EndInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.EndInput;
-    public override void _DoEntityAction(Entity subject)
+    public override void DoAction(Entity subject)
     {
         subject.inputMachine.InputDisable(input);
     }
@@ -32,7 +32,7 @@ public class EndInput : InputAction
 public class FireInput : InputAction
 {
     public override ActionId type { get; set; } = ActionId.FireInput;
-    public override void _DoEntityAction(Entity subject)
+    public override void DoAction(Entity subject)
     {
         subject.inputMachine.InputFire(input);
     }

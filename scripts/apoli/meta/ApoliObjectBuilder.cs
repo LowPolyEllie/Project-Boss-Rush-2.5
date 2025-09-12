@@ -1,40 +1,39 @@
-using System;
-using System.Collections.Generic;
+using Apoli.Types;
 using Godot;
 
 namespace Apoli;
 
-public class ApoliObjectBuilder<Type>
+public class ApoliObjectBuilder<ObjectType>
 {
 	protected ParameterCollection _parameters = new();
 	public ApoliObject _Build()
 	{
 		ApoliObject newObject;
-		newObject = (ApoliObject)Activator.CreateInstance(typeof(Type));
+		newObject = (ApoliObject)System.Activator.CreateInstance(typeof(ObjectType));
 		newObject.parameters.AddFrom(_parameters);
 		return newObject;
 	}
-	public ApoliObjectBuilder<Type> _SetParam(string Key, Types.Type Value)
+	public ApoliObjectBuilder<ObjectType> _SetParam<T>(string Key, IValue<T> Value)
 	{
+		GD.Print(Key);
+		GD.Print(typeof(T));
 		if (!_parameters.HasParam(Key))
 		{
 			throw new TypeUnsetException("No keys matching \"" + Key + "\" found. use ApoliObjectBuilder.SetType() before setting values");
 		}
-		if (!_parameters.GetType(Key).IsAssignableFrom(Value.type))
+		if (!_parameters.GetType(Key).IsAssignableFrom(typeof(T)))
 		{
-			throw new InvalidParameterException("Wrong Apoli type: Expected " + _parameters.GetType(Key) + ", got " + Value.type);
+			throw new InvalidParameterException("Wrong Apoli type: Expected " + _parameters.GetType(Key).ToString() + ", got " + typeof(T).ToString());
 		}
 		_parameters.SetValue(Key, Value);
 		return this;
 	}
-	public ApoliObjectBuilder(){
-		_parameters = ApoliObject.GetParameterSet(typeof(Type));
-	}
-	/*public ApoliObjectBuilder _SetType(Enum _type)
+	public ApoliObjectBuilder<ObjectType> _SetParam<T>(string Key, T Value)
 	{
-		type = _type;
-		internalType = apoliIdMatch[type];
-		_parameters = ApoliObject.GetParameterSet(internalType);
-		return this;
-	}*/
+		return _SetParam<T>(Key,Type<T>.FromValue(Value));
+	}
+	public ApoliObjectBuilder()
+	{
+		_parameters = ApoliObject.GetParameterSet(typeof(ObjectType));
+	}
 }

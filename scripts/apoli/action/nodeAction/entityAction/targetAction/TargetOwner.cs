@@ -1,4 +1,5 @@
 using BossRush2;
+using Godot;
 
 namespace Apoli.Actions;
 /// <summary>
@@ -7,8 +8,8 @@ namespace Apoli.Actions;
 public class TargetOwner : TargetAction
 {
     public override ActionId type { get; set; } = ActionId.TargetOwner;
-    public override void _DoEntityAction(Entity subject)
+    public override void DoAction(Entity subject)
     {
-        parameters.GetValue<EntityAction>("EntityAction",subject).DoAction(subject.Owner);
+        GetValue<EntityAction>("EntityAction", subject).DoAction((Entity)subject.Owner);
     }
 }

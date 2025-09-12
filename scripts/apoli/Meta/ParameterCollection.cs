@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Apoli.Types;
+using Apoli.ValueFunctions;
 using Godot;
 
 namespace Apoli;
@@ -14,29 +15,33 @@ public class ParameterCollection : IEnumerable
 	{
 		return new ParameterEnumerator(parameters);
 	}
-	public object GetValue(string key)
-	{
-		return parameters[key].value.value;
-	}
 	public T GetValue<T>(string key)
 	{
-		if (parameters[key].value.value is T tValue)
-		{
-			return tValue;
+		IValue<T> value = parameters[key].value as IValue<T>;
+		if (value is null) {
+			throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
 		}
-		throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
+		return value.GetValue();
 	}
-	public T GetValue<T>(string key, Node subject)
+	public T GetValue<T,Subject>(string key, Subject subject)
 	{
-		if (parameters[key].value.value is T)
+		IValueFunction<T,Subject> value = parameters[key].value as IValueFunction<T,Subject>;
+		if (value is null)
 		{
-			return (T)parameters[key].value.GetValue(subject);
+			return GetValue<T>(key);
 		}
-		throw new System.Exception("Value at key " + key + " not of type " + typeof(T).Name);
+		return value.GetValue(subject);
 	}
 	public System.Type GetType(string key)
 	{
-		return parameters[key].type;
+		if (HasParam(key))
+		{
+			return parameters[key].type;
+		}
+		else
+		{
+			throw new KeyNotFoundException("No key called " + key);
+		}
 	}
 	public Parameter GetParam(string key)
 	{
@@ -46,7 +51,7 @@ public class ParameterCollection : IEnumerable
 	{
 		return parameters.ContainsKey(key);
 	}
-	public void SetValue(string key, Type value)
+	public void SetValue<T>(string key, IValue<T> value)
 	{
 		if (HasParam(key))
 		{
@@ -92,7 +97,7 @@ public class ParameterCollection : IEnumerable
 		string output = "";
 		foreach (KeyValuePair<string, Parameter> keyValuePair in parameters)
 		{
-			output += keyValuePair.Key + " : " + keyValuePair.Value.ToString() + "\n";
+			output += keyValuePair.Key + " : " + keyValuePair.Value?.ToString() + "\n";
 		}
 		return output;
 	}
@@ -100,50 +105,33 @@ public class ParameterCollection : IEnumerable
 public class ParameterCollectionInitParam
 {
 	public string name;
-	public virtual object value { get; set; }
-	public virtual Parameter ToParameter()
-	{
-		return new()
-		{
-			value = Types.Type.FromValue(value)
-		};
-	}
+	public object value { get; set; }
+	public virtual Parameter ToParameter() { return default; }
 }
 public class ParameterInit<T> : ParameterCollectionInitParam
 {
-	public T _value;
-    public override object value
-	{
-		get
-		{
-			return _value;
-		}
-		set
-		{
-			_value = (T)value;
-		}
-	}
-	public ParameterInit(string _name, T __value)
+	public new T value;
+	public ParameterInit(string _name, T _value)
 	{
 		name = _name;
-		value = __value;
+		value = _value;
 	}
-	public ParameterInit(string _name, Type<T> __value)
+	public ParameterInit(string _name, Type<T> _value)
 	{
 		name = _name;
-		value = __value.value;
+		value = _value.value;
 	}
 	public ParameterInit(string _name)
 	{
 		name = _name;
 	}
-    public override Parameter ToParameter()
-    {
-        return new Parameter<T>()
+	public override Parameter ToParameter()
+	{
+		return new Parameter<T>()
 		{
-			value = new Type<T>(_value)
+			value = new Type<T>(value)
 		};
-    }
+	}
 }
 public class ParameterEnumerator : IEnumerator
 {

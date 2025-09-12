@@ -1,17 +1,22 @@
-using System;
-using System.Collections.Generic;
+using Apoli.Types;
+using Godot;
 
 namespace Apoli.Actions;
 
-public class ActionBuilder<ActionType> : ApoliObjectBuilder<ActionType> where ActionType:Action
+public class ActionBuilder<ActionType> : ApoliObjectBuilder<ActionType> where ActionType : Action
 {
-	public Action Build()
+	public ActionBuilder<ActionType> SetParam<T>(string Key, IValue<T> Value)
 	{
-		return (Action)_Build();
+		_SetParam<T>(Key, Value);
+		return this;
 	}
-	public ActionBuilder<ActionType> SetParam(string Key, Types.Type Value)
+	public ActionBuilder<ActionType> SetParam<T>(string Key, T Value)
 	{
 		_SetParam(Key, Value);
 		return this;
+	}
+	public ActionType Build()
+	{
+		return (ActionType)_Build();
 	}
 }

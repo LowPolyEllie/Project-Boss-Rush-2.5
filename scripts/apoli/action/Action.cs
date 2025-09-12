@@ -15,13 +15,19 @@ public class Action : ApoliObject
 {
 	public Power power;
 	public virtual ActionId type { get; set; }
-	public virtual void DoAction(object subject) { }
 	public new static ParameterCollection parameterSet = new(
 		new ParameterInit<bool>("Condition")
 	);
 }
-public class Action<Subject> : Action
+public interface IAction<in Subject>
 {
-	public override void DoAction(object subject) { _DoAction((Subject)subject); }
-	public virtual void _DoAction(Subject subject) { }
+	public void DoAction(Subject subject);
+}
+public class Action<Subject> : Action, IAction<Subject>
+{
+	public virtual void DoAction(Subject subject) { }
+	
+	public T GetValue<T>(string key, Subject subject){
+		return parameters.GetValue<T, Subject>(key, subject);
+	}
 }

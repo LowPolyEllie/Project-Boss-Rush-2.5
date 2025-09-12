@@ -5,9 +5,9 @@ namespace Apoli.ValueFunctions;
 
 public class EntityValueFunction<ReturnType> : ValueFunction<ReturnType,Entity>
 {
-	public override object ReturnValue(Node subject)
+	public override ReturnType GetValue(Entity subject)
 	{
-		return ReturnEntityValue((Entity)subject);
+		return ReturnEntityValue(subject);
 	}
 	public virtual ReturnType ReturnEntityValue(Entity subject) { return default; }
 }
