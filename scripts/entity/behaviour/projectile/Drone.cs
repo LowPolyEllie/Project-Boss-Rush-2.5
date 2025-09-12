@@ -9,12 +9,6 @@ namespace BossRush2;
 [GlobalClass]
 public partial class Drone : Basic
 {
-	public Targeter targeter = new();
-	[Export]
-	public TargetMode targetMode = TargetMode.NONE;
-	[Export]
-	public Array<string> targets = [];
-
 	/// <summary>
 	/// If this is on, the drone will be controlled according to owner inputs
 	/// </summary>
@@ -33,12 +27,13 @@ public partial class Drone : Basic
 	[Export]
 	public float accuracy = 0.9f;
 
-	public override void _Ready()
-	{
-		targeter.subject = this;
-		targeter.targets = targets;
-		targeter.targetMode = targetMode;
-	}
+	protected TargetMode initTargetMode;
+
+    public override void _Ready()
+    {
+		initTargetMode = targeter.targetMode;
+    }
+
 	public override void _PhysicsProcess(double delta)
 	{
 		float deltaF = (float)delta;
@@ -50,14 +45,15 @@ public partial class Drone : Basic
 
 		UpdateVelocity(deltaF);
 	}
+	
 	public override void _Process(double delta)
 	{
 		if (controllable)
 		{
 			targeter.targetMode =
 			owner.inputMachine.TryGetInputEnabled(controlTrigger) ?
-			TargetMode.OWNER_TARGET : TargetMode.OWNER;
-			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled(controlTrigger));
+			TargetMode.OWNER_TARGET : initTargetMode;
+			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled("Fire"));
 		}
 	}
 }

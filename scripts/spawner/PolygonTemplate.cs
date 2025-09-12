@@ -6,7 +6,7 @@ namespace BossRush2;
 /// The data used to generate a polygon with the spawner
 /// </summary>
 [GlobalClass]
-public partial class PolygonTemplate : Resource
+public partial class PolygonTemplate : Resource, IBrObject
 {
 	/// <summary>
 	/// The higher the value, the more likely this template is to be selected

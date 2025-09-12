@@ -8,7 +8,7 @@ namespace BossRush2;
 /// A node that automatically faces a target
 /// </summary>
 [GlobalClass]
-public partial class Turret : Entity
+public partial class Turret : Entity, ITargetable
 {
 	/// <summary>
 	/// The parent's input type that would cause this cannon to shoot
@@ -19,11 +19,7 @@ public partial class Turret : Entity
 	public override List<string> inputs { get; set; } = ["Fire"];
 
 	[Export]
-	public TargetMode targetMode;
-	[Export]
-	public Array<string> targets;
-
-	public Targeter targeter = new();
+	public Targeter targeter { get; set; }
 
 	[Export]
 	public bool controllable;
@@ -35,6 +31,8 @@ public partial class Turret : Entity
 
 	public float startingRot;
 
+	protected TargetMode initTargetMode;
+
 	/// <summary>
 	/// Interpolation point for how fast the turret turns
 	/// </summary>
@@ -45,11 +43,9 @@ public partial class Turret : Entity
 	{
 		Init();
 		owner ??= this.SearchForParent<Entity>();
-		targeter.subject = this;
-		targeter.targets = targets;
-		targeter.targetMode = targetMode;
 		rotation = GlobalRotation;
 		startingRot = Rotation;
+		initTargetMode = targeter.targetMode;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -59,7 +55,7 @@ public partial class Turret : Entity
 
 		rotation = Mathf.LerpAngle(rotation, targetRot, 1 - Mathf.Pow(1 - accuracy, deltaF));
 		GlobalRotation = rotation;
-		inputMachine.SetInputEnabled("Fire", owner.inputMachine.TryGetInputEnabled(shootTrigger));
+		inputMachine.SetInputEnabled("Fire",!targeter.currentTarget.emptyTarget);
 	}
 
 	public override void _Process(double delta)
@@ -69,8 +65,7 @@ public partial class Turret : Entity
 		{
 			targeter.targetMode =
 			owner.inputMachine.TryGetInputEnabled(shootTrigger) ?
-			TargetMode.OWNER_TARGET : TargetMode.NONE;
-			inputMachine.SetInputEnabled("Fire",owner.inputMachine.TryGetInputEnabled(shootTrigger));
+			TargetMode.OWNER_TARGET : initTargetMode;
 		}
 	}
 }

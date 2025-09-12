@@ -52,7 +52,7 @@ public partial class Minion : Drone
 		float targetRot = targeter.GetTargetDirection(Rotation);
 
 		float newAccuracy = useMinionAccuracy ? minionAccuracy : accuracy;
-		
+
 		Rotation = Mathf.LerpAngle(Rotation, targetRot, 1 - Mathf.Pow(1 - newAccuracy, deltaF));
 
 
@@ -70,7 +70,7 @@ public partial class Minion : Drone
 			}
 			else
 			{
-				targeter.targetMode = TargetMode.OWNER;
+				targeter.targetMode = initTargetMode;
 				ignoreFollowLimit = true;
 				useMinionAccuracy = false;
 			}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3yrqihchr15q"]
+[gd_scene load_steps=15 format=3 uid="uid://b3yrqihchr15q"]
 
 [ext_resource type="Script" uid="uid://cx2p4ukd2q2vm" path="res://scripts/entity/behaviour/projectile/Minion.cs" id="1_xeqes"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_1562y"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://g7mv4netbpkr" path="res://scenes/player/projectiles/SmallBullet.tscn" id="6_xeqes"]
 [ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="7_xeqes"]
 [ext_resource type="Texture2D" uid="uid://cgyhcc45p6am7" path="res://textures/player/cannon/SmallCannon.svg" id="8_byjtg"]
+[ext_resource type="Script" uid="uid://5y1q5b528821" path="res://scripts/entity/behaviour/target/Targeter.cs" id="9_ml1sp"]
+[ext_resource type="Script" uid="uid://ctkjd0bbwtktq" path="res://scripts/entity/behaviour/target/TeamTarget.cs" id="10_y0cvc"]
 
 [sub_resource type="Resource" id="Resource_dppdj"]
 resource_local_to_scene = true
@@ -42,12 +44,19 @@ DoApply = true
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[node name="BasicMinion" type="Node2D"]
+[sub_resource type="Resource" id="Resource_eukjb"]
+script = ExtResource("10_y0cvc")
+teamLayer = "Side"
+team = "Polygon"
+distanceMultiplier = 1.0
+metadata/_custom_type_script = "uid://ctkjd0bbwtktq"
+
+[node name="BasicMinion" type="Node2D" node_paths=PackedStringArray("targeter")]
 script = ExtResource("1_xeqes")
 minionAccuracy = 0.99
-targetMode = 1
 controllable = true
 accuracy = 0.95
+targeter = NodePath("Targeter")
 stats = SubResource("Resource_dppdj")
 velocity = Vector2(1, 0)
 isTopLevel = true
@@ -76,3 +85,9 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 
 [node name="CannonSprite" type="Sprite2D" parent="Cannon"]
 texture = ExtResource("8_byjtg")
+
+[node name="Targeter" type="Node2D" parent="."]
+script = ExtResource("9_ml1sp")
+_targetMode = 1
+targets = Array[ExtResource("10_y0cvc")]([SubResource("Resource_eukjb")])
+metadata/_custom_type_script = "uid://5y1q5b528821"

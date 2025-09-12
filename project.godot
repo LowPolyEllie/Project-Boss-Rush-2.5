@@ -15,6 +15,10 @@ config/description="Project Boss Rush 2, rebuilt and newed into a brand new engi
 run/main_scene="uid://6mehkqxcptea"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 
+[display]
+
+window/size/mode=3
+
 [dotnet]
 
 project/assembly_name="Project Boss Rush 2.5"

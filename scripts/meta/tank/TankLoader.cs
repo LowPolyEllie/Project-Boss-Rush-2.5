@@ -27,14 +27,24 @@ public partial class TankLoader : Resource, IBrObject
 
         foreach (var toDelete in target.GetChildren())
         {
-            target.RemoveChild(toDelete);
-            toDelete.QueueFree();
+            if (
+                    toDelete is IEntitySegment entitySegment && !entitySegment.persistent
+                )
+            {
+                target.RemoveChild(toDelete);
+                toDelete.QueueFree();
+            }
         }
         foreach (var toAdd in toSteal.GetChildren())
         {
             toAdd.Owner = null; //to shut the compiler up
-            toSteal.RemoveChild(toAdd);
-            target.AddChild(toAdd);
+            if (
+                    toAdd is IEntitySegment entitySegment && !entitySegment.persistent
+                )
+            {
+                toSteal.RemoveChild(toAdd);
+                target.AddChild(toAdd);
+            }
         }
 
         toSteal.QueueFree();

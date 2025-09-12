@@ -35,10 +35,12 @@ public class PlayerController : Controller, IBrObject
 		InitInputMachine();
 		basis.playerController = this;
 	}
+
+	// Removed the jank
 	public void ProcessInput(double delta)
 	{
-		//Kinda jank but it works
-		inputMachine.SetVariantInput("Target", source.GetGlobalMousePosition());
+		// Kinda jank but it works
+		// inputMachine.SetVariantInput("Target", source.GetGlobalMousePosition());
 	}
 	
 	public void AddKeybind(string input, Key key, bool @override = false)

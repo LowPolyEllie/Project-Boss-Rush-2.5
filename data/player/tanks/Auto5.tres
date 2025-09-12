@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TankLoader" load_steps=3 format=3 uid="uid://bx8pui020os3i"]
 
-[ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/TankLoader.cs" id="1_tdxfx"]
+[ext_resource type="Script" uid="uid://d046lyoyydsb" path="res://scripts/meta/tank/TankLoader.cs" id="1_tdxfx"]
 [ext_resource type="PackedScene" uid="uid://vgvc6nnsjmj3" path="res://scenes/player/tanks/Auto5.tscn" id="2_6lnwu"]
 
 [resource]

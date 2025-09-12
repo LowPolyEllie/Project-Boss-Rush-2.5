@@ -17,4 +17,9 @@ public interface IEntitySegment
 	/// Whether the entity can independently collide
 	/// </summary>
 	public bool isTopLevel { get; set; }
+
+	/// <summary>
+	/// Whether or not this node will remain after a tankload
+	/// </summary>
+	public bool persistent { get; set; }
 }

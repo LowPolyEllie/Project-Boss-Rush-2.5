@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cb0eyptjm8r6u"]
+[gd_scene load_steps=10 format=3 uid="uid://cb0eyptjm8r6u"]
 
 [ext_resource type="Script" uid="uid://5y3so1lii4db" path="res://scripts/entity/behaviour/projectile/Drone.cs" id="1_lti5p"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_ayd0k"]
 [ext_resource type="Texture2D" uid="uid://dbsxwqndm8hvi" path="res://textures/player/projectiles/BasicDrone.svg" id="3_37uk1"]
 [ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="4_75lr2"]
+[ext_resource type="Script" uid="uid://5y1q5b528821" path="res://scripts/entity/behaviour/target/Targeter.cs" id="5_37uk1"]
+[ext_resource type="Script" uid="uid://ctkjd0bbwtktq" path="res://scripts/entity/behaviour/target/TeamTarget.cs" id="6_75lr2"]
 
 [sub_resource type="Resource" id="Resource_32d87"]
 resource_local_to_scene = true
@@ -23,11 +25,18 @@ metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_32d87"]
 
-[node name="BasicDrone" type="Node2D"]
+[sub_resource type="Resource" id="Resource_eukjb"]
+script = ExtResource("6_75lr2")
+teamLayer = "Side"
+team = "Polygon"
+distanceMultiplier = 1.0
+metadata/_custom_type_script = "uid://ctkjd0bbwtktq"
+
+[node name="BasicDrone" type="Node2D" node_paths=PackedStringArray("targeter")]
 script = ExtResource("1_lti5p")
-targetMode = 1
 controllable = true
 accuracy = 0.95
+targeter = NodePath("Targeter")
 stats = SubResource("Resource_32d87")
 isTopLevel = true
 metadata/_custom_type_script = "uid://5y3so1lii4db"
@@ -42,3 +51,9 @@ metadata/_custom_type_script = "uid://8au7v2dw2h03"
 
 [node name="Collider" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_32d87")
+
+[node name="Targeter" type="Node2D" parent="."]
+script = ExtResource("5_37uk1")
+_targetMode = 1
+targets = Array[ExtResource("6_75lr2")]([SubResource("Resource_eukjb")])
+metadata/_custom_type_script = "uid://5y1q5b528821"

@@ -10,6 +10,11 @@ namespace BossRush2;
 public partial class Hitbox : Area2D, IBrObject, IEntitySegment
 {
 	/// <summary>
+	/// Whether or not this node will remain after a tankload
+	/// </summary>
+	public bool persistent { get; set; }
+	
+	/// <summary>
 	/// Currently colliding entities with the hitbox
 	/// </summary>
 	protected List<Entity> collidingEntities = [];

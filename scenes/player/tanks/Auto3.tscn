@@ -1,6 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://jea1tiwx25aq"]
+[gd_scene load_steps=29 format=3 uid="uid://jea1tiwx25aq"]
 
-[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_fwdv0"]
+[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/generic/Basic.cs" id="1_fwdv0"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_2pfwo"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_gwh67"]
 [ext_resource type="Script" uid="uid://duyti1ql6ixwq" path="res://scripts/entity/EntitySegment.cs" id="4_gwh67"]
@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://1tt5gsaxvm5w" path="res://scenes/player/projectiles/BasicBullet.tscn" id="17_v33bl"]
 [ext_resource type="Texture2D" uid="uid://brug1ufdts2pk" path="res://textures/player/cannon/BasicCannon.svg" id="18_2pfwo"]
 [ext_resource type="Texture2D" uid="uid://cgyhcc45p6am7" path="res://textures/player/cannon/SmallCannon.svg" id="18_ngued"]
+[ext_resource type="Script" uid="uid://5y1q5b528821" path="res://scripts/entity/behaviour/target/Targeter.cs" id="19_q3aey"]
+[ext_resource type="Script" uid="uid://ctkjd0bbwtktq" path="res://scripts/entity/behaviour/target/TeamTarget.cs" id="20_d4rbi"]
 
 [sub_resource type="Resource" id="Resource_ntk6r"]
 script = ExtResource("2_2pfwo")
@@ -68,6 +70,13 @@ LifeTime = -1.0
 DoApply = true
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
+
+[sub_resource type="Resource" id="Resource_eukjb"]
+script = ExtResource("20_d4rbi")
+teamLayer = "Side"
+team = "Polygon"
+distanceMultiplier = 1.0
+metadata/_custom_type_script = "uid://ctkjd0bbwtktq"
 
 [sub_resource type="Resource" id="Resource_gwh67"]
 script = ExtResource("2_2pfwo")
@@ -131,10 +140,9 @@ metadata/_custom_type_script = "uid://8au7v2dw2h03"
 [node name="Collider" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_o6odb")
 
-[node name="Turret" type="Node2D" parent="."]
+[node name="Turret" type="Node2D" parent="." node_paths=PackedStringArray("targeter")]
 script = ExtResource("15_47kf3")
-targetMode = 2
-targets = Array[String]([])
+targeter = NodePath("Targeter")
 controllable = true
 accuracy = 0.95
 stats = SubResource("Resource_kiex2")
@@ -158,11 +166,16 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 [node name="CannonSprite" type="Sprite2D" parent="Turret/Cannon/Body"]
 texture = ExtResource("18_ngued")
 
-[node name="Turret2" type="Node2D" parent="."]
+[node name="Targeter" type="Node2D" parent="Turret"]
+script = ExtResource("19_q3aey")
+_targetMode = 4
+targets = Array[ExtResource("20_d4rbi")]([SubResource("Resource_eukjb")])
+metadata/_custom_type_script = "uid://5y1q5b528821"
+
+[node name="Turret2" type="Node2D" parent="." node_paths=PackedStringArray("targeter")]
 position = Vector2(0, 50)
 script = ExtResource("15_47kf3")
-targetMode = 2
-targets = Array[String]([])
+targeter = NodePath("Targeter")
 controllable = true
 accuracy = 0.95
 stats = SubResource("Resource_kiex2")
@@ -186,11 +199,16 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 [node name="CannonSprite" type="Sprite2D" parent="Turret2/Cannon/Body"]
 texture = ExtResource("18_ngued")
 
-[node name="Turret3" type="Node2D" parent="."]
+[node name="Targeter" type="Node2D" parent="Turret2"]
+script = ExtResource("19_q3aey")
+_targetMode = 4
+targets = Array[ExtResource("20_d4rbi")]([SubResource("Resource_eukjb")])
+metadata/_custom_type_script = "uid://5y1q5b528821"
+
+[node name="Turret3" type="Node2D" parent="." node_paths=PackedStringArray("targeter")]
 position = Vector2(0, -50)
 script = ExtResource("15_47kf3")
-targetMode = 2
-targets = Array[String]([])
+targeter = NodePath("Targeter")
 controllable = true
 accuracy = 0.95
 stats = SubResource("Resource_kiex2")
@@ -214,6 +232,12 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 [node name="CannonSprite" type="Sprite2D" parent="Turret3/Cannon/Body"]
 texture = ExtResource("18_ngued")
 
+[node name="Targeter" type="Node2D" parent="Turret3"]
+script = ExtResource("19_q3aey")
+_targetMode = 4
+targets = Array[ExtResource("20_d4rbi")]([SubResource("Resource_eukjb")])
+metadata/_custom_type_script = "uid://5y1q5b528821"
+
 [node name="Cannon" type="Node2D" parent="." node_paths=PackedStringArray("body")]
 show_behind_parent = true
 position = Vector2(15, 0)
@@ -230,3 +254,9 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 position = Vector2(3, 0)
 scale = Vector2(1.15789, 1)
 texture = ExtResource("18_2pfwo")
+
+[node name="Targeter" type="Node2D" parent="."]
+script = ExtResource("19_q3aey")
+_targetMode = 5
+persistent = true
+metadata/_custom_type_script = "uid://5y1q5b528821"

@@ -52,6 +52,8 @@ public partial class World : Node, IBrObject
 	public TeamLayerCollection activeTeams = new();
 	public TeamLayer allTeams = new();
 
+	public MouseTracker activeMouseTracker { get; set; }
+
 	/// <summary>
 	/// Amount of velocity in ratio remaining after a second
 	/// </summary>
@@ -121,6 +123,8 @@ public partial class World : Node, IBrObject
 	public override void _Ready()
 	{
 		activePlayerController = activePlayerControllerWrapper?.playerController;
+		activeMouseTracker = new();
+		AddChild(activeMouseTracker);
 		EmitSignal(SignalName.InitSetup);
 	}
 }

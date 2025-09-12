@@ -1,13 +1,17 @@
 using Godot;
+using Godot.Collections;
 using System.Collections.Generic;
 namespace BossRush2;
 
 [GlobalClass]
-public partial class Basic : Entity
+public partial class Basic : Entity, ITargetable
 {
+	[Export]
+	public Targeter targeter { get; set; } = new();
+
 	public override List<string> inputs
-	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire", "Fire2","TiltLeft","TiltRight"];
-	public override List<string> variantInputs { get; set; } = ["Target"];
+	{ get; set; } = ["Up", "Down", "Left", "Right", "Fire", "Fire2", "TiltLeft", "TiltRight"];
+	// public override List<string> variantInputs { get; set; } = ["Target"];
 
 	public void MovementControls()
 	{
@@ -70,12 +74,7 @@ public partial class Basic : Entity
 	public override void _Process(double delta)
 	{
 		float deltaF = (float)delta;
-
-		if (inputMachine.GetVariantInput("Target").VariantType == Variant.Type.Vector2)
-		{
-			Vector2 mousePos = (Vector2)inputMachine.GetVariantInput("Target");
-			Rotation = Position.AngleToPoint(mousePos);
-		}
+		Rotation = targeter.GetTargetDirection(Rotation);
 	}
 
 	public override void _PhysicsProcess(double delta)

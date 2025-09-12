@@ -1,6 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://o8rnn5kg2p55"]
+[gd_scene load_steps=19 format=3 uid="uid://o8rnn5kg2p55"]
 
-[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_h7lf0"]
+[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/generic/Basic.cs" id="1_h7lf0"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_6ysew"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_ux3qa"]
 [ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_2jj8g"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://ciktamhd63plw" path="res://scripts/meta/ui/bars/HealthBar.cs" id="8_w7xm6"]
 [ext_resource type="Resource" uid="uid://1o0bq8wg4pec" path="res://data/ui/bars/hpbar/HPBar.tres" id="9_h7lf0"]
 [ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="14_q7qx5"]
+[ext_resource type="Script" uid="uid://5y1q5b528821" path="res://scripts/entity/behaviour/target/Targeter.cs" id="15_gfsvd"]
 [ext_resource type="Script" uid="uid://ctlkn3fghegrb" path="res://scripts/entity/behaviour/generic/Cannon.cs" id="15_nk2ys"]
 [ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="16_pmio2"]
 [ext_resource type="PackedScene" uid="uid://1tt5gsaxvm5w" path="res://scenes/player/projectiles/BasicBullet.tscn" id="18_csn2s"]
@@ -48,9 +49,10 @@ DoApply = true
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[node name="Penta Shot" type="Node2D"]
+[node name="Penta Shot" type="Node2D" node_paths=PackedStringArray("targeter")]
 z_index = 5
 script = ExtResource("1_h7lf0")
+targeter = NodePath("Targeter")
 _teams = Dictionary[String, String]({
 "Side": "Player"
 })
@@ -169,3 +171,9 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 
 [node name="CannonSprite" type="Sprite2D" parent="FrontCannon/Body"]
 texture = ExtResource("18_na82c")
+
+[node name="Targeter" type="Node2D" parent="."]
+script = ExtResource("15_gfsvd")
+_targetMode = 5
+persistent = true
+metadata/_custom_type_script = "uid://5y1q5b528821"

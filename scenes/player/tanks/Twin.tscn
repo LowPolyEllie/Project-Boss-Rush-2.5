@@ -1,6 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://cnoekplakoydr"]
+[gd_scene load_steps=19 format=3 uid="uid://cnoekplakoydr"]
 
-[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/Basic.cs" id="1_mchr6"]
+[ext_resource type="Script" uid="uid://d0rnginli70t2" path="res://scripts/entity/behaviour/generic/Basic.cs" id="1_mchr6"]
 [ext_resource type="Script" uid="uid://cnjwjxirv8pn6" path="res://scripts/entity/Stats.cs" id="2_nhi0w"]
 [ext_resource type="Texture2D" uid="uid://dqef22fo60t8m" path="res://textures/player/body/BasicBody.svg" id="3_i7s4x"]
 [ext_resource type="Script" uid="uid://jrsq1fmp0ncl" path="res://scripts/meta/ui/StopRotating.cs" id="4_hqmpn"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://8au7v2dw2h03" path="res://scripts/entity/colliders/Hitbox.cs" id="14_bqmw8"]
 [ext_resource type="PackedScene" uid="uid://1tt5gsaxvm5w" path="res://scenes/player/projectiles/BasicBullet.tscn" id="15_7vxhl"]
 [ext_resource type="Script" uid="uid://ctlkn3fghegrb" path="res://scripts/entity/behaviour/generic/Cannon.cs" id="15_dmcqa"]
+[ext_resource type="Script" uid="uid://5y1q5b528821" path="res://scripts/entity/behaviour/target/Targeter.cs" id="15_pdvxx"]
 [ext_resource type="Resource" uid="uid://bif868w3136y3" path="res://data/animation/CannonShoot.tres" id="16_7vxhl"]
 [ext_resource type="Texture2D" uid="uid://brug1ufdts2pk" path="res://textures/player/cannon/BasicCannon.svg" id="18_c117s"]
 
@@ -48,9 +49,10 @@ DoApply = true
 Extra = Dictionary[String, float]({})
 metadata/_custom_type_script = "uid://cnjwjxirv8pn6"
 
-[node name="Twin" type="Node2D"]
+[node name="Twin" type="Node2D" node_paths=PackedStringArray("targeter")]
 z_index = 5
 script = ExtResource("1_mchr6")
+targeter = NodePath("Targeter")
 _teams = Dictionary[String, String]({
 "Side": "Player"
 })
@@ -117,3 +119,9 @@ metadata/_custom_type_script = "uid://ctlkn3fghegrb"
 
 [node name="CannonSprite" type="Sprite2D" parent="Cannon2/Body"]
 texture = ExtResource("18_c117s")
+
+[node name="Targeter" type="Node2D" parent="."]
+script = ExtResource("15_pdvxx")
+_targetMode = 5
+persistent = true
+metadata/_custom_type_script = "uid://5y1q5b528821"

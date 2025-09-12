@@ -24,6 +24,12 @@ public partial class EntitySegment : Node2D, IBrObject, IEntitySegment
 	public bool isTopLevel { get; set; } = false;
 
 	/// <summary>
+	/// Whether or not this node will remain after a tankload
+	/// </summary>
+	[Export]
+	public virtual bool persistent { get; set; } = false;
+
+	/// <summary>
 	/// Please call in _Ready() for every derived class
 	/// </summary>
 	public void FindOwner()
@@ -34,4 +40,6 @@ public partial class EntitySegment : Node2D, IBrObject, IEntitySegment
 			owner = this.SearchForParent<Entity>();
 		}
 	}
+
+	public override void _Ready() => FindOwner();
 }
