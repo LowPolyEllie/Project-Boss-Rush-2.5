@@ -15,8 +15,16 @@ public class ActionBuilder<ActionType> : ApoliObjectBuilder<ActionType> where Ac
 		_SetParam(Key, Value);
 		return this;
 	}
-	public ActionType Build()
+	public new ActionType Build()
 	{
 		return (ActionType)_Build();
 	}
+}
+
+public static class ActionBuilderFactoryHelper
+{
+    public static ActionBuilder<T> NewBuilder<T>() where T:Action
+    {
+        return new();
+    }
 }

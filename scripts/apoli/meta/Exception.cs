@@ -14,4 +14,8 @@ namespace Apoli
     {
         public TypeUnsetException(string msg):base(msg){}
     }
+    public class DuplicateKeyException : ApoliException
+    {
+        public DuplicateKeyException(string msg):base(msg){}
+    }
 }

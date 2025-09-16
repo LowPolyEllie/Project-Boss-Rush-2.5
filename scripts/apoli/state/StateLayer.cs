@@ -26,11 +26,12 @@ public class StateLayer : ICollection<State>
             _currentState.OnEnter();
         }
     }
-    public float name;
+    public string name;
     public StateMachine stateMachine;
     public List<State> states = new();
-    public StateLayer(string _initialState)
+    public StateLayer(string _name,string _initialState)
     {
+        name = _name;
         initialState = _initialState;
     }
     public State GetState(string name)
@@ -49,6 +50,10 @@ public class StateLayer : ICollection<State>
     {
         state.stateLayer = this;
         states.Add(state);
+    }
+    public void AddState(State state)
+    {
+        Add(state);
     }
     public bool Remove(State state)
     {

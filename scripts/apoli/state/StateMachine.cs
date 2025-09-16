@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -5,17 +6,21 @@ namespace Apoli.States;
 
 public class StateMachine
 {
-    public Dictionary<string, StateLayer> stateLayers = new();
+    public List<StateLayer> stateLayers = new();
     public Node subject;
 
-    public void AddLayer(string name, StateLayer layer)
+    public void AddLayer(StateLayer layer)
     {
+        if (stateLayers.FindIndex((_layer) => _layer.name == layer.name) > -1)
+        {
+            throw new DuplicateKeyException("StateMachine already has layer called " + layer.name);
+        }
         layer.stateMachine = this;
-        stateLayers.Add(name, layer);
+        stateLayers.Add(layer);
     }
     public StateLayer GetLayer(string name)
     {
-        return stateLayers[name];
+        return stateLayers.Find((layer)=>layer.name == name);
     }
     public StateMachine(Node _subject)
     {
@@ -23,9 +28,9 @@ public class StateMachine
     }
     public void Init()
     {
-        foreach (KeyValuePair<string,StateLayer> keyValuePair in stateLayers)
+        foreach (StateLayer layer in stateLayers)
         {
-            keyValuePair.Value.Init();
+            layer.Init();
         }
     }
 }

@@ -4,7 +4,7 @@ using Apoli.Types;
 
 namespace Apoli.ValueFunctions;
 
-public class ValueFunctionBuilder<FunctionType> : ApoliObjectBuilder<FunctionType> where FunctionType:ValueFunction
+public class ValueFunctionBuilder<FunctionType> : ApoliObjectBuilder<FunctionType> where FunctionType : ValueFunction
 {
     public ValueFunctionBuilder<FunctionType> SetParam<T>(string Key, IValue<T> Value)
     {
@@ -16,8 +16,16 @@ public class ValueFunctionBuilder<FunctionType> : ApoliObjectBuilder<FunctionTyp
         _SetParam(Key, Value);
         return this;
     }
-    public FunctionType Build()
+    public new FunctionType Build()
     {
         return (FunctionType)_Build();
+    }
+}
+
+public static class ValueFunctionBuilderFactoryHelper
+{
+    public static ValueFunctionBuilder<T> NewBuilder<T>() where T:ValueFunction
+    {
+        return new();
     }
 }

@@ -1,0 +1,28 @@
+{
+    "Layers":[
+        {
+            "Name":"Base",
+            "InitialState":"Idle",
+            "States":[
+                {
+                    "Name":"Idle",
+                    "Powers":[
+                        {
+                            "Type":"Action_On_Physics_Tick",
+                            "EntityAction":{
+                                "Type":"Print",
+                                "Message":{
+                                    "Type":"Concat",
+                                    "String1":"My name is ",
+                                    "String2":{
+                                        "Type":"Get_Name"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
