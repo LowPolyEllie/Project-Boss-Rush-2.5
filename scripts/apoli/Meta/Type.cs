@@ -39,6 +39,13 @@ public class Type<T> : IValue<T>
             return typeof(T).IsGenericType;
         }
     }
+    public bool isPrimitive
+    {
+        get
+        {
+            return typeof(T).IsPrimitive;
+        }
+    }
     public bool isApoliObject
     {
         get

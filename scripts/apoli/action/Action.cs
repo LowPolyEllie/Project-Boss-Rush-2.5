@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using Apoli.Powers;
+using Godot.Collections;
 
 namespace Apoli.Actions;
 
@@ -26,8 +29,13 @@ public interface IAction<in Subject>
 public class Action<Subject> : Action, IAction<Subject>
 {
 	public virtual void DoAction(Subject subject) { }
-	
-	public T GetValue<T>(string key, Subject subject){
+
+	public T GetValue<T>(string key, Subject subject)
+	{
 		return parameters.GetValue<T, Subject>(key, subject);
 	}
+	public void SetValue<T>(T value)
+    {
+        if (typeof(T).IsPrimitive){ throw new Exception(); }
+    }
 }
